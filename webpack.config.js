@@ -13,6 +13,8 @@ exports.output = {
     filename: '[name].bundle.js'
 };
 
+exports.devtool = 'source-map';
+
 exports.module = {
     loaders: [
         { test: /\.css$/, loader: 'style!css', exclude: /node_modules/ },
@@ -28,6 +30,10 @@ exports.plugins = [
         hash: true,
         template: 'index.html',
         filename: 'index.html'
+    }),
+    new webpack.ProvidePlugin({
+        $: 'jquery',
+        jQuery: 'jquery',
     })
 ];
 

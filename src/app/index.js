@@ -1,10 +1,10 @@
 require('angular');
 require('angular-ui-router');
 
-var app = angular.module('usuariosApp', [
+var app = angular.module('app', [
         'ui.router'
-    ])
-    .config(function($stateProvider, $urlRouterProvider) {
+       ])
+    .config(function($urlRouterProvider) {
         $urlRouterProvider.when('', '/');
         $urlRouterProvider.otherwise(function($injector) {
             var $state = $injector.get('$state');
@@ -13,6 +13,8 @@ var app = angular.module('usuariosApp', [
                 location: false
             });
         });
+    }).run(function($state){
+        $state.go('inicio');
     });
     
 var $app = document.querySelector('#app');
