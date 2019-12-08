@@ -7,12 +7,12 @@ var listaCtrl = function ($scope, $rootScope) {
             icon: 'fas fa-futbol',
             listaPaises: [
                 {
-                    icon : 'fab fa-font-awesome-flag',
+                    icon: 'fab fa-font-awesome-flag',
                     nombrePais: 'Brazil',
                     ligas: [
                         {
-                            id : 1,
-                            icon : 'fas fa-caret-right',
+                            id: 1,
+                            icon: 'fas fa-caret-right',
                             nombreLiga: 'Liga A',
                             juegos: [
                                 {
@@ -26,8 +26,8 @@ var listaCtrl = function ($scope, $rootScope) {
                             ]
                         },
                         {
-                            id : 2,
-                            icon : 'fas fa-caret-right',
+                            id: 2,
+                            icon: 'fas fa-caret-right',
                             nombreLiga: 'Liga B',
                             juegos: [
                                 {
@@ -39,13 +39,13 @@ var listaCtrl = function ($scope, $rootScope) {
                     ]
                 },
                 {
-                    icon : 'fab fa-font-awesome-flag',
+                    icon: 'fab fa-font-awesome-flag',
                     nombrePais: 'Argentina',
                     ligas: [
                         {
-                            id : 3,
-                            icon : 'fas fa-caret-right',
-                            nombreLiga: 'Liga Argenta',
+                            id: 3,
+                            icon: 'fas fa-caret-right',
+                            nombreLiga: 'L Argenta',
                             juegos: [
                                 {
                                     equipoA: 'Equipo Ejemplo',
@@ -54,9 +54,9 @@ var listaCtrl = function ($scope, $rootScope) {
                             ]
                         },
                         {
-                            id : 4,
-                            icon : 'fas fa-caret-right',
-                            nombreLiga: 'Liga Jugamos',
+                            id: 4,
+                            icon: 'fas fa-caret-right',
+                            nombreLiga: 'L Jugamos',
                             juegos: [
                                 {
                                     equipoA: 'Equipo x',
@@ -76,13 +76,13 @@ var listaCtrl = function ($scope, $rootScope) {
             icon: 'fas fa-basketball-ball',
             listaPaises: [
                 {
-                    icon : 'fab fa-font-awesome-flag',
+                    icon: 'fab fa-font-awesome-flag',
                     nombrePais: 'Spain',
                     ligas: [
                         {
-                            id : 5,
-                            icon : 'fas fa-caret-right',
-                            nombreLiga: 'Liga Española',
+                            id: 5,
+                            icon: 'fas fa-caret-right',
+                            nombreLiga: 'L Española',
                             juegos: [
                                 {
                                     equipoA: 'Los Grandes',
@@ -91,9 +91,9 @@ var listaCtrl = function ($scope, $rootScope) {
                             ]
                         },
                         {
-                            id : 9,
-                            icon : 'fas fa-caret-right',
-                            nombreLiga: 'Liga vamos',
+                            id: 9,
+                            icon: 'fas fa-caret-right',
+                            nombreLiga: 'L vamos',
                             juegos: [
                                 {
                                     equipoA: 'Los que siempre gana',
@@ -104,35 +104,48 @@ var listaCtrl = function ($scope, $rootScope) {
                     ]
                 },
                 {
-                    icon : 'fab fa-font-awesome-flag',
-                    nombrePais: 'England'
+                    icon: 'fab fa-font-awesome-flag',
+                    nombrePais: 'England',
+                    ligas: [
+                        {
+                            id: 6,
+                            icon: 'fas fa-caret-right',
+                            nombreLiga: 'L England',
+                            juegos: [
+                                {
+                                    equipoA: 'Los abc',
+                                    equipoB: 'Los xtz'
+                                }
+                            ]
+                        }]
                 },
                 {
-                    icon : 'fab fa-font-awesome-flag',
+                    icon: 'fab fa-font-awesome-flag',
                     nombrePais: 'Turkey'
                 }
             ]
         },
         {
             id: '3',
-            icon : 'fas fa-hockey-puck',
+            icon: 'fas fa-hockey-puck',
             deporte: 'HOCKEY',
             listaPaises: [
                 {
-                    icon : 'fab fa-font-awesome-flag',
+                    icon: 'fab fa-font-awesome-flag',
                     nombrePais: 'Rusia'
                 },
                 {
-                    icon : 'fab fa-font-awesome-flag',
+                    icon: 'fab fa-font-awesome-flag',
                     nombrePais: 'Canada'
                 },
                 {
-                    icon : 'fab fa-font-awesome-flag',
+                    icon: 'fab fa-font-awesome-flag',
                     nombrePais: 'Norway'
                 }
             ]
         }
     ];
+
 
     vm.enviarTabla = function (list, pais, liga) {
         var dato = [];
