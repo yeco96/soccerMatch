@@ -1,9 +1,9 @@
-var listaCtrl = function () {
+var listaCtrl = function ($scope, $rootScope) {
     var vm = this;
     vm.listaJuegos = [
         {
             id: '1',
-            deporte: 'SOCCER',
+            deporte: 'Soccer',
             icon: 'fas fa-futbol',
             listaPaises: [
                 {
@@ -13,22 +13,26 @@ var listaCtrl = function () {
                         {
                             id : 1,
                             icon : 'fas fa-caret-right',
-                            nombreLiga: 'LIGA A',
+                            nombreLiga: 'Liga A',
                             juegos: [
                                 {
-                                    equipoA: 'EQUIPO A',
-                                    equipoB: 'EQUIPO B'
+                                    equipoA: 'Equipo Bra',
+                                    equipoB: 'Equipo FC'
+                                },
+                                {
+                                    equipoA: 'Equipo Anona',
+                                    equipoB: 'Equipo Segundo'
                                 }
                             ]
                         },
                         {
                             id : 2,
                             icon : 'fas fa-caret-right',
-                            nombreLiga: 'LIGA B',
+                            nombreLiga: 'Liga B',
                             juegos: [
                                 {
-                                    equipoA: 'EQUIPO X',
-                                    equipoB: 'EQUIPO Z'
+                                    equipoA: 'FC Conca',
+                                    equipoB: 'Tiro al Blanco'
                                 }
                             ]
                         }
@@ -41,22 +45,22 @@ var listaCtrl = function () {
                         {
                             id : 3,
                             icon : 'fas fa-caret-right',
-                            nombreLiga: 'LIGA Argenta',
+                            nombreLiga: 'Liga Argenta',
                             juegos: [
                                 {
-                                    equipoA: 'EQUIPO A',
-                                    equipoB: 'EQUIPO B'
+                                    equipoA: 'Equipo Ejemplo',
+                                    equipoB: 'Grupo del gane'
                                 }
                             ]
                         },
                         {
                             id : 4,
                             icon : 'fas fa-caret-right',
-                            nombreLiga: 'LIGA Jugamos',
+                            nombreLiga: 'Liga Jugamos',
                             juegos: [
                                 {
-                                    equipoA: 'EQUIPO X',
-                                    equipoB: 'EQUIPO Z'
+                                    equipoA: 'Equipo x',
+                                    equipoB: 'Equipo y'
                                 }
                             ]
                         }
@@ -73,7 +77,31 @@ var listaCtrl = function () {
             listaPaises: [
                 {
                     icon : 'fab fa-font-awesome-flag',
-                    nombrePais: 'Spain'
+                    nombrePais: 'Spain',
+                    ligas: [
+                        {
+                            id : 5,
+                            icon : 'fas fa-caret-right',
+                            nombreLiga: 'Liga Española',
+                            juegos: [
+                                {
+                                    equipoA: 'Los Grandes',
+                                    equipoB: 'Los Pequeños'
+                                }
+                            ]
+                        },
+                        {
+                            id : 9,
+                            icon : 'fas fa-caret-right',
+                            nombreLiga: 'Liga vamos',
+                            juegos: [
+                                {
+                                    equipoA: 'Los que siempre gana',
+                                    equipoB: 'Los que siempre pierden'
+                                }
+                            ]
+                        }
+                    ]
                 },
                 {
                     icon : 'fab fa-font-awesome-flag',
@@ -105,6 +133,16 @@ var listaCtrl = function () {
             ]
         }
     ];
+
+    vm.enviarTabla = function (list, pais, liga) {
+        var dato = [];
+        dato.list = list;
+        dato.pais = pais;
+        dato.liga = liga;
+        $rootScope.$broadcast('enviar-dato', dato, true);
+    };
+
+
 };
 module.exports = listaCtrl;
 
