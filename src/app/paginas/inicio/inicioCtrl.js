@@ -9,5 +9,6 @@ var inicioCtrl = function () {
         document.getElementById(id).focus();
     };
 
+
 };
 module.exports = inicioCtrl;

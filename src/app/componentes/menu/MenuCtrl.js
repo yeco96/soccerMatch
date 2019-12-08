@@ -3,18 +3,29 @@ var MenuCtrl = function() {
 
     vm.items = [
         {
-            state: 'home',
-            nombre: 'Principal'
+            state: 'm',
+            nombre: 'SPORTS'
         },
         {
-            state: 'formulario',
-            nombre: 'Agregar'
+            state: 'n',
+            nombre: 'LIVE'
         },
         {
-            state: 'filtro',
-            nombre: 'Filtro'
+            state: 'b',
+            nombre: 'PROP BUILDER'
+        },
+        {
+            state: 'v',
+            nombre: 'CASINO'
+        },
+        {
+            state: 'x',
+            nombre: 'VIP ACCESS'
+        },
+        {
+            state: 'z',
+            nombre: 'LOGOUT'
         }
     ];
-    };
-
+};
 module.exports = MenuCtrl;

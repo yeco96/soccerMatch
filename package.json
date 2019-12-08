@@ -1,5 +1,5 @@
 {
-  "name": "Base-Angular",
+  "name": "maquetaBM",
   "version": "1.0.0",
   "description": "",
   "main": "webpack.config.js",
@@ -10,7 +10,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "Coopetarrazu",
+  "author": "yeco",
   "license": "ISC",
   "dependencies": {
     "angular": "^1.5.5",
