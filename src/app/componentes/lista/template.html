@@ -1,15 +1,45 @@
-
 <div class="accordion" id="accordionExample">
-	<div class="card" ng-repeat="list in $ctrl.listaJuegos">
-		<div class="card-header" id="headingOne">
-		<h5 class="mb-0">
-			<button class="btn btn-link" type="button" data-toggle="collapse" data-target="{{'#collapseOne' + list.id}}" aria-expanded="true" aria-controls="collapseOne">
-			{{list.name}}
-			</button>
-		</h5>
-		</div>
-		<div ng-repeat="sub in list.sub" id="{{'collapseOne' + list.id}}" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
-				{{sub}}
-		</div>
-	</div>
+
+    <!--primero-->
+    <div class="card" ng-repeat="list in $ctrl.listaJuegos">
+
+        <div class="card-header p-0">
+                <button class="btn btn-link" type="button" data-toggle="collapse"
+                        data-target="{{'#collapseOne' + list.id}}">
+                    {{list.deporte}}
+                </button>
+        </div>
+
+
+        <div ng-repeat="pais in list.listaPaises" id="{{'collapseOne' + list.id}}" class="collapse">
+            <!--segundo-->
+            <div class="card">
+                <div class="card-header p-0">
+                        <button class="btn btn-link" type="button" data-toggle="collapse"
+                                data-target="{{'#collapseTwo' + pais.nombrePais}}">
+                            {{pais.nombrePais}}
+                        </button>
+                </div>
+                <div ng-repeat="liga in pais.ligas" id="{{'collapseTwo' + pais.nombrePais}}" class="collapse"
+                     data-parent="#accordionExample">
+
+                    <!--tercero-->
+                    <div class="card">
+                        <div class="card-header p-0">
+                                <button class="btn btn-link" type="button" data-toggle="collapse"
+                                        data-target="{{'#A' + liga.id}}">
+                                    {{liga.nombreLiga}}
+                                </button>
+                        </div>
+                        <div ng-repeat="juego in liga.juegos" id="{{'A' + liga.id}}" class="collapse">
+                            <a class="list-group-item list-group-item-action">
+                                {{juego.equipoA}} <br> {{juego.equipoB}}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
 </div>

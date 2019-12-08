@@ -3,27 +3,27 @@ var MenuCtrl = function() {
 
     vm.items = [
         {
-            state: 'm',
+            state: 'inicio',
             nombre: 'SPORTS'
         },
         {
-            state: 'n',
+            state: 'inicio',
             nombre: 'LIVE'
         },
         {
-            state: 'b',
+            state: 'inicio',
             nombre: 'PROP BUILDER'
         },
         {
-            state: 'v',
+            state: 'inicio',
             nombre: 'CASINO'
         },
         {
-            state: 'x',
+            state: 'inicio',
             nombre: 'VIP ACCESS'
         },
         {
-            state: 'z',
+            state: 'inicio',
             nombre: 'LOGOUT'
         }
     ];

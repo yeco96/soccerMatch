@@ -19,7 +19,8 @@ exports.module = {
     loaders: [
         { test: /\.css$/, loader: 'style!css', exclude: /node_modules/ },
         { test: /\.html$/, loader: 'html', exclude: /node_modules/ },
-        { test: /\.json$/, loader: 'file', exclude: /node_modules/ }
+        { test: /\.json$/, loader: 'file', exclude: /node_modules/ },
+        { test: /\.(png|jpe?g|gif)$/i, loader: 'file', exclude: /node_modules/ }
     ]
 };
 
