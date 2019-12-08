@@ -13,6 +13,7 @@
   "author": "yeco",
   "license": "ISC",
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.11.2",
     "angular": "^1.5.5",
     "angular-ui-router": "^0.4.2",
     "bootstrap": "^4.4.1",

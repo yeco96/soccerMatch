@@ -1,24 +1,45 @@
 <div class="accordion" id="accordionExample">
 
+    <div class="card">
+        <button class="btn btn-link d-flex justify-content-between" type="button">
+            <div>
+                Total de Juegos
+            </div>
+            <div>
+                <span class="badge badge-primary">15</span>
+            </div>
+        </button>
+        <button class="btn btn-link d-flex justify-content-between" type="button">
+            <div>
+                Favoritos
+            </div>
+            <div>
+                <i class="fas fa-star"></i>
+            </div>
+        </button>
+    </div>
+
+
     <!--primero-->
     <div class="card" ng-repeat="list in $ctrl.listaJuegos">
 
         <div class="card-header p-0">
-                <button class="btn btn-link" type="button" data-toggle="collapse"
-                        data-target="{{'#collapseOne' + list.id}}">
-                    {{list.deporte}}
-                </button>
+            <button class="btn btn-link" type="button" data-toggle="collapse"
+                    data-target="{{'#collapseOne' + list.id}}">
+                <i class="{{list.icon}}"></i>
+                {{list.deporte}}
+            </button>
         </div>
-
 
         <div ng-repeat="pais in list.listaPaises" id="{{'collapseOne' + list.id}}" class="collapse">
             <!--segundo-->
             <div class="card">
                 <div class="card-header p-0">
-                        <button class="btn btn-link" type="button" data-toggle="collapse"
-                                data-target="{{'#collapseTwo' + pais.nombrePais}}">
-                            {{pais.nombrePais}}
-                        </button>
+                    <button class="btn btn-link" type="button" data-toggle="collapse"
+                            data-target="{{'#collapseTwo' + pais.nombrePais}}">
+                        <i class="{{pais.icon}}"></i>
+                        {{pais.nombrePais}}
+                    </button>
                 </div>
                 <div ng-repeat="liga in pais.ligas" id="{{'collapseTwo' + pais.nombrePais}}" class="collapse"
                      data-parent="#accordionExample">
@@ -26,10 +47,11 @@
                     <!--tercero-->
                     <div class="card">
                         <div class="card-header p-0">
-                                <button class="btn btn-link" type="button" data-toggle="collapse"
-                                        data-target="{{'#A' + liga.id}}">
-                                    {{liga.nombreLiga}}
-                                </button>
+                            <button class="btn btn-link" type="button" data-toggle="collapse"
+                                    data-target="{{'#A' + liga.id}}">
+                                <i class="{{liga.icon}}"></i>
+                                {{liga.nombreLiga}}
+                            </button>
                         </div>
                         <div ng-repeat="juego in liga.juegos" id="{{'A' + liga.id}}" class="collapse">
                             <a class="list-group-item list-group-item-action">
