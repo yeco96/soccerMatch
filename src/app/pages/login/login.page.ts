@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { NavController } from '@ionic/angular';
 import { AuthenticationService } from '../../services/authentication.service';
+import { LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-login',
@@ -10,11 +11,14 @@ import { AuthenticationService } from '../../services/authentication.service';
 })
 export class LoginPage implements OnInit {
 
+  loaderToShow: any;
+
   constructor(
 
     private navCtrl: NavController,
     private authService: AuthenticationService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private loadingController: LoadingController
 
   ) { }
 
@@ -49,19 +53,36 @@ export class LoginPage implements OnInit {
   }
 
 
-  loginUser(value){
+  loginUser(value: { email: string; password: string; }) {
+    this.showLoader();
+
     this.authService.loginUser(value)
     .then(res => {
       console.log(res);
       this.errorMessage = '';
       this.navCtrl.navigateForward('/dashboard');
+      this.hideLoader();
     }, err => {
       this.errorMessage = err.message;
+      this.hideLoader();
     });
   }
 
   goToRegisterPage() {
     this.navCtrl.navigateForward('/register');
   }
+
+  showLoader() {
+    this.loaderToShow = this.loadingController.create({
+      message: 'Espere un momento por favor'
+    }).then((res) => {
+      res.present();
+    });
+  }
+
+  hideLoader() {
+    this.loadingController.dismiss();
+  }
+
 
 }
