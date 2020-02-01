@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   firebase: {
-    apiKey: 'YOUAIzaSyCG-skSjiJXalAcR9gcKa5pA5HrOsR3jNMR_apiKey',
+    apiKey: 'AIzaSyCG-skSjiJXalAcR9gcKa5pA5HrOsR3jNM',
     authDomain: 'soccermatch-e7962.firebaseapp.com',
     databaseURL: 'https://soccermatch-e7962.firebaseio.com',
     projectId: 'soccermatch-e7962',
