@@ -25,11 +25,9 @@ export class AuthenticationService {
     }
 
   ifLoggedIn() {
-    this.storage.get('USER_INFO').then((response) => {
-      if (response) {
+    if (firebase.auth().currentUser) {
         this.authState.next(true);
-      }
-    });
+    }
   }
 
   registerUser(value: { email: string; password: string; }) {
@@ -46,10 +44,8 @@ export class AuthenticationService {
       firebase.auth().signInWithEmailAndPassword(value.email, value.password)
       .then(
         res => {
-          this.storage.set('USER_INFO', res.user.refreshToken).then((response) => {
-            this.authState.next(true);
-            resolve(res);
-          });
+          this.authState.next(true);
+          resolve(res);
         },
         err => reject(err));
     });
@@ -60,14 +56,8 @@ export class AuthenticationService {
        if (firebase.auth().currentUser) {
          firebase.auth().signOut()
          .then(() => {
-
-           this.storage.remove('USER_INFO').then(() => {
-            this.router.navigate(['login']);
             this.authState.next(false);
             resolve();
-          });
-
-          
          }).catch((error) => {
            reject();
          });
