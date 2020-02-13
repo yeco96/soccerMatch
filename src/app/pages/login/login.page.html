@@ -1,10 +1,13 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-title>Login</ion-title>
+    <ion-title>Iniciar</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
+
+{{titulo}}
+
   <form class="form" [formGroup]="validationsForm"  (ngSubmit)="loginUser(validationsForm.value)">
 
     <ion-item>

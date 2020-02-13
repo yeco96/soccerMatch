@@ -13,6 +13,10 @@ export class LoginPage implements OnInit {
 
   loaderToShow: any;
 
+  titulo : string;
+
+  
+
   constructor(
 
     private navCtrl: NavController,
@@ -50,6 +54,9 @@ export class LoginPage implements OnInit {
         Validators.required
       ])),
     });
+
+    this.titulo = 'mensaje';
+
   }
 
 
