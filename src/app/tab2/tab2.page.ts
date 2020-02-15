@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { CrudService } from './../service/crud.service';
+import { LoaderService } from '../services/loader.service';
 
 @Component({
   selector: 'app-tab2',
@@ -15,9 +16,13 @@ export class Tab2Page implements OnInit {
   studentAge: number;
   studentAddress: string;
 
-  constructor(private crudService: CrudService) {}
+  constructor(
+    private crudService: CrudService,
+    private loader: LoaderService
+    ) {}
 
   ngOnInit() {
+    this.loader.showLoader();
     this.crudService.read_Students().subscribe(data => {
 
       this.students = data.map(e => {
@@ -30,11 +35,12 @@ export class Tab2Page implements OnInit {
         };
       });
       console.log(this.students);
-
+      this.loader.hideLoader();
     });
   }
 
   CreateRecord() {
+   
     const record = {};
     record['Name'] = this.studentName;
     record['Age'] = this.studentAge;
@@ -45,9 +51,9 @@ export class Tab2Page implements OnInit {
       this.studentAddress = '';
       console.log(resp);
     })
-      .catch(error => {
+    .catch(error => {
         console.log(error);
-      });
+    });
   }
 
   RemoveRecord(rowID) {

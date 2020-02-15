@@ -17,7 +17,13 @@ const routes: Routes = [
   {
     path: 'register',
     loadChildren: () => import('./pages/register/register.module').then( m => m.RegisterPageModule)
+  },
+  {
+    path: 'profile',
+    loadChildren: () => import('./pages/maintenance/profile/profile.module').then( m => m.ProfilePageModule),
+    canActivate: [AuthGuardService]
   }
+
 ];
 @NgModule({
   imports: [
