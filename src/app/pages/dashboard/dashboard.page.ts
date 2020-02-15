@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController, ModalController } from '@ionic/angular';
 import { AuthenticationService } from '../../services/authentication.service';
+import { LoaderService } from 'src/app/services/loader.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -14,25 +15,24 @@ export class DashboardPage implements OnInit {
 
   constructor(
     private navCtrl: NavController,
-    private authService: AuthenticationService
+    private authService: AuthenticationService,
+    private loader: LoaderService
   ) {}
 
   ngOnInit() {
-    if (this.authService.userDetails()) {
-      this.userEmail = this.authService.userDetails().email;
-    } else {
-      this.navCtrl.navigateBack('');
-    }
   }
 
+
   logout() {
+    this.loader.showLoader();
     this.authService.logoutUser()
     .then(res => {
       console.log(res);
       this.navCtrl.navigateBack('');
-    })
-    .catch(error => {
+      this.loader.hideLoader();
+    }).catch(error => {
       console.log(error);
+      this.loader.hideLoader();
     });
   }
 }

@@ -30,7 +30,10 @@ firebase.initializeApp(environment.firebase);
   entryComponents: [],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
-    AngularFirestoreModule, IonicStorageModule.forRoot(),
+    AngularFirestoreModule, IonicStorageModule.forRoot({
+      name: '__mydb',
+      driverOrder: ['indexeddb', 'sqlite', 'websql']
+    }),
     AngularFireDatabaseModule, AngularFireAuthModule, ReactiveFormsModule],
   providers: [
     StatusBar,

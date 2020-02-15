@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 
 import { ToastController, Platform } from '@ionic/angular';
 import { BehaviorSubject } from 'rxjs';
+import { LoaderService } from './loader.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,8 @@ export class AuthenticationService {
   constructor( private router: Router,
                private platform: Platform,
                private storage: Storage,
-               public toastController: ToastController
+               public toastController: ToastController,
+               public loader: LoaderService
     ) {
       this.platform.ready().then(() => {
         this.ifLoggedIn();
@@ -25,9 +27,11 @@ export class AuthenticationService {
     }
 
   ifLoggedIn() {
-    if (firebase.auth().currentUser) {
-        this.authState.next(true);
-    }
+    this.loader.showLoader();
+    this.storage.get('refreshToken').then((val) => {
+      this.authState.next(val ? true : false);
+      this.loader.hideLoader();
+    });
   }
 
   registerUser(value: { email: string; password: string; }) {
@@ -44,30 +48,34 @@ export class AuthenticationService {
       firebase.auth().signInWithEmailAndPassword(value.email, value.password)
       .then(
         res => {
-          this.authState.next(true);
-          resolve(res);
+          this.storage.set('refreshToken', res.user.refreshToken).then((val) => {
+            this.authState.next(true);
+            resolve(res);
+          });
         },
         err => reject(err));
     });
    }
 
    logoutUser() {
-     return new Promise((resolve, reject) => {
-       if (firebase.auth().currentUser) {
+    return new Promise<any>((resolve, reject) => {
+      //  if (firebase.auth().currentUser) {
          firebase.auth().signOut()
-         .then(() => {
-            this.authState.next(false);
-            resolve();
-         }).catch((error) => {
-           reject();
-         });
-       }
+         .then(
+          res => {
+            this.storage.remove('refreshToken').then(() => {
+              this.authState.next(false);
+              resolve(res);
+            });
+          },
+          err => reject(err));
+      //  }
      });
    }
 
-   userDetails() {
+  userDetails() {
      return firebase.auth().currentUser;
-   }
+  }
 
   isAuthenticated() {
     return this.authState.value;
