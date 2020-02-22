@@ -10,11 +10,6 @@ const routes: Routes = [
     loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule)
   },
   {
-    path: 'dashboard',
-    loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule),
-    canActivate: [AuthGuardService]
-  },
-  {
     path: 'register',
     loadChildren: () => import('./pages/register/register.module').then( m => m.RegisterPageModule)
   },
@@ -22,7 +17,18 @@ const routes: Routes = [
     path: 'profile',
     loadChildren: () => import('./pages/maintenance/profile/profile.module').then( m => m.ProfilePageModule),
     canActivate: [AuthGuardService]
+  },
+  {
+    path: 'home',
+    loadChildren: () => import('./pages/home/home.module').then( m => m.HomePageModule),
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'retos',
+    loadChildren: () => import('./pages/retos/retos.module').then( m => m.RetosPageModule),
+    canActivate: [AuthGuardService]
   }
+
 
 ];
 @NgModule({

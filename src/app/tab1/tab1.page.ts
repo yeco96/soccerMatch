@@ -33,5 +33,6 @@ export class Tab1Page {
   enviar() {
     this.navCtrl.navigateForward('/profile');
   }
+  
 
 }
