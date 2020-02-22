@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -11,19 +11,28 @@ export class CrudService {
   ) { }
 
 
-  create_NewStudent(record) {
-    return this.firestore.collection('Students').add(record);
+  create(tabla, record) {
+    return this.firestore.collection(tabla).add(record);
   }
 
-  read_Students() {
-    return this.firestore.collection('Students').snapshotChanges();
+  read(tabla) {
+    return this.firestore.collection(tabla).snapshotChanges();
   }
 
-  update_Student(recordId, record) {
-    this.firestore.doc('Students/' + recordId).update(record);
+  update(tabla, recordId, record) {
+    this.firestore.doc(tabla + '/' + recordId).update(record);
   }
 
-  delete_Student(recordId) {
-    this.firestore.doc('Students/' + recordId).delete();
+  delete(tabla, recordId) {
+    this.firestore.doc(tabla + '/' + recordId).delete();
   }
+
+  find(tabla, recordId) {
+    this.firestore.doc(tabla + '/' + recordId).get();
+  }
+
+  getSongDetail(songId: string): AngularFirestoreDocument<any> {
+    return this.firestore.collection('songList').doc(songId);
+  }
+
 }

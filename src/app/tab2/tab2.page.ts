@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
+import { TablesService } from './../service/tables.service';
 import { CrudService } from './../service/crud.service';
 import { LoaderService } from '../services/loader.service';
 
@@ -17,13 +18,14 @@ export class Tab2Page implements OnInit {
   studentAddress: string;
 
   constructor(
+    private tables: TablesService,
     private crudService: CrudService,
     private loader: LoaderService
     ) {}
 
   ngOnInit() {
     this.loader.showLoader();
-    this.crudService.read_Students().subscribe(data => {
+    this.crudService.read(this.tables.tablas().ESTUDIANTES).subscribe(data => {
 
       this.students = data.map(e => {
         return {
@@ -39,13 +41,13 @@ export class Tab2Page implements OnInit {
     });
   }
 
+
   CreateRecord() {
-   
     const record = {};
     record['Name'] = this.studentName;
     record['Age'] = this.studentAge;
     record['Address'] = this.studentAddress;
-    this.crudService.create_NewStudent(record).then(resp => {
+    this.crudService.create(this.tables.tablas().ESTUDIANTES, record).then(resp => {
       this.studentName = '';
       this.studentAge = undefined;
       this.studentAddress = '';
@@ -57,7 +59,7 @@ export class Tab2Page implements OnInit {
   }
 
   RemoveRecord(rowID) {
-    this.crudService.delete_Student(rowID);
+    this.crudService.delete(this.tables.tablas().ESTUDIANTES, rowID);
   }
 
   EditRecord(record) {
@@ -72,7 +74,7 @@ export class Tab2Page implements OnInit {
     record['Name'] = recordRow.EditName;
     record['Age'] = recordRow.EditAge;
     record['Address'] = recordRow.EditAddress;
-    this.crudService.update_Student(recordRow.id, record);
+    this.crudService.update(this.tables.tablas().ESTUDIANTES, recordRow.id, record);
     recordRow.isEdit = false;
   }
 

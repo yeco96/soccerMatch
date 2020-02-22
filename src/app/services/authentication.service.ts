@@ -27,10 +27,10 @@ export class AuthenticationService {
     }
 
   ifLoggedIn() {
-    this.loader.showLoader();
+    // this.loader.showLoading('token');
     this.storage.get('refreshToken').then((val) => {
       this.authState.next(val ? true : false);
-      this.loader.hideLoader();
+      // this.loader.dismissLoader('token');
     });
   }
 
