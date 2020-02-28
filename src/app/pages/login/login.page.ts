@@ -13,7 +13,7 @@ export class LoginPage implements OnInit {
 
   loaderToShow: any;
 
-  titulo : string;
+  titulo: string;
 
 
   constructor(

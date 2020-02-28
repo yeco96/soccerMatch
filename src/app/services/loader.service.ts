@@ -59,6 +59,9 @@ export class LoaderService {
 
   async hideLoader() {
     this.isLoading = false;
+    if (!this.loadingController) {
+      return;
+    }
     return await this.loadingController.dismiss().then(() => console.log('loading dismissed'));
   }
 

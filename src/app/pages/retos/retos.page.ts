@@ -32,6 +32,7 @@ export class RetosPage implements OnInit {
     this.presentModal();
   }
 
+
   ngOnInit() {
     this.loader.showLoading('red_RETOS');
     this.crudService.read(this.tables.tablas().RETOS).subscribe(data => {

@@ -12,7 +12,7 @@ export class CrudService {
 
 
   create(tabla, record) {
-    return this.firestore.collection(tabla).add(record);
+    return this.firestore.collection(tabla).add(Object.assign({}, record));
   }
 
   read(tabla) {
@@ -20,7 +20,7 @@ export class CrudService {
   }
 
   update(tabla, recordId, record) {
-    this.firestore.doc(tabla + '/' + recordId).update(record);
+    this.firestore.doc(tabla + '/' + recordId).update(Object.assign({}, record));
   }
 
   delete(tabla, recordId) {

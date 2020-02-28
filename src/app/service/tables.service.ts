@@ -17,8 +17,10 @@ export class TablesService {
 
   public tablas() {
     return {
-      CANCHAS: 'canchas',
-      RETOS: 'retos',
+      CANCHAS: 'Canchas',
+      EQUIPO: 'Equipo',
+      USUARIO: 'Usuario',
+      RETOS: 'Retos',
       ESTUDIANTES: 'Students'
     };
   }
