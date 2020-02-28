@@ -1,31 +1,23 @@
-<ion-app>
-  <ion-menu side="start" menuId="first" contentId="content1">
-      <ion-header>
-        <ion-toolbar>
-          <ion-title>Navigate</ion-title>
-        </ion-toolbar>
-      </ion-header>
-      <ion-content>
-        <ion-list *ngFor="let pages of navigate">
-        <ion-menu-toggle auto-hide="true">
-          <ion-item [routerLink]="pages.url" routerDirection="forward">
-              <ion-icon [name]="pages.icon" slot="start"></ion-icon>
-                 {{pages.title}} 
-          </ion-item>
-        </ion-menu-toggle>
-        </ion-list>
-      </ion-content>
-    </ion-menu>
-<ion-router-outlet id="content"></ion-router-outlet>
-</ion-app>
+<ion-content>
+  <ion-list>
 
-<ion-header>
-  <ion-toolbar>
-      <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-      </ion-buttons>
-    <ion-title>
-      Home
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
+    <ion-list-header class="ion-text-start">YEISON PICADO ABARCA</ion-list-header>
+
+    <ion-item (click)="wifiSetting()">
+      <ion-icon slot="start" md="person-sharp"></ion-icon>
+      Perfil
+    </ion-item>
+    <ion-item (click)="eventFromPopover()()">
+      <ion-icon slot="start" md="football-sharp"></ion-icon>
+      Equipo
+    </ion-item>
+    <ion-item (click)="eventFromPopover()()">
+      <ion-icon slot="start" md="settings-sharp"></ion-icon>
+      Configuración
+    </ion-item>
+    <ion-item (click)="logout()">
+      <ion-icon slot="start" md="log-out-sharp"></ion-icon>
+      Cerrar Sesión
+    </ion-item>
+  </ion-list>
+</ion-content>

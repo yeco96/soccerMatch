@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { PopoverController, NavParams, Events } from '@ionic/angular';
 
 @Component({
   selector: 'app-menu',
@@ -6,9 +7,29 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./menu.component.scss'],
 })
 export class MenuComponent implements OnInit {
+  page;
 
-  constructor() { }
+  constructor(
+    private events: Events,
+    private navParams: NavParams,
+    private popoverController: PopoverController
+  ) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.page = this.navParams.get('data');
+  }
+
+  wifiSetting() {
+  // code for setting wifi option in apps
+  }
+
+  logout() {
+  // code for logout
+  }
+
+  eventFromPopover() {
+    this.events.publish('fromPopoverEvent');
+    this.popoverController.dismiss();
+  }
 
 }
