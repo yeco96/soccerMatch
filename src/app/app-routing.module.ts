@@ -30,6 +30,10 @@ const routes: Routes = [
   },  {
     path: 'cancha',
     loadChildren: () => import('./pages/maintenance/cancha/cancha.module').then( m => m.CanchaPageModule)
+  },
+  {
+    path: 'noticias',
+    loadChildren: () => import('./pages/noticias/noticias.module').then( m => m.NoticiasPageModule)
   }
 
 

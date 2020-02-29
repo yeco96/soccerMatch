@@ -18,6 +18,16 @@ const routes: Routes = [
         ]
       },
       {
+        path: 'noticias',
+        children: [
+          {
+            path: '',
+            loadChildren: () =>
+              import('../noticias/noticias.module').then(m => m.NoticiasPageModule)
+          }
+        ]
+      },
+      {
         path: '',
         redirectTo: '/home/retos',
         pathMatch: 'full'

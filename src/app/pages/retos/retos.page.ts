@@ -3,7 +3,7 @@ import { TablesService } from 'src/app/service/tables.service';
 import { CrudService } from 'src/app/service/crud.service';
 import { LoaderService } from 'src/app/services/loader.service';
 import { ModalController } from '@ionic/angular';
-import { MenuComponent } from 'src/app/components/menu/menu.component';
+import { CrearRetoComponent } from 'src/app/components/crear-reto/crear-reto.component';
 
 @Component({
   selector: 'app-retos',
@@ -23,7 +23,7 @@ export class RetosPage implements OnInit {
 
   async presentModal() {
     const modal = await this.modalController.create({
-      component: MenuComponent
+      component: CrearRetoComponent
     });
     return await modal.present();
   }

@@ -22,14 +22,15 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { MenuComponent } from './components/menu/menu.component';
+import { CrearRetoComponent } from './components/crear-reto/crear-reto.component';
 
 import { environment } from '../environments/environment';
 import * as firebase from 'firebase';
 firebase.initializeApp(environment.firebase);
 
 @NgModule({
-  declarations: [AppComponent, MenuComponent],
-  entryComponents: [MenuComponent],
+  declarations: [AppComponent, MenuComponent, CrearRetoComponent],
+  entryComponents: [MenuComponent, CrearRetoComponent],
   imports: [BrowserModule, IonicModule.forRoot({ backButtonText: 'Atrás' }), AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule, IonicStorageModule.forRoot({
