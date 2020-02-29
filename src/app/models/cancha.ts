@@ -2,7 +2,7 @@ export class  Cancha {
     id: string;
     nombre: string;
     direccion: string;
-    telefono: [Telefono];
+    telefono: Array<Telefono>;
 
     constructor() {
     }

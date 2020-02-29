@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PopoverController, NavParams, Events, NavController } from '@ionic/angular';
+import { PopoverController, NavParams, NavController } from '@ionic/angular';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { LoaderService } from 'src/app/services/loader.service';
 
@@ -12,7 +12,6 @@ export class MenuComponent implements OnInit {
   page;
 
   constructor(
-    private events: Events,
     private navParams: NavParams,
     private popoverController: PopoverController,
     private authService: AuthenticationService,
@@ -40,10 +39,5 @@ export class MenuComponent implements OnInit {
       this.loader.hideLoader();
     });
   }
-
-  // eventFromPopover() {
-  //   this.events.publish('fromPopoverEvent');
-  //   this.popoverController.dismiss();
-  // }
 
 }

@@ -23,7 +23,7 @@ export class RetosPage implements OnInit {
 
   async presentModal() {
     const modal = await this.modalController.create({
-      component: CrearRetoComponent
+      component: CrearRetoComponent,
     });
     return await modal.present();
   }

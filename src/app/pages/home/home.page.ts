@@ -1,6 +1,6 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 
-import { PopoverController, Events } from '@ionic/angular';
+import { PopoverController } from '@ionic/angular';
 import { MenuComponent } from '../../components/menu/menu.component';
 
 @Component({
@@ -11,25 +11,18 @@ import { MenuComponent } from '../../components/menu/menu.component';
 export class HomePage implements OnInit {
 
   constructor(
-    private popoverController: PopoverController,
-    private events: Events,
+    private popoverController: PopoverController
   ) { }
 
   ngOnInit() {
   }
 
-  async settingsPopover(ev: any) {
+  async settingsPopover() {
     const popover = await this.popoverController.create({
       component: MenuComponent,
-      event: ev,
       componentProps: { page: 'home' },
       cssClass: 'popover_class',
     });
-
-    /** Sync event from popover component */
-    // this.events.subscribe('fromPopoverEvent', () => {
-    //   this.syncTasks();
-    // });
     return await popover.present();
   }
 

@@ -12,7 +12,7 @@ export class CrudService {
 
 
   create(tabla, record) {
-    return this.firestore.collection(tabla).add(Object.assign({}, record));
+    return this.firestore.collection(tabla).add(JSON.parse(JSON.stringify(record)));
   }
 
   read(tabla) {
@@ -20,7 +20,7 @@ export class CrudService {
   }
 
   update(tabla, recordId, record) {
-    this.firestore.doc(tabla + '/' + recordId).update(Object.assign({}, record));
+    this.firestore.doc(tabla + '/' + recordId).update(JSON.parse(JSON.stringify(record)));
   }
 
   delete(tabla, recordId) {
@@ -28,7 +28,24 @@ export class CrudService {
   }
 
   find(tabla, recordId) {
-    this.firestore.doc(tabla + '/' + recordId).get();
+    return this.firestore.doc(tabla + '/' + recordId).get();
+  }
+
+  get(tabla) {
+    return this.firestore.collection(tabla).get();
+  }
+
+  where(tabla) {
+    this.firestore.collection(tabla).get().subscribe(snapshot => {
+    if (snapshot.empty) {
+    console.log('No matching documents.');
+    return;
+    }
+
+    snapshot.forEach(doc => {
+    console.log(doc.id, '=>', doc.data());
+    });
+    });
   }
 
   getSongDetail(songId: string): AngularFirestoreDocument<any> {

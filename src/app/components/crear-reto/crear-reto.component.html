@@ -9,81 +9,53 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
-
-
-
-
+<ion-content>
   <ion-card>
-    <ion-card-header>
-      <ion-card-title>Ubicación</ion-card-title>
+    <ion-card-header class="ion-text-center">
+      <ion-card-title>Parámetros</ion-card-title>
     </ion-card-header>
   
     <ion-card-content>
-      <ion-grid>
-        <ion-col>
-            <ion-row>
-              <ion-col size="12">
-                <ion-item>
-                  <ion-label>Provincia</ion-label>
-                  <ion-select interface="action-sheet" okText="Okay" cancelText="Cerrar">
-                    <ion-select-option value="brown">San José</ion-select-option>
-                    <ion-select-option value="blonde">Cartago</ion-select-option>
-                  </ion-select>
-                </ion-item>
-              </ion-col>
-              <ion-col size="12">
-                <ion-item>
-                  <ion-label>Cantón</ion-label>
-                  <ion-select interface="action-sheet" okText="Okay" cancelText="Cerrar">
-                    <ion-select-option value="brown">Tarrazú</ion-select-option>
-                    <ion-select-option value="blonde">Alajuelita</ion-select-option>
-                    <ion-select-option value="black">Desamparados</ion-select-option>
-                    <ion-select-option value="red">Montes de Oca</ion-select-option>
-                  </ion-select>
-                </ion-item>
-              </ion-col>
-            </ion-row>
-          </ion-col>
-        </ion-grid>
+
+      <ion-item>
+        <ion-label>Provincia</ion-label>
+        <ion-select interface="action-sheet" cancelText="Cancelar" doneText="Aceptar">
+          <ion-select-option value="brown">San José</ion-select-option>
+          <ion-select-option value="blonde">Cartago</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Cantón</ion-label>
+        <ion-select interface="action-sheet" cancelText="Cancelar" doneText="Aceptar">
+          <ion-select-option value="brown">Tarrazú</ion-select-option>
+          <ion-select-option value="blonde">Alajuelita</ion-select-option>
+          <ion-select-option value="black">Desamparados</ion-select-option>
+          <ion-select-option value="red">Montes de Oca</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Fecha y Hora</ion-label>
+        <ion-datetime cancelText="Cancelar" doneText="Aceptar" displayFormat="D MMM YYYY h a" min="2019"></ion-datetime>
+      </ion-item>
+      <ion-button (click)="buscarCanchas()" class="ion-padding" expand="block" color="secondary">BUSCAR</ion-button>
+      <br>
     </ion-card-content>
   </ion-card>
 
-  <ion-card>
+  <!-- <ion-card>
     <ion-card-header>
       <ion-card-title>Cancha</ion-card-title>
     </ion-card-header>
   
     <ion-card-content>
 
-        <ion-grid>
-          <ion-row>
-            <ion-col size="12">
-            <ion-item>
-              <ion-label>Cancha</ion-label>
-              <ion-select interface="action-sheet" okText="Okay" cancelText="Dismiss">
-                <ion-select-option value="brown">Brown</ion-select-option>
-                <ion-select-option value="blonde">Blonde</ion-select-option>
-                <ion-select-option value="black">Black</ion-select-option>
-                <ion-select-option value="red">Red</ion-select-option>
-              </ion-select>
-            </ion-item>
-          </ion-col>
-          <ion-col size="12">
-            <ion-item>
-              <ion-label>Fecha y Hora</ion-label>
-              <ion-datetime displayFormat="D MMM YYYY h a" min="2019"></ion-datetime>
-            </ion-item>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-
     </ion-card-content>
   </ion-card>
-  
+   -->
 
 
-  <ion-button expand="block" color="secondary">ENVIAR</ion-button>
-
+ 
 
 </ion-content>

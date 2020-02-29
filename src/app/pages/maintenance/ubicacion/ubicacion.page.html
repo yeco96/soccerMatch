@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button  [text]="''" defaultHref="home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Ubicación</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-content>
+      <ion-list>
+        <ion-item *ngFor="let ubicacion of ubicacion"> 
+          <ion-label>
+            <h2>{{ubicacion.codigoProvincia}} - {{ubicacion.descripcion}}</h2>
+            <h3></h3>
+            <p>Estado: {{ubicacion.estado ? 'Activo' : 'Inactivo'}}</p>
+          </ion-label>
+          <ion-button fill="outline" slot="end">
+            Editar
+          </ion-button>
+        </ion-item>
+
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="crearCanchaPrueba()" color="secondary">
+      <ion-icon md="add-circle-sharp"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+</ion-content>

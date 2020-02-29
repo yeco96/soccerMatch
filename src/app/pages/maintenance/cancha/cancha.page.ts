@@ -83,23 +83,4 @@ canchas = new Array<Cancha>();
         this.loader.hideLoader();
     });
   }
-
-
-  // loginUser(value: { email: string; password: string; }) {
-  //   this.loader.showLoader();
-  //   this.authService.loginUser(value)
-  //   .then(res => {
-  //     console.log(res);
-  //     this.errorMessage = '';
-  //     this.navCtrl.navigateForward('/home');
-  //     this.loader.hideLoader();
-  //   }, err => {
-  //     this.errorMessage = err.message;
-  //     this.loader.hideLoader();
-  //   });
-  // }
-
-  // goToRegisterPage() {
-  //   this.navCtrl.navigateForward('/register');
-  // }
 }

@@ -9,6 +9,7 @@ export class TablesService {
 
   public ubicacion() {
     return {
+      UBICACION: 'Ubicacion',
       PROVINCIA: 'provincia',
       CANTON: 'canton',
       DISTITO: 'distrito'

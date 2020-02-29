@@ -25,7 +25,13 @@ import { MenuComponent } from './components/menu/menu.component';
 import { CrearRetoComponent } from './components/crear-reto/crear-reto.component';
 
 import { environment } from '../environments/environment';
-import * as firebase from 'firebase';
+
+
+import * as firebase from 'firebase/app';
+import 'firebase/database';
+import 'firebase/auth';
+
+
 firebase.initializeApp(environment.firebase);
 
 @NgModule({

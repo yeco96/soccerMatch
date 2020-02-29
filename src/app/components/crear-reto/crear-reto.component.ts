@@ -25,4 +25,13 @@ export class CrearRetoComponent implements OnInit {
     this.modalController.dismiss();
   }
 
+
+  buscarCanchas() {
+    const a = this.crudService.get(this.tables.tablas().CANCHAS).subscribe(resp => {
+      console.log(resp);
+      this.loader.hideLoader();
+    });
+
+  }
+
 }

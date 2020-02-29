@@ -15,12 +15,8 @@ import { AuthenticationService } from './services/authentication.service';
 export class AppComponent implements OnInit {
 
   public selectedIndex = 0;
+  public selectedIndexMaintenance = 0;
   public appPages = [
-    {
-      title: 'Canchas',
-      url: '/cancha',
-      icon: 'football'
-    },
     {
       title: 'Outbox',
       url: '/folder/Outbox',
@@ -49,6 +45,19 @@ export class AppComponent implements OnInit {
   ];
   public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
 
+  public appMaintenance = [
+    {
+      title: 'Canchas',
+      url: '/cancha',
+      icon: 'football'
+    },
+    {
+      title: 'Ubicación',
+      url: '/ubicacion',
+      icon: 'compass'
+    }
+  ];
+
 
   constructor(
     private platform: Platform,
@@ -65,6 +74,12 @@ export class AppComponent implements OnInit {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
 
+      // let status bar overlay webview
+      this.statusBar.overlaysWebView(true);
+
+      // set status bar to white
+      this.statusBar.backgroundColorByHexString('#003300');
+
       this.authenticationService.authState.subscribe(state => {
         if (state) {
           this.router.navigate(['home']);
@@ -80,6 +95,7 @@ export class AppComponent implements OnInit {
     const path = window.location.pathname.split('login/')[1];
     if (path !== undefined) {
       this.selectedIndex = this.appPages.findIndex(page => page.title.toLowerCase() === path.toLowerCase());
+      this.selectedIndexMaintenance = this.appPages.findIndex(page => page.title.toLowerCase() === path.toLowerCase());
     }
   }
 
