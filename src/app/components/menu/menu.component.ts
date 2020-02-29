@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { PopoverController, NavParams, Events } from '@ionic/angular';
+import { PopoverController, NavParams, Events, NavController } from '@ionic/angular';
+import { AuthenticationService } from 'src/app/services/authentication.service';
+import { LoaderService } from 'src/app/services/loader.service';
 
 @Component({
   selector: 'app-menu',
@@ -12,7 +14,10 @@ export class MenuComponent implements OnInit {
   constructor(
     private events: Events,
     private navParams: NavParams,
-    private popoverController: PopoverController
+    private popoverController: PopoverController,
+    private authService: AuthenticationService,
+    private loader: LoaderService,
+    private navCtrl: NavController,
   ) { }
 
   ngOnInit() {
@@ -20,16 +25,25 @@ export class MenuComponent implements OnInit {
   }
 
   wifiSetting() {
-  // code for setting wifi option in apps
+
   }
 
   logout() {
-  // code for logout
+    this.loader.showLoader();
+    this.authService.logoutUser()
+    .then(res => {
+      console.log(res);
+      this.navCtrl.navigateForward('/login');
+      this.loader.hideLoader();
+      this.popoverController.dismiss();
+    }, err => {
+      this.loader.hideLoader();
+    });
   }
 
-  eventFromPopover() {
-    this.events.publish('fromPopoverEvent');
-    this.popoverController.dismiss();
-  }
+  // eventFromPopover() {
+  //   this.events.publish('fromPopoverEvent');
+  //   this.popoverController.dismiss();
+  // }
 
 }
