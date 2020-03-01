@@ -19,19 +19,17 @@
 
       <ion-item>
         <ion-label>Provincia</ion-label>
-        <ion-select interface="action-sheet" cancelText="Cancelar" doneText="Aceptar">
-          <ion-select-option value="brown">San José</ion-select-option>
-          <ion-select-option value="blonde">Cartago</ion-select-option>
+        <ion-select [(ngModel)]="codProvincia" (ionChange)="changeProvincia()" 
+        interface="action-sheet" cancelText="Cancelar" doneText="Aceptar">
+          <ion-select-option *ngFor="let ubi of ubicacion" value="{{ubi.codigoProvincia}}">{{ubi.descripcion}}</ion-select-option>
         </ion-select>
       </ion-item>
+    
 
-      <ion-item>
+      <ion-item *ngIf="provincia">
         <ion-label>Cantón</ion-label>
-        <ion-select interface="action-sheet" cancelText="Cancelar" doneText="Aceptar">
-          <ion-select-option value="brown">Tarrazú</ion-select-option>
-          <ion-select-option value="blonde">Alajuelita</ion-select-option>
-          <ion-select-option value="black">Desamparados</ion-select-option>
-          <ion-select-option value="red">Montes de Oca</ion-select-option>
+        <ion-select [(ngModel)]="codCanton" interface="action-sheet" cancelText="Cancelar" doneText="Aceptar">
+          <ion-select-option *ngFor="let cant of provincia.canton" value="{{cant.codigoCanton}}">{{cant.descripcion}}</ion-select-option>
         </ion-select>
       </ion-item>
 
@@ -44,18 +42,6 @@
     </ion-card-content>
   </ion-card>
 
-  <!-- <ion-card>
-    <ion-card-header>
-      <ion-card-title>Cancha</ion-card-title>
-    </ion-card-header>
-  
-    <ion-card-content>
 
-    </ion-card-content>
-  </ion-card>
-   -->
-
-
- 
 
 </ion-content>

@@ -19,7 +19,7 @@ import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { MenuComponent } from './components/menu/menu.component';
 import { CrearRetoComponent } from './components/crear-reto/crear-reto.component';
@@ -43,7 +43,7 @@ firebase.initializeApp(environment.firebase);
       name: '__mydb',
       driverOrder: ['indexeddb', 'sqlite', 'websql']
     }),
-    AngularFireDatabaseModule, AngularFireAuthModule, ReactiveFormsModule],
+    AngularFireDatabaseModule, AngularFireAuthModule, ReactiveFormsModule, FormsModule],
   providers: [
     StatusBar,
     SplashScreen,

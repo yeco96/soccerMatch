@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms'
 import { LoaderService } from 'src/app/services/loader.service';
 import { CrudService } from 'src/app/service/crud.service';
 import { TablesService } from 'src/app/service/tables.service';
-import { Cancha } from 'src/app/models/cancha';
+import { Cancha, Ubicacion } from 'src/app/models/cancha';
 
 @Component({
   selector: 'app-cancha',
@@ -55,7 +55,8 @@ canchas = new Array<Cancha>();
           id: e.payload.doc.id,
           direccion: (e.payload.doc.data() as Cancha).direccion,
           nombre: (e.payload.doc.data() as Cancha).nombre,
-          telefono: (e.payload.doc.data() as Cancha).telefono
+          telefono: (e.payload.doc.data() as Cancha).telefono,
+          ubicacion: (e.payload.doc.data() as Cancha).ubicacion
         };
       }) as Array<Cancha>;
 
@@ -73,6 +74,9 @@ canchas = new Array<Cancha>();
     canchas.nombre = 'prueba';
     canchas.direccion = 'san jose';
     canchas.telefono = [{codigo: 506, telefono: 25465570}];
+
+    const ubicacion = {codigoCanton : 5, codigoProvincia : 1};
+    canchas.ubicacion = ubicacion as Ubicacion;
 
     this.crudService.create(this.tables.tablas().CANCHAS, canchas).then(resp => {
       console.log(resp);
