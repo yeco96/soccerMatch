@@ -6,6 +6,20 @@
 
 <ion-content>
 
+   <ion-card>
+    <ion-card-content>
+      <ion-list>
+        <ion-item *ngFor="let reto of retos">
+          <ion-label>
+            <h2>{{reto.region}}</h2>
+            <h3></h3>
+            <p>{{cancha.summary}}</p>
+          </ion-label>
+        </ion-item>
+
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
 
   <!-- <div style="height:30%;
   background-color: #003300;
