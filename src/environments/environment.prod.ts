@@ -1,12 +1,13 @@
 export const environment = {
   production: true,
-  firebase: {
-    apiKey: 'AIzaSyCG-skSjiJXalAcR9gcKa5pA5HrOsR3jNM',
-    authDomain: 'soccermatch-e7962.firebaseapp.com',
-    databaseURL: 'https://soccermatch-e7962.firebaseio.com',
-    projectId: 'soccermatch-e7962',
-    storageBucket: 'soccermatch-e7962.appspot.com',
-    messagingSenderId: '906120752235',
-    appId: '1:906120752235:web:6248a9c99cc72a0df7952e'
+  firebase : {
+    apiKey: 'AIzaSyDrEN7xobZ5n_V2AGT5hJkkRLOuCqK2UCY',
+    authDomain: 'soccermatch-43e4e.firebaseapp.com',
+    databaseURL: 'https://soccermatch-43e4e.firebaseio.com',
+    projectId: 'soccermatch-43e4e',
+    storageBucket: 'soccermatch-43e4e.appspot.com',
+    messagingSenderId: '1093749360689',
+    appId: '1:1093749360689:web:c3698f260743587efa6d10',
+    measurementId: 'G-EB08TJ5N59'
   }
 };
