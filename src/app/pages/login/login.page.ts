@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { NavController } from '@ionic/angular';
+import { NavController, IonDatetime } from '@ionic/angular';
 import { AuthenticationService } from '../../services/authentication.service';
 import { LoaderService } from '../../services/loader.service';
 
@@ -31,10 +31,12 @@ export class LoginPage implements OnInit {
 
 
   validationMessages = {
+
     email: [
       { type: 'required', message: 'Email is required.' },
       { type: 'pattern', message: 'Please enter a valid email.' }
     ],
+    
     password: [
       { type: 'required', message: 'Password is required.' },
       { type: 'minlength', message: 'Password must be at least 5 characters long.' }
@@ -52,6 +54,8 @@ export class LoginPage implements OnInit {
         Validators.minLength(5),
         Validators.required
       ])),
+      
+
     });
 
     this.titulo = 'mensaje';
@@ -59,7 +63,7 @@ export class LoginPage implements OnInit {
   }
 
 
-  loginUser(value: { email: string; password: string; }) {
+  loginUser(value: {  email: string;  password: string;  }) {
     this.loader.showLoader();
     this.authService.loginUser(value)
     .then(res => {

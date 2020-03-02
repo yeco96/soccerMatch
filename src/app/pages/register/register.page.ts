@@ -16,6 +16,21 @@ export class RegisterPage implements OnInit {
   successMessage = '';
 
   validation_messages = {
+
+    
+    nombre: [
+      { type: 'required', message: 'Nombre is required.' }
+      ],
+    apellidos: [
+      { type: 'required', message: 'Apellidos is required.' }
+    ],
+    telefono: [
+      { type: 'required', message: 'Telefono is required.' },
+      { type: 'minlength', message: 'Telefono must be at least 8 characters long.'}
+    ],
+    edad: [
+      { type: 'required', message: 'Edad is required.' }
+    ],
    email: [
      { type: 'required', message: 'Email is required.' },
      { type: 'pattern', message: 'Enter a valid email.' }
@@ -33,7 +48,23 @@ export class RegisterPage implements OnInit {
   ) {}
 
   ngOnInit() {
+
     this.validations_form = this.formBuilder.group({
+
+
+      nombre: new FormControl('', Validators.compose([
+        Validators.required
+      ])),
+      apellidos: new FormControl('', Validators.compose([
+        Validators.required
+      ])),
+      telefono: new FormControl('', Validators.compose([
+        Validators.minLength(8),
+        Validators.required
+      ])),
+      edad: new FormControl('', Validators.compose([
+        Validators.required
+      ])),
       email: new FormControl('', Validators.compose([
         Validators.required,
         Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')

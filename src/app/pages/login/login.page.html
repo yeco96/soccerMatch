@@ -9,6 +9,9 @@
 {{titulo}}
 
   <form class="form" [formGroup]="validationsForm"  (ngSubmit)="loginUser(validationsForm.value)">
+    
+
+    
 
     <ion-item>
       <ion-label  position="floating" color="primary">Email</ion-label>
@@ -33,6 +36,7 @@
         </div>
       </ng-container>
     </div>
+
 
     <ion-button  class="submit-btn" type="submit"  [disabled]="!validationsForm.valid">Log In</ion-button>
 
