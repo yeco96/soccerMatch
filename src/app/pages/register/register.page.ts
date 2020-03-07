@@ -16,8 +16,6 @@ export class RegisterPage implements OnInit {
   successMessage = '';
 
   validation_messages = {
-
-    
     nombre: [
       { type: 'required', message: 'Nombre is required.' }
       ],
@@ -76,7 +74,7 @@ export class RegisterPage implements OnInit {
     });
   }
 
-  tryRegister(value: any){
+  tryRegister(value: any) {
     this.authService.registerUser(value)
      .then((res: any) => {
        console.log(res);
