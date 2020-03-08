@@ -28,7 +28,7 @@ export class CrudService {
   }
 
   find(tabla, recordId) {
-    return this.firestore.doc(tabla + '/' + recordId).get();
+    return this.firestore.collection(tabla).doc(recordId);
   }
 
   get(tabla) {

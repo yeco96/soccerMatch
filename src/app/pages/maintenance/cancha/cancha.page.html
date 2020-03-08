@@ -13,7 +13,8 @@
       <ion-list>
         <ion-item *ngFor="let cancha of canchas">
           <ion-avatar slot="start">
-            <img src="../../../../assets/img/cancha.jpg">
+            <!-- <img src="../../../../assets/img/cancha.jpg"> -->
+            <img src="{{cancha.imagen}}">
           </ion-avatar>
           <ion-label>
             <h2>{{cancha.nombre}}</h2>

@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms'
 import { LoaderService } from 'src/app/services/loader.service';
 import { CrudService } from 'src/app/service/crud.service';
 import { TablesService } from 'src/app/service/tables.service';
-import { Cancha, UbicacionCancha } from 'src/app/models/cancha';
+import { Cancha, UbicacionCancha, MyData } from 'src/app/models/cancha';
 import { CrearCanchaComponent } from 'src/app/pages/maintenance/canchaM/crear-cancha/crear-cancha.component';
 
 @Component({
@@ -16,6 +16,7 @@ import { CrearCanchaComponent } from 'src/app/pages/maintenance/canchaM/crear-ca
 export class CanchaPage implements OnInit {
 
   loaderToShow: any;
+  imagenes = new Array<MyData>();
 
   constructor(
     private navCtrl: NavController,
@@ -40,13 +41,26 @@ canchas = new Array<Cancha>();
           direccion: (e.payload.doc.data() as Cancha).direccion,
           nombre: (e.payload.doc.data() as Cancha).nombre,
           telefono: (e.payload.doc.data() as Cancha).telefono,
-          ubicacion: (e.payload.doc.data() as Cancha).ubicacion
+          ubicacion: (e.payload.doc.data() as Cancha).ubicacion,
+          imagen: (e.payload.doc.data() as Cancha).imagen
         };
       }) as Array<Cancha>;
 
       console.log(this.canchas);
-      // this.loader.hideLoader();
     });
+
+
+    // this.crudService.read(this.tables.imagenes().CANCHAS).subscribe(data => {
+
+    //   this.imagenes = data.map(e => {
+    //     return {
+    //       id: e.payload.doc.id,
+    //      data : e.payload.doc.data()
+    //     };
+    //   }) as Array<MyData>;
+
+    //   console.log(this.imagenes);
+    // });
 
   }
 
@@ -83,5 +97,20 @@ canchas = new Array<Cancha>();
   mostrarModal() {
     this.presentModal();
   }
+
+
+  // getImagenURL(id: string) {
+
+  //   if (!id) {
+  //     return '';
+  //   }
+
+
+  //   // tslint:disable-next-line: triple-equals
+  //   return (this.imagenes.filter(x => x.id == id)[0] as MyData).filepath;
+
+
+  // }
+
 
 }

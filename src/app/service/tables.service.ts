@@ -16,6 +16,12 @@ export class TablesService {
     };
   }
 
+  public imagenes() {
+    return {
+      CANCHAS: 'imagenesCancha'
+    };
+  }
+
   public tablas() {
     return {
       CANCHAS: 'Canchas',

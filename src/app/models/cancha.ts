@@ -11,6 +11,7 @@ export class  Cancha {
     uniforme: boolean;
     arbitro: boolean;
     horario: Horario;
+    imagen: string;
 
     constructor() {
     }
@@ -39,4 +40,10 @@ export class  UbicacionCancha {
     codigoDistrito: number;
 }
 
+
+export interface MyData {
+    name: string;
+    filepath: string;
+    size: number;
+  }
 

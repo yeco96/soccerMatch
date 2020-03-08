@@ -18,6 +18,7 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFireStorageModule } from '@angular/fire/storage';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -27,17 +28,20 @@ import { CrearCanchaComponent } from './pages/maintenance/canchaM/crear-cancha/c
 
 
 import { environment } from '../environments/environment';
+import { FileSizeFormatPipe } from './components/file-size-format.pipe';
 
 
 import * as firebase from 'firebase/app';
 import 'firebase/database';
 import 'firebase/auth';
+import 'firebase/storage';
+
 
 
 firebase.initializeApp(environment.firebase);
 
 @NgModule({
-  declarations: [AppComponent, MenuComponent, CrearRetoComponent, CrearCanchaComponent],
+  declarations: [AppComponent, MenuComponent, CrearRetoComponent, CrearCanchaComponent, FileSizeFormatPipe],
   entryComponents: [MenuComponent, CrearRetoComponent, CrearCanchaComponent],
   imports: [BrowserModule, IonicModule.forRoot({ backButtonText: 'Atrás' }), AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
@@ -45,7 +49,7 @@ firebase.initializeApp(environment.firebase);
       name: '__mydb',
       driverOrder: ['indexeddb', 'sqlite', 'websql']
     }),
-    AngularFireDatabaseModule, AngularFireAuthModule, ReactiveFormsModule, FormsModule],
+    AngularFireDatabaseModule, AngularFireAuthModule, AngularFireStorageModule, ReactiveFormsModule, FormsModule],
   providers: [
     StatusBar,
     SplashScreen,
