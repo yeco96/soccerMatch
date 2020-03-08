@@ -27,7 +27,8 @@ const routes: Routes = [
     path: 'retos',
     loadChildren: () => import('./pages/retos/retos.module').then( m => m.RetosPageModule),
     canActivate: [AuthGuardService]
-  },  {
+  },
+  {
     path: 'cancha',
     loadChildren: () => import('./pages/maintenance/cancha/cancha.module').then( m => m.CanchaPageModule)
   },

@@ -1,0 +1,132 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Crear Cacha</ion-title>
+    <ion-buttons slot="start">
+      <ion-button (click)="cerrarModal()">
+        <ion-icon style="font-size: 25px;" md="close-circle"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content>
+  <ion-card>
+    <ion-card-content>
+    <ion-item>
+      <ion-label position="floating">Nombre</ion-label>
+      <ion-input  [(ngModel)]="canchaObjeto.nombre"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Provincia</ion-label>
+      <ion-select [(ngModel)]="codProvincia" (ionChange)="changeProvincia()" 
+      interface="action-sheet" cancelText="Cancelar" doneText="Aceptar">
+        <ion-select-option *ngFor="let ubi of ubicacion" value="{{ubi.codigoProvincia}}">{{ubi.descripcion}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+  
+
+    <ion-item *ngIf="provincia">
+      <ion-label position="floating" >Cantón</ion-label>
+      <ion-select [(ngModel)]="codCanton" interface="action-sheet" cancelText="Cancelar" doneText="Aceptar">
+        <ion-select-option *ngFor="let cant of provincia.canton" value="{{cant.codigoCanton}}">{{cant.descripcion}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Dirección</ion-label>
+      <ion-input [(ngModel)]="canchaObjeto.direccion"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Monto por Equipo</ion-label>
+      <ion-input [(ngModel)]="canchaObjeto.montoEquipo" type="number"></ion-input>
+    </ion-item>
+
+    
+    <ion-item>
+      <ion-label position="floating">Método de Pago</ion-label>
+      <ion-select [(ngModel)]="canchaObjeto.metodoPago.tipo" (ionChange)="changeProvincia()" 
+      interface="action-sheet" cancelText="Cancelar" doneText="Aceptar">
+        <ion-select-option *ngFor="let ubi of ubicacion" value="{{ubi.codigoProvincia}}">{{ubi.descripcion}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Telefono Principal</ion-label>
+      <ion-input type="number"></ion-input>
+    </ion-item>
+
+    <ion-row>
+      <ion-col size="6">
+        <ion-item class="ion-no-padding">
+          <ion-label>Parqueo</ion-label>
+          <ion-toggle [(ngModel)]="canchaObjeto.parqueo"></ion-toggle>
+        </ion-item>
+      </ion-col>
+      <ion-col size="6">
+        <ion-item class="ion-no-padding">
+          <ion-label>Bestidor</ion-label>
+          <ion-toggle [(ngModel)]="canchaObjeto.bestidor"></ion-toggle>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size="6">
+        <ion-item class="ion-no-padding">
+          <ion-label>Uniforme</ion-label>
+          <ion-toggle [(ngModel)]="canchaObjeto.uniforme"></ion-toggle>
+        </ion-item>
+      </ion-col>
+      <ion-col size="6">
+        <ion-item class="ion-no-padding">
+          <ion-label>Árbitro</ion-label>
+          <ion-toggle [(ngModel)]="canchaObjeto.arbitro"></ion-toggle>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-item-divider class="ion-padding-top">
+      <ion-label>
+        Horario
+      </ion-label>
+    </ion-item-divider>
+
+
+    <ion-row>
+      <ion-col size="6">
+        <ion-item class="ion-no-padding">
+          <ion-label position="floating">Inicio</ion-label>
+          <ion-datetime [(ngModel)]="canchaObjeto.horario.horaInicio" cancelText="Cancelar" doneText="Aceptar" displayFormat="h a"></ion-datetime>
+        </ion-item>
+      </ion-col>
+      <ion-col size="6">
+        <ion-item class="ion-no-padding">
+          <ion-label position="floating">Fin</ion-label>
+          <ion-datetime [(ngModel)]="canchaObjeto.horario.horaFin" cancelText="Cancelar" doneText="Aceptar" displayFormat="h a"></ion-datetime>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-item>
+      <ion-label position="floating">Tiempo por juego (horas)</ion-label>
+      <ion-input [(ngModel)]="canchaObjeto.horario.tiempoJuego" type="number"></ion-input>
+    </ion-item>
+
+
+    <ion-item>
+      <ion-label position="floating">Dias</ion-label>
+      <ion-select multiple="true" [(ngModel)]="canchaObjeto.horario.dias"
+      interface="action-sheet" cancelText="Cancelar" doneText="Aceptar">
+        <ion-select-option *ngFor="let dia of dias" value="{{dia}}">{{dia}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-button (click)="guardar()" class="ion-padding" expand="block" color="secondary">GUARDAR</ion-button>
+    <br>
+
+    </ion-card-content>
+  </ion-card>
+</ion-content>

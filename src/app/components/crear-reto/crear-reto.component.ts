@@ -29,8 +29,35 @@ export class CrearRetoComponent implements OnInit {
 
   provincia: Ubicacion;
   canton: Canton;
+  fechaBuscar: any;
 
   canchas = new Array<Cancha>();
+
+  diaSemana() {
+    const date = new Date(this.fechaBuscar);
+
+    const options = {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    };
+    console.log(date.toLocaleDateString('es-MX', options));
+  }
+
+  diaSemana2() {
+    const dias = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo'];
+    // tslint:disable-next-line: max-line-length
+    const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+
+    const date = new Date(this.fechaBuscar);
+
+    const fechaNum = date.getDate();
+    // tslint:disable-next-line: variable-name
+    const mes_name = date.getMonth();
+
+    console.log(dias[date.getDay() - 1] + ' ' + fechaNum + ' de ' + meses[mes_name] + ' de ' + date.getFullYear());
+  }
 
   ngOnInit() {
     this.crudService.read(this.tables.ubicacion().UBICACION).subscribe(data => {
@@ -46,7 +73,6 @@ export class CrearRetoComponent implements OnInit {
       console.log(this.ubicacion);
       this.ubicacionJSON = JSON.parse(JSON.stringify(this.ubicacion));
     });
-
   }
 
 
@@ -71,6 +97,8 @@ export class CrearRetoComponent implements OnInit {
       this.canchas = lista.filter(x => x.ubicacion.codigoProvincia == this.codProvincia && x.ubicacion.codigoCanton == this.codCanton);
 
       console.log(this.canchas);
+      this.diaSemana();
+      this.diaSemana2();
     });
   }
 

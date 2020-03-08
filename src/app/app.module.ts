@@ -23,6 +23,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { MenuComponent } from './components/menu/menu.component';
 import { CrearRetoComponent } from './components/crear-reto/crear-reto.component';
+import { CrearCanchaComponent } from './pages/maintenance/canchaM/crear-cancha/crear-cancha.component';
+
 
 import { environment } from '../environments/environment';
 
@@ -35,8 +37,8 @@ import 'firebase/auth';
 firebase.initializeApp(environment.firebase);
 
 @NgModule({
-  declarations: [AppComponent, MenuComponent, CrearRetoComponent],
-  entryComponents: [MenuComponent, CrearRetoComponent],
+  declarations: [AppComponent, MenuComponent, CrearRetoComponent, CrearCanchaComponent],
+  entryComponents: [MenuComponent, CrearRetoComponent, CrearCanchaComponent],
   imports: [BrowserModule, IonicModule.forRoot({ backButtonText: 'Atrás' }), AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule, IonicStorageModule.forRoot({

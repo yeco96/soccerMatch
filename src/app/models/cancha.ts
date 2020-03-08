@@ -3,7 +3,14 @@ export class  Cancha {
     nombre: string;
     direccion: string;
     telefono: Array<Telefono>;
-    ubicacion: Ubicacion;
+    ubicacion: UbicacionCancha;
+    montoEquipo: number;
+    metodoPago: MetodoPago;
+    parqueo: boolean;
+    bestidor: boolean;
+    uniforme: boolean;
+    arbitro: boolean;
+    horario: Horario;
 
     constructor() {
     }
@@ -12,9 +19,21 @@ export class  Cancha {
 export class  Telefono {
     codigo: number;
     telefono: number;
+    tipo: string;
 }
 
-export class  Ubicacion {
+export class  Horario {
+    horaInicio: number;
+    horaFin: number;
+    dias: Array<string>;
+    tiempoJuego: number;
+}
+
+export class  MetodoPago {
+    tipo: string;
+}
+
+export class  UbicacionCancha {
     codigoProvincia: number;
     codigoCanton: number;
     codigoDistrito: number;

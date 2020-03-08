@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController } from '@ionic/angular';
+import { NavController, ModalController } from '@ionic/angular';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { LoaderService } from 'src/app/services/loader.service';
 import { CrudService } from 'src/app/service/crud.service';
 import { TablesService } from 'src/app/service/tables.service';
-import { Cancha, Ubicacion } from 'src/app/models/cancha';
+import { Cancha, UbicacionCancha } from 'src/app/models/cancha';
+import { CrearCanchaComponent } from 'src/app/pages/maintenance/canchaM/crear-cancha/crear-cancha.component';
 
 @Component({
   selector: 'app-cancha',
@@ -22,26 +23,9 @@ export class CanchaPage implements OnInit {
     private formBuilder: FormBuilder,
     private loader: LoaderService,
     private crudService: CrudService,
-    private tables: TablesService
+    private tables: TablesService,
+    public modalController: ModalController
   ) { }
-
-
-
-
-// validationsForm: FormGroup;
-//   errorMessage = '';
-
-
-//   validationMessages = {
-//     email: [
-//       { type: 'required', message: 'Email is required.' },
-//       { type: 'pattern', message: 'Please enter a valid email.' }
-//     ],
-//     password: [
-//       { type: 'required', message: 'Password is required.' },
-//       { type: 'minlength', message: 'Password must be at least 5 characters long.' }
-//     ]
-//   };
 
 canchas = new Array<Cancha>();
 
@@ -73,10 +57,10 @@ canchas = new Array<Cancha>();
 
     canchas.nombre = 'prueba';
     canchas.direccion = 'san jose';
-    canchas.telefono = [{codigo: 506, telefono: 25465570}];
+    canchas.telefono = [{codigo: 506, telefono: 25465570, tipo: ''}];
 
     const ubicacion = {codigoCanton : 5, codigoProvincia : 1};
-    canchas.ubicacion = ubicacion as Ubicacion;
+    canchas.ubicacion = ubicacion as UbicacionCancha;
 
     this.crudService.create(this.tables.tablas().CANCHAS, canchas).then(resp => {
       console.log(resp);
@@ -87,4 +71,17 @@ canchas = new Array<Cancha>();
         this.loader.hideLoader();
     });
   }
+
+
+  async presentModal() {
+    const modal = await this.modalController.create({
+      component: CrearCanchaComponent,
+    });
+    return await modal.present();
+  }
+
+  mostrarModal() {
+    this.presentModal();
+  }
+
 }
