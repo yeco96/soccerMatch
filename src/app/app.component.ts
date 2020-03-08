@@ -74,11 +74,11 @@ export class AppComponent implements OnInit {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
 
-      // let status bar overlay webview
-      this.statusBar.overlaysWebView(true);
+      // // let status bar overlay webview
+      // this.statusBar.overlaysWebView(true);
 
-      // set status bar to white
-      this.statusBar.backgroundColorByHexString('#003300');
+      // // set status bar to white
+      // this.statusBar.backgroundColorByHexString('#003300');
 
       this.authenticationService.authState.subscribe(state => {
         if (state) {

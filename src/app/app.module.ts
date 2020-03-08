@@ -43,7 +43,7 @@ firebase.initializeApp(environment.firebase);
 @NgModule({
   declarations: [AppComponent, MenuComponent, CrearRetoComponent, CrearCanchaComponent, FileSizeFormatPipe],
   entryComponents: [MenuComponent, CrearRetoComponent, CrearCanchaComponent],
-  imports: [BrowserModule, IonicModule.forRoot({ backButtonText: 'Atrás' }), AppRoutingModule,
+  imports: [BrowserModule, IonicModule.forRoot({ backButtonText: 'Atrás', scrollPadding: true, scrollAssist: false}), AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule, IonicStorageModule.forRoot({
       name: '__mydb',
