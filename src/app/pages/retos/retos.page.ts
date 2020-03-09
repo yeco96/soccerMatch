@@ -4,6 +4,8 @@ import { CrudService } from 'src/app/service/crud.service';
 import { LoaderService } from 'src/app/services/loader.service';
 import { ModalController } from '@ionic/angular';
 import { CrearRetoComponent } from 'src/app/components/crear-reto/crear-reto.component';
+import { Reto } from 'src/app/models/reto';
+import { Retos } from 'src/app/models/retos';
 
 @Component({
   selector: 'app-retos',
@@ -12,7 +14,7 @@ import { CrearRetoComponent } from 'src/app/components/crear-reto/crear-reto.com
 })
 export class RetosPage implements OnInit {
 
-  retos: any;
+  loaderToShow: any;
 
   constructor(
     private tables: TablesService,
@@ -32,25 +34,24 @@ export class RetosPage implements OnInit {
     this.presentModal();
   }
 
+  retos = new Array<Retos>();
 
+  
   ngOnInit() {
-    this.loader.showLoading('red_RETOS');
+
+    // this.loader.showLoader();
     this.crudService.read(this.tables.tablas().RETOS).subscribe(data => {
 
-      // this.retos = data.map(e => {
-      //   return {
-      //     id: e.payload.doc.id,
-      //     isEdit: false,
-      //     Name: e.payload.doc.data()['Name'],
-      //     Age: e.payload.doc.data()['Age'],
-      //     Address: e.payload.doc.data()['Address'],
-      //   };
-      // });
-      console.log(data);
-      this.loader.dismissLoader('red_RETOS');
+      this.retos = data.map(e => {
+        return {
+          id: e.payload.doc.id,
+          region: (e.payload.doc.data() as Retos).region,
+          summary: (e.payload.doc.data() as Retos).summary,
+        };
+      }) as Array<Retos>;
+
+      console.log(this.retos);
     });
 
 
-  }
-
-}
+}}
