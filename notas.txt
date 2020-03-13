@@ -30,8 +30,9 @@
 		Retos
 			Lista de Retos disponibles (sin equipo B)
 		Crear Reserva
-			lista de canchas disponibles por ubicacion y horario
-			metodo de pago
+			lista de canchas disponibles por ubicacion,horario y tipo de chancha
+			segun el metodo de pago invoco el simpe movil y creo un msj
+			aparta la fecha
 		Crear Reto
 			solcitar un equipo B para un posible partido
 
@@ -47,6 +48,7 @@
 	Menú
 		Mantenimientos
 			Cancha
+				editar, crear y inactivar
 				Ubicaciones**
 			Usuarios
 
