@@ -1,0 +1,123 @@
+Noticias
+	id
+	descripcionEvento string
+	fechaHora Date
+	tipoEvento string
+	actor (Persona, Equipo)
+
+Notificaciones
+	id
+	fechaHora Date
+	descripcionEvento string
+	usuarioDestino
+	estado
+	actor (Persona, Equipo)
+
+
+Usuario
+	id
+	correo string
+	contraseña string
+	nombre string
+	apellidos string
+	fechaNacimientos Date
+	telefonos [Telefono]
+	mascaraAcceso [Mascaras] -> permisos
+	inactivo bit
+	tipoLogueo
+	imagen
+
+
+Equipo
+	id
+	nombre
+	usuarios: [usuarios "crea bit"]
+	fechaCreacion
+	inactivo bit
+	imagen
+	estaditica
+		goles
+			en contra
+			a favor
+		partidos
+			ganados
+			perdidos
+			empates
+Cancha
+	id
+	nombre
+	direccion
+	ubicacion [Ubicacion]
+	telefono [telefono]
+	caracteristicas [parqueo, vestidor, arbitro,uniforme]
+	imagen	
+	♠ horario
+		diasDisponibles
+		horariodisponible
+		duracionJuego
+	metodoPago
+		simpleMovil
+		en sitio
+		deposito
+			numero de cuenta
+			banco
+	tipoCancha
+	inactivo
+	responsable
+	fechaCreacion
+	reservas []
+		fechaHora
+			dia
+			hora
+
+
+Reserva
+	id
+	fechaCreacion
+	♠ fechaReserva
+	estado
+	cancha: [cancha]
+	usuario: [usuario]
+
+
+Reto
+	equipoA
+	equipoB
+	estado
+	reserva (opcional)
+	
+
+Partido
+	resultados
+	tipo (opcional) {codigo reserva, codigo reto}
+	resultado
+		equipoA
+		equipoB
+
+
+
+Auditoria
+	usuario
+	accion
+	objetoAntes
+	objetoDespues
+	fechaHora
+
+Telefono
+	id
+	tipo
+	codigoPais
+	numero
+
+Mascaras
+	id
+	modulo
+	mascara	
+
+Ubicacion
+	id
+	codigoProvincia
+	codigoCanton
+	descripcion
+	canton : [Canton]
+

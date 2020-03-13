@@ -1,0 +1,56 @@
+
+-Pantallas Sin Auth
+	Iniciar sesión
+		olvido la contraseña
+	registro
+		correo
+			validar correo
+		google
+			certificado, obtener datos de cuenta -> realizar registro
+
+--intangible
+	seguridad
+		authGuard 
+		refresh token
+		token
+		getUser
+		bit wise
+		loader
+		build
+		compile
+		message native
+		icons
+
+
+
+-Pantallas Con Auth
+	Principal
+		Noticas
+			lista de actividades realizadas en el app por todos los usuario (partidos, torneos, retos, estadistica, canchas, etc)
+		Retos
+			Lista de Retos disponibles (sin equipo B)
+		Crear Reserva
+			lista de canchas disponibles por ubicacion y horario
+			metodo de pago
+		Crear Reto
+			solcitar un equipo B para un posible partido
+
+	Menu Usuario
+		Perfil
+			Datos personales del usuario
+			Estadistica
+		Equipos
+			Equipo al que pertenece		
+			Estadistica del equipo
+		Cerrar Sesión
+
+	Menú
+		Mantenimientos
+			Cancha
+				Ubicaciones**
+			Usuarios
+
+	Notificaciones
+		lista de avisos o notificaciones de eventos en los que el usuario se encuentra involucrado
+			
+

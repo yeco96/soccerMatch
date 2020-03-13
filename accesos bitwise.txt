@@ -1,0 +1,22 @@
+1 crear canchas
+2 crear usuario
+4 usuario generico
+8 reportes
+16 seguridad
+32 lider equipo
+
+
+Usuarios:
+	usuario: juan
+	mascara: 0
+
+
+	usuario: maria
+	mascara: 12
+
+
+	usuario: marco
+	mascara: 4
+
+	usuario: antonio
+	mascara: 36
