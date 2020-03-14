@@ -34,34 +34,9 @@ canchas = new Array<Cancha>();
 
     // this.loader.showLoader();
     this.crudService.read(this.tables.tablas().CANCHAS).subscribe(data => {
-
-      this.canchas = data.map(e => {
-        return {
-          id: e.payload.doc.id,
-          direccion: (e.payload.doc.data() as Cancha).direccion,
-          nombre: (e.payload.doc.data() as Cancha).nombre,
-          telefono: (e.payload.doc.data() as Cancha).telefono,
-          ubicacion: (e.payload.doc.data() as Cancha).ubicacion,
-          imagen: (e.payload.doc.data() as Cancha).imagen
-        };
-      }) as Array<Cancha>;
-
+      this.canchas = this.crudService.construir(data) as Array<Cancha>;
       console.log(this.canchas);
     });
-
-
-    // this.crudService.read(this.tables.imagenes().CANCHAS).subscribe(data => {
-
-    //   this.imagenes = data.map(e => {
-    //     return {
-    //       id: e.payload.doc.id,
-    //      data : e.payload.doc.data()
-    //     };
-    //   }) as Array<MyData>;
-
-    //   console.log(this.imagenes);
-    // });
-
   }
 
   crearCanchaPrueba() {
@@ -97,20 +72,5 @@ canchas = new Array<Cancha>();
   mostrarModal() {
     this.presentModal();
   }
-
-
-  // getImagenURL(id: string) {
-
-  //   if (!id) {
-  //     return '';
-  //   }
-
-
-  //   // tslint:disable-next-line: triple-equals
-  //   return (this.imagenes.filter(x => x.id == id)[0] as MyData).filepath;
-
-
-  // }
-
 
 }
