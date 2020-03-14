@@ -103,16 +103,41 @@
     </ion-card-content>
   </ion-card> -->
 
+      <!-- <form class="form" [formGroup]="validations_form"  (ngSubmit)="guardar(validations_form.value)">
+      <ion-item>
+        <ion-label position="floating">Nombre</ion-label>
+        <ion-input  type="text" formControlName="nombre" [(ngModel)]="canchaObjeto.nombre"></ion-input>
+      </ion-item> 
+      <div class="validation-errors">
+        <ng-container *ngFor="let validation of validation_messages.nombre">
+          <div class="error-message" *ngIf="validations_form.get('nombre').hasError(validation.type) && (validations_form.get('nombre').dirty || validations_form.get('nombre').touched)">
+            {{ validation.message }}
+          </div>
+        </ng-container>
+      </div>  
+      <ion-button type="submit" class="ion-padding" expand="block" color="secondary" [disabled]="!validations_form.valid">GUARDAR</ion-button>
+    </form>-->
+
   <ion-card>
+    
     <ion-card-content>
+      <form class="form" [formGroup]="validations_form"  (ngSubmit)="guardar(validations_form.value)">
     <ion-item>
       <ion-label position="floating">Nombre</ion-label>
-      <ion-input  [(ngModel)]="canchaObjeto.nombre"></ion-input>
+      <ion-input type="text" formControlName="nombre" [(ngModel)]="canchaObjeto.nombre"></ion-input>
     </ion-item>
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validation_messages.nombre">
+        <div class="error-message" *ngIf="validations_form.get('nombre').hasError(validation.type) && (validations_form.get('nombre').dirty || validations_form.get('nombre').touched)">
+          {{ validation.message }}
+        </div>
+      </ng-container>
+    </div>
 
+    
     <ion-item>
       <ion-label position="floating">Provincia</ion-label>
-      <ion-select [(ngModel)]="canchaObjeto.ubicacion.codigoProvincia" (ionChange)="changeProvincia()" 
+      <ion-select formControlName="provincia" [(ngModel)]="canchaObjeto.ubicacion.codigoProvincia" (ionChange)="changeProvincia()" 
       interface="action-sheet" cancelText="Cancelar" doneText="Aceptar">
         <ion-select-option *ngFor="let ubi of ubicacion" value="{{ubi.codigoProvincia}}">{{ubi.descripcion}}</ion-select-option>
       </ion-select>
@@ -128,27 +153,43 @@
 
     <ion-item>
       <ion-label position="floating">Dirección</ion-label>
-      <ion-input [(ngModel)]="canchaObjeto.direccion"></ion-input>
-    </ion-item>
-
-    <ion-item>
-      <ion-label position="floating">Monto por Equipo</ion-label>
-      <ion-input [(ngModel)]="canchaObjeto.montoEquipo" type="number"></ion-input>
+      <ion-input type="text" formControlName="direccion" [(ngModel)]="canchaObjeto.direccion"></ion-input>
     </ion-item>
 
     
     <ion-item>
+      <ion-label position="floating">Monto por Equipo</ion-label>
+      <ion-input type="text" formControlName="montoEquipo" [(ngModel)]="canchaObjeto.montoEquipo" type="number"></ion-input>
+    </ion-item>
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validation_messages.montoEquipo">
+        <div class="error-message" *ngIf="validations_form.get('montoEquipo').hasError(validation.type) && (validations_form.get('montoEquipo').dirty || validations_form.get('montoEquipo').touched)">
+          {{ validation.message }}
+        </div>
+      </ng-container>
+    </div>
+
+    
+    <ion-item>
       <ion-label position="floating">Método de Pago</ion-label>
-      <ion-select [(ngModel)]="canchaObjeto.metodoPago.tipo" (ionChange)="changeProvincia()" 
+      <ion-select formControlName="metodoPago" [(ngModel)]="canchaObjeto.metodoPago.tipo" (ionChange)="changeProvincia()" 
       interface="action-sheet" cancelText="Cancelar" doneText="Aceptar">
         <ion-select-option *ngFor="let ubi of ubicacion" value="{{ubi.codigoProvincia}}">{{ubi.descripcion}}</ion-select-option>
       </ion-select>
     </ion-item>
 
+
     <ion-item>
       <ion-label position="floating">Telefono Principal</ion-label>
-      <ion-input type="number"></ion-input>
+      <ion-input formControlName="telefono" [(ngModel)]="canchaObjeto.telefono" type="number"></ion-input>
     </ion-item>
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validation_messages.telefono">
+        <div class="error-message" *ngIf="validations_form.get('telefono').hasError(validation.type) && (validations_form.get('telefono').dirty || validations_form.get('telefono').touched)">
+          {{ validation.message }}
+        </div>
+      </ng-container>
+    </div>
 
     <ion-row>
       <ion-col size="6">
@@ -159,7 +200,7 @@
       </ion-col>
       <ion-col size="6">
         <ion-item class="ion-no-padding">
-          <ion-label>Vestidor</ion-label>
+          <ion-label>Bestidor</ion-label>
           <ion-toggle [(ngModel)]="canchaObjeto.bestidor"></ion-toggle>
         </ion-item>
       </ion-col>
@@ -202,10 +243,7 @@
       </ion-col>
     </ion-row>
 
-    <ion-item>
-      <ion-label position="floating">Tiempo por juego (horas)</ion-label>
-      <ion-input [(ngModel)]="canchaObjeto.horario.tiempoJuego" type="number"></ion-input>
-    </ion-item>
+
 
 
     <ion-item>
@@ -236,12 +274,31 @@
           (click)="isUploading = isUploaded = false"
           >Upload More</ion-button
         > -->
-      </ion-card-content>
+        
+    
+      </ion-card-content>          
     </ion-card>
+    
+ 
 
-    <ion-button (click)="guardar()" class="ion-padding" expand="block" color="secondary">GUARDAR</ion-button>
+    <!-- <form class="form" [formGroup]="validations_form"  (ngSubmit)="guardar(validations_form.value)">
+      <ion-item>
+        <ion-label position="floating">Nombre</ion-label>
+        <ion-input  type="text" formControlName="nombre" [(ngModel)]="canchaObjeto.nombre"></ion-input>
+      </ion-item> 
+      <div class="validation-errors">
+        <ng-container *ngFor="let validation of validation_messages.nombre">
+          <div class="error-message" *ngIf="validations_form.get('nombre').hasError(validation.type) && (validations_form.get('nombre').dirty || validations_form.get('nombre').touched)">
+            {{ validation.message }}
+          </div>
+        </ng-container>
+      </div>  
+      <ion-button type="submit" class="ion-padding" expand="block" color="secondary" [disabled]="!validations_form.valid">GUARDAR</ion-button>
+    </form>-->
+    
     <br>
-
+    <ion-button type="submit" class="ion-padding" expand="block" color="secondary" [disabled]="!validations_form.valid">GUARDAR</ion-button>
+  </form>
     </ion-card-content>
   </ion-card>
 </ion-content>

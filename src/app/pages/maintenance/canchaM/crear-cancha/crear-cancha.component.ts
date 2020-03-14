@@ -4,14 +4,15 @@ import { CrudService } from 'src/app/service/crud.service';
 import { LoaderService } from 'src/app/services/loader.service';
 import { ModalController } from '@ionic/angular';
 import { Ubicacion, Canton } from 'src/app/models/ubicacion';
-import { FormControl } from '@angular/forms';
 import { Cancha, MetodoPago, Telefono, Horario, UbicacionCancha, MyData } from 'src/app/models/cancha';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 
 
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { finalize, tap } from 'rxjs/operators';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 
 
 @Component({
@@ -44,6 +45,55 @@ export class CrearCanchaComponent implements OnInit {
   isUploading: boolean;
   isUploaded: boolean;
 
+  //Validations
+  validations_form: FormGroup;
+  errorMessage  = '';
+  successMessage = '';
+
+  validation_messages = {
+    nombre: [
+      { type: 'required', message: 'Nombre is required.' }
+      ],
+    direccion: [
+      { type: 'required', message: 'Direccion is required.' }
+    ],
+    telefono: [
+      { type: 'required', message: 'Telefono is required.' },
+      { type: 'minlength', message: 'Telefono must be at least 8 characters long.'}
+    ],/*
+    ubicacion: [
+      { type: 'required', message: 'Ubicacion is required.' }
+    ],*/
+    montoEquipo: [
+     { type: 'required', message: 'Monto is required.' }
+   ],
+    metodoPago: [
+     { type: 'required', message: 'MetodoPago is required.' },
+   ],
+   provincia: [
+    { type: 'required', message: 'MetodoPago is required.' },
+   ]
+    /*parqueo: [
+      { type: 'required', message: 'parqueo is required.' },
+    ], 
+    bestidor: [
+      { type: 'required', message: 'vestidor is required.' },
+    ],  
+    uniforme:  [
+      { type: 'required', message: 'uniforme is required.' },
+    ],  
+    arbitro:  [
+      { type: 'required', message: 'MetodoPago is required.' },
+    ], 
+    horario: [
+      { type: 'required', message: 'horario is required.' },
+    ],  
+    imagen: [
+      { type: 'required', message: 'imagen is required.' },
+    ],*/
+  };
+
+
   private imageCollection: AngularFirestoreCollection<MyData>;
   constructor(
     private tables: TablesService,
@@ -51,7 +101,9 @@ export class CrearCanchaComponent implements OnInit {
     private loader: LoaderService,
     public modalController: ModalController,
     private storage: AngularFireStorage,
-    private database: AngularFirestore
+    private database: AngularFirestore,
+    private authService: AuthenticationService,
+    private formBuilder: FormBuilder
   ) {
 
     this.isUploading = false;
@@ -90,8 +142,31 @@ export class CrearCanchaComponent implements OnInit {
       }) as Array<Ubicacion>;
       console.log(this.ubicacion);
       this.ubicacionJSON = JSON.parse(JSON.stringify(this.ubicacion));
+      
     });
+    this.validations_form = this.formBuilder.group({
 
+
+      nombre: new FormControl('', Validators.compose([
+        Validators.required
+      ])),
+      metodoPago: new FormControl('', Validators.compose([
+        Validators.required
+      ])),
+      montoEquipo: new FormControl('', Validators.compose([
+        Validators.required
+      ])),
+      telefono: new FormControl('', Validators.compose([
+        Validators.required,
+        Validators.minLength(8)
+      ])),
+      provincia: new FormControl('', Validators.compose([
+        Validators.required,
+      ])),
+      direccion: new FormControl('', Validators.compose([
+        Validators.required
+      ])),      
+    });
   }
 
   cerrarModal() {
@@ -118,6 +193,19 @@ export class CrearCanchaComponent implements OnInit {
     });
   }
 
+  /*  tryRegister(value: any) {
+    this.authService.registerUser(value)
+     .then((res: any) => {
+       console.log(res);
+       this.errorMessage = '';
+       this.successMessage = 'Your account has been created. Please log in.';
+     }, (err: { message: string; }) => {
+       console.log(err);
+       this.errorMessage = err.message;
+       this.successMessage = '';
+     });
+  }
+*/
 
 
   uploadFile(event: FileList) {
