@@ -68,29 +68,38 @@ export class CrearCanchaComponent implements OnInit {
      { type: 'required', message: 'Monto is required.' }
    ],
     metodoPago: [
-     { type: 'required', message: 'MetodoPago is required.' },
+     { type: 'required', message: 'Metodo de pago is required.' },
    ],
    provincia: [
-    { type: 'required', message: 'MetodoPago is required.' },
-   ]
-    /*parqueo: [
-      { type: 'required', message: 'parqueo is required.' },
-    ], 
-    bestidor: [
-      { type: 'required', message: 'vestidor is required.' },
-    ],  
-    uniforme:  [
-      { type: 'required', message: 'uniforme is required.' },
-    ],  
-    arbitro:  [
-      { type: 'required', message: 'MetodoPago is required.' },
-    ], 
-    horario: [
-      { type: 'required', message: 'horario is required.' },
+    { type: 'required', message: 'Provincia is required.' },
+   ],
+   canton: [
+      { type: 'required', message: 'canton is required.' },
     ],  
     imagen: [
       { type: 'required', message: 'imagen is required.' },
-    ],*/
+    ],
+    inicio: [
+      { type: 'required', message: 'inicio is required.' },
+    ],
+    fin: [
+      { type: 'required', message: 'fin is required.' },
+    ],
+    dias: [
+      { type: 'required', message: 'dias is required.' },
+    ],
+    parqueo: [
+      { type: 'required', message: 'dias is required.' },
+    ],
+    vestidor: [
+      { type: 'required', message: 'dias is required.' },
+    ],
+    uniforme: [
+      { type: 'required', message: 'dias is required.' },
+    ],
+    arbitro: [
+      { type: 'required', message: 'dias is required.' },
+    ],
   };
 
 
@@ -157,15 +166,39 @@ export class CrearCanchaComponent implements OnInit {
         Validators.required
       ])),
       telefono: new FormControl('', Validators.compose([
-        Validators.required,
-        Validators.minLength(8)
+        Validators.minLength(8),
+        Validators.required
       ])),
       provincia: new FormControl('', Validators.compose([
         Validators.required,
       ])),
       direccion: new FormControl('', Validators.compose([
         Validators.required
-      ])),      
+      ])),  
+      canton: new FormControl('', Validators.compose([
+        Validators.required
+      ])),  
+      inicio: new FormControl('', Validators.compose([
+        Validators.required
+      ])),  
+      fin: new FormControl('', Validators.compose([
+        Validators.required
+      ])),  
+      dias: new FormControl('', Validators.compose([
+        Validators.required
+      ])),     
+      vestidor: new FormControl('', Validators.compose([
+        Validators.required
+      ])),   
+      parqueo: new FormControl('', Validators.compose([
+        Validators.required
+      ])),   
+      arbitro: new FormControl('', Validators.compose([
+        Validators.required
+      ])),   
+      uniforme: new FormControl('', Validators.compose([
+        Validators.nullValidator
+      ])),   
     });
   }
 

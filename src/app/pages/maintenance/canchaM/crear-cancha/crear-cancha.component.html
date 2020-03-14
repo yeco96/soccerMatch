@@ -142,19 +142,40 @@
         <ion-select-option *ngFor="let ubi of ubicacion" value="{{ubi.codigoProvincia}}">{{ubi.descripcion}}</ion-select-option>
       </ion-select>
     </ion-item>
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validation_messages.provincia">
+        <div class="error-message" *ngIf="validations_form.get('provincia').hasError(validation.type) && (validations_form.get('provincia').dirty || validations_form.get('provincia').touched)">
+          {{ validation.message }}
+        </div>
+      </ng-container>
+    </div>
   
 
     <ion-item *ngIf="provincia">
       <ion-label position="floating" >Cantón</ion-label>
-      <ion-select [(ngModel)]="canchaObjeto.ubicacion.codigoCanton" interface="action-sheet" cancelText="Cancelar" doneText="Aceptar">
+      <ion-select   formControlName="canton" [(ngModel)]="canchaObjeto.ubicacion.codigoCanton" interface="action-sheet" cancelText="Cancelar" doneText="Aceptar">
         <ion-select-option *ngFor="let cant of provincia.canton" value="{{cant.codigoCanton}}">{{cant.descripcion}}</ion-select-option>
       </ion-select>
     </ion-item>
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validation_messages.canton">
+        <div class="error-message" *ngIf="validations_form.get('canton').hasError(validation.type) && (validations_form.get('canton').dirty || validations_form.get('canton').touched)">
+          {{ validation.message }}
+        </div>
+      </ng-container>
+    </div>
 
     <ion-item>
       <ion-label position="floating">Dirección</ion-label>
       <ion-input type="text" formControlName="direccion" [(ngModel)]="canchaObjeto.direccion"></ion-input>
     </ion-item>
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validation_messages.direccion">
+        <div class="error-message" *ngIf="validations_form.get('direccion').hasError(validation.type) && (validations_form.get('direccion').dirty || validations_form.get('direccion').touched)">
+          {{ validation.message }}
+        </div>
+      </ng-container>
+    </div>
 
     
     <ion-item>
@@ -177,6 +198,14 @@
         <ion-select-option *ngFor="let ubi of ubicacion" value="{{ubi.codigoProvincia}}">{{ubi.descripcion}}</ion-select-option>
       </ion-select>
     </ion-item>
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validation_messages.metodoPago">
+        <div class="error-message" *ngIf="validations_form.get('metodoPago').hasError(validation.type) && (validations_form.get('metodoPago').dirty || validations_form.get('metodoPago').touched)">
+          {{ validation.message }}
+        </div>
+      </ng-container>
+    </div>
+
 
 
     <ion-item>
@@ -195,13 +224,13 @@
       <ion-col size="6">
         <ion-item class="ion-no-padding">
           <ion-label>Parqueo</ion-label>
-          <ion-toggle [(ngModel)]="canchaObjeto.parqueo"></ion-toggle>
+          <ion-toggle formControlName="parqueo" [(ngModel)]="canchaObjeto.parqueo"></ion-toggle>
         </ion-item>
       </ion-col>
       <ion-col size="6">
         <ion-item class="ion-no-padding">
-          <ion-label>Bestidor</ion-label>
-          <ion-toggle [(ngModel)]="canchaObjeto.bestidor"></ion-toggle>
+          <ion-label>Vestidor</ion-label>
+          <ion-toggle formControlName="vestidor" [(ngModel)]="canchaObjeto.bestidor"></ion-toggle>
         </ion-item>
       </ion-col>
     </ion-row>
@@ -210,13 +239,13 @@
       <ion-col size="6">
         <ion-item class="ion-no-padding">
           <ion-label>Uniforme</ion-label>
-          <ion-toggle [(ngModel)]="canchaObjeto.uniforme"></ion-toggle>
+          <ion-toggle formControlName="uniforme" [(ngModel)]="canchaObjeto.uniforme"></ion-toggle>
         </ion-item>
       </ion-col>
       <ion-col size="6">
         <ion-item class="ion-no-padding">
           <ion-label>Árbitro</ion-label>
-          <ion-toggle [(ngModel)]="canchaObjeto.arbitro"></ion-toggle>
+          <ion-toggle formControlName="arbitro" [(ngModel)]="canchaObjeto.arbitro"></ion-toggle>
         </ion-item>
       </ion-col>
     </ion-row>
@@ -232,14 +261,28 @@
       <ion-col size="6">
         <ion-item class="ion-no-padding">
           <ion-label position="floating">Inicio</ion-label>
-          <ion-datetime [(ngModel)]="canchaObjeto.horario.horaInicio" cancelText="Cancelar" doneText="Aceptar" displayFormat="h a"></ion-datetime>
+          <ion-datetime formControlName="inicio" [(ngModel)]="canchaObjeto.horario.horaInicio" cancelText="Cancelar" doneText="Aceptar" displayFormat="h a"></ion-datetime>
         </ion-item>
+        <div class="validation-errors">
+          <ng-container *ngFor="let validation of validation_messages.inicio">
+            <div class="error-message" *ngIf="validations_form.get('inicio').hasError(validation.type) && (validations_form.get('inicio').dirty || validations_form.get('inicio').touched)">
+              {{ validation.message }}
+            </div>
+          </ng-container>
+        </div>
       </ion-col>
       <ion-col size="6">
         <ion-item class="ion-no-padding">
           <ion-label position="floating">Fin</ion-label>
-          <ion-datetime [(ngModel)]="canchaObjeto.horario.horaFin" cancelText="Cancelar" doneText="Aceptar" displayFormat="h a"></ion-datetime>
+          <ion-datetime formControlName="fin" [(ngModel)]="canchaObjeto.horario.horaFin" cancelText="Cancelar" doneText="Aceptar" displayFormat="h a"></ion-datetime>
         </ion-item>
+        <div class="validation-errors">
+          <ng-container *ngFor="let validation of validation_messages.fin">
+            <div class="error-message" *ngIf="validations_form.get('fin').hasError(validation.type) && (validations_form.get('fin').dirty || validations_form.get('fin').touched)">
+              {{ validation.message }}
+            </div>
+          </ng-container>
+        </div>
       </ion-col>
     </ion-row>
 
@@ -248,11 +291,19 @@
 
     <ion-item>
       <ion-label position="floating">Dias</ion-label>
-      <ion-select multiple="true" [(ngModel)]="canchaObjeto.horario.dias"
+      <ion-select formControlName="dias" multiple="true" [(ngModel)]="canchaObjeto.horario.dias"
       interface="action-sheet" cancelText="Cancelar" doneText="Aceptar">
         <ion-select-option *ngFor="let dia of dias" value="{{dia}}">{{dia}}</ion-select-option>
       </ion-select>
     </ion-item>
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validation_messages.fin">
+        <div class="error-message" *ngIf="validations_form.get('fin').hasError(validation.type) && (validations_form.get('fin').dirty || validations_form.get('fin').touched)">
+          {{ validation.message }}
+        </div>
+      </ng-container>
+    </div>
+
 
     <ion-card class="ion-text-center" *ngIf="!isUploading && isUploaded">
       <!-- <ion-card-header>
