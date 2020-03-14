@@ -6,8 +6,6 @@ import { ModalController } from '@ionic/angular';
 import { Ubicacion, Canton } from 'src/app/models/ubicacion';
 import { Cancha, MetodoPago, Telefono, Horario, UbicacionCancha, MyData } from 'src/app/models/cancha';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-
-
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';

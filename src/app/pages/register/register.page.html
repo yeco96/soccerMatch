@@ -9,7 +9,7 @@
     
     <ion-item>
       <ion-label  position="floating" color="primary">Nombre</ion-label>
-      <ion-input type="text" formControlName="nombre"></ion-input>
+      <ion-input type="text" formControlName="nombre" ngModel=""></ion-input>
     </ion-item>
     <div class="validation-errors">
       <ng-container *ngFor="let validation of validation_messages.nombre">
@@ -45,11 +45,11 @@
 
     <ion-item>
       <ion-label  position="floating" color="primary">Fecha de Nacimiento</ion-label>
-      <ion-input type="date" formControlName="edad"></ion-input>
+      <ion-input type="date" formControlName="fechaNacimiento"></ion-input>
     </ion-item>
     <div class="validation-errors">
-      <ng-container *ngFor="let validation of validation_messages.edad">
-        <div class="error-message" *ngIf="validations_form.get('edad').hasError(validation.type) && (validations_form.get('edad').dirty || validations_form.get('edad').touched)">
+      <ng-container *ngFor="let validation of validation_messages.fechaNacimiento">
+        <div class="error-message" *ngIf="validations_form.get('fechaNacimiento').hasError(validation.type) && (validations_form.get('fechaNacimiento').dirty || validations_form.get('fechaNacimiento').touched)">
           {{ validation.message }}
         </div>
       </ng-container>
