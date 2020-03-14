@@ -9,8 +9,7 @@ export class Usuario {
     mascaraAcceso: string;
     inactivo: boolean;
     tipoLogueo: number;
-    imagen: string;
-}
+    imagen: string;}
 
 
 export class  Telefono {
