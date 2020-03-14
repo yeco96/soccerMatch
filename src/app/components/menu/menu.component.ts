@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { PopoverController, NavParams, NavController } from '@ionic/angular';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { LoaderService } from 'src/app/services/loader.service';
+import { ProfilePage } from 'src/app/pages/maintenance/profile/profile.page';
+
 
 @Component({
   selector: 'app-menu',
@@ -24,7 +26,7 @@ export class MenuComponent implements OnInit {
   }
 
   wifiSetting() {
-
+    this.navCtrl.navigateForward('/profile');
   }
 
   logout() {
