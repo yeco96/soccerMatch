@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { RespuestaData } from '../models/respuesta-data';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,23 @@ export class CrudService {
 
   read(tabla) {
     return this.firestore.collection(tabla).snapshotChanges();
+  }
+
+  construir(data): any {
+    const lista = data.map(e => {
+      return {
+        id: e.payload.doc.id,
+        data: (e.payload.doc.data()),
+      };
+    }) as Array<RespuestaData>;
+
+    const respuesta = new Array<any>();
+    lista.forEach(a => {
+      const respuestaObjeto = JSON.parse(JSON.stringify(a.data)) as any;
+      respuestaObjeto.id = a.id;
+      respuesta.push(respuestaObjeto);
+    });
+    return respuesta;
   }
 
   update(tabla, recordId, record) {

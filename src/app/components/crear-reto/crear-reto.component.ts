@@ -6,6 +6,8 @@ import { ModalController } from '@ionic/angular';
 import { Ubicacion, Canton } from 'src/app/models/ubicacion';
 import { FormControl } from '@angular/forms';
 import { Cancha } from 'src/app/models/cancha';
+import { RespuestaData } from 'src/app/models/respuesta-data';
+import { Usuario } from 'src/app/models/usuario';
 
 @Component({
   selector: 'app-crear-reto',
@@ -61,16 +63,7 @@ export class CrearRetoComponent implements OnInit {
 
   ngOnInit() {
     this.crudService.read(this.tables.ubicacion().UBICACION).subscribe(data => {
-      this.ubicacion = data.map(e => {
-        return {
-          id: e.payload.doc.id,
-          descripcion: (e.payload.doc.data() as Ubicacion).descripcion,
-          codigoProvincia: (e.payload.doc.data() as Ubicacion).codigoProvincia,
-          estado: (e.payload.doc.data() as Ubicacion).estado,
-          canton: (e.payload.doc.data() as Ubicacion).canton
-        };
-      }) as Array<Ubicacion>;
-      console.log(this.ubicacion);
+      this.ubicacion = this.crudService.construir(data) as Array<Ubicacion>;
       this.ubicacionJSON = JSON.parse(JSON.stringify(this.ubicacion));
     });
   }
@@ -80,23 +73,11 @@ export class CrearRetoComponent implements OnInit {
     this.modalController.dismiss();
   }
 
-
   buscarCanchas() {
     this.crudService.read(this.tables.tablas().CANCHAS).subscribe(data => {
-      const lista = data.map(e => {
-        return {
-          id: e.payload.doc.id,
-          direccion: (e.payload.doc.data() as Cancha).direccion,
-          nombre: (e.payload.doc.data() as Cancha).nombre,
-          telefono: (e.payload.doc.data() as Cancha).telefono,
-          ubicacion: (e.payload.doc.data() as Cancha).ubicacion
-        };
-      }) as Array<Cancha>;
-
+      const respuesta = this.crudService.construir(data) as Array<Cancha>;
       // tslint:disable-next-line: triple-equals
-      this.canchas = lista.filter(x => x.ubicacion.codigoProvincia == this.codProvincia && x.ubicacion.codigoCanton == this.codCanton);
-
-      console.log(this.canchas);
+      this.canchas = respuesta.filter(x => x.ubicacion.codigoProvincia == this.codProvincia && x.ubicacion.codigoCanton == this.codCanton);
       this.diaSemana();
       this.diaSemana2();
     });
