@@ -34,17 +34,7 @@ export class NoticiasPage implements OnInit {
 
     // this.loader.showLoader();
     this.crudService.read(this.tables.tablas().NOTICIAS).subscribe(data => {
-
-      this.noticias = data.map(e => {
-        return {
-          id: e.payload.doc.id,
-          descripcion: (e.payload.doc.data() as Noticias).descripcion,
-          fecha: (e.payload.doc.data() as Noticias).fecha,
-          tipo: (e.payload.doc.data() as Noticias).tipo,
-          usuario: (e.payload.doc.data() as Noticias).usuario,
-        };
-      }) as Array<Noticias>;
-
+      this.noticias = this.crudService.construir(data) as Array<Noticias>;
       console.log(this.noticias);
     });
   }

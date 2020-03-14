@@ -138,18 +138,9 @@ export class CrearCanchaComponent implements OnInit {
 
 
     this.crudService.read(this.tables.ubicacion().UBICACION).subscribe(data => {
-      this.ubicacion = data.map(e => {
-        return {
-          id: e.payload.doc.id,
-          descripcion: (e.payload.doc.data() as Ubicacion).descripcion,
-          codigoProvincia: (e.payload.doc.data() as Ubicacion).codigoProvincia,
-          estado: (e.payload.doc.data() as Ubicacion).estado,
-          canton: (e.payload.doc.data() as Ubicacion).canton
-        };
-      }) as Array<Ubicacion>;
+      this.ubicacion = this.crudService.construir(data) as Array<Ubicacion>;
       console.log(this.ubicacion);
       this.ubicacionJSON = JSON.parse(JSON.stringify(this.ubicacion));
-      
     });
     this.validations_form = this.formBuilder.group({
 

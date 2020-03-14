@@ -36,20 +36,11 @@ export class RetosPage implements OnInit {
 
   retos = new Array<Retos>();
 
-  
   ngOnInit() {
 
     // this.loader.showLoader();
     this.crudService.read(this.tables.tablas().RETOS).subscribe(data => {
-
-      this.retos = data.map(e => {
-        return {
-          id: e.payload.doc.id,
-          region: (e.payload.doc.data() as Retos).region,
-          summary: (e.payload.doc.data() as Retos).summary,
-        };
-      }) as Array<Retos>;
-
+      this.retos = this.crudService.construir(data) as Array<Retos>;
       console.log(this.retos);
     });
 
