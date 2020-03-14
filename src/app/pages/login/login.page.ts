@@ -12,17 +12,13 @@ import { LoaderService } from '../../services/loader.service';
 export class LoginPage implements OnInit {
 
   loaderToShow: any;
-
   titulo: string;
 
-
   constructor(
-
     private navCtrl: NavController,
     private authService: AuthenticationService,
     private formBuilder: FormBuilder,
     private loader: LoaderService
-
   ) { }
 
 
@@ -33,13 +29,13 @@ export class LoginPage implements OnInit {
   validationMessages = {
 
     email: [
-      { type: 'required', message: 'Email is required.' },
-      { type: 'pattern', message: 'Please enter a valid email.' }
+      { type: 'required', message: 'El correo es requerido.' },
+      { type: 'pattern', message: 'Por favor ingrese un correo valido' }
     ],
-    
+
     password: [
-      { type: 'required', message: 'Password is required.' },
-      { type: 'minlength', message: 'Password must be at least 5 characters long.' }
+      { type: 'required', message: 'La contraseña es requerida' },
+      { type: 'minlength', message: 'Por favor ingrese una contraseña valida' }
     ]
   };
 
@@ -54,12 +50,7 @@ export class LoginPage implements OnInit {
         Validators.minLength(5),
         Validators.required
       ])),
-      
-
     });
-
-    this.titulo = 'mensaje';
-
   }
 
 
