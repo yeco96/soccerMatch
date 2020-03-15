@@ -27,6 +27,7 @@ export class MenuComponent implements OnInit {
 
   wifiSetting() {
     this.navCtrl.navigateForward('/profile');
+    this.popoverController.dismiss();
   }
 
   logout() {
