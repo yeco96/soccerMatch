@@ -7,6 +7,9 @@ import { Router } from '@angular/router';
 import { ToastController, Platform } from '@ionic/angular';
 import { BehaviorSubject } from 'rxjs';
 import { LoaderService } from './loader.service';
+import { CrudService } from '../service/crud.service';
+import { TablesService } from '../service/tables.service';
+import { Usuario } from '../models/usuario';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +22,9 @@ export class AuthenticationService {
                private platform: Platform,
                private storage: Storage,
                public toastController: ToastController,
-               public loader: LoaderService
+               public loader: LoaderService,
+               private crudService: CrudService,
+               private tables: TablesService,
     ) {
       this.platform.ready().then(() => {
         this.ifLoggedIn();
@@ -27,10 +32,8 @@ export class AuthenticationService {
     }
 
   ifLoggedIn() {
-    // this.loader.showLoading('token');
-    this.storage.get('refreshToken').then((val) => {
+    this.storage.get('uid').then((val) => {
       this.authState.next(val ? true : false);
-      // this.loader.dismissLoader('token');
     });
   }
 
@@ -48,7 +51,7 @@ export class AuthenticationService {
       firebase.auth().signInWithEmailAndPassword(value.email, value.password)
       .then(
         res => {
-          this.storage.set('refreshToken', res.user.refreshToken).then((val) => {
+          this.storage.set('uid', res.user.uid).then((val) => {
             this.authState.next(true);
             resolve(res);
           });
@@ -59,26 +62,40 @@ export class AuthenticationService {
 
    logoutUser() {
     return new Promise<any>((resolve, reject) => {
-      //  if (firebase.auth().currentUser) {
          firebase.auth().signOut()
          .then(
           res => {
-            this.storage.remove('refreshToken').then(() => {
+            this.storage.remove('uid').then(() => {
               this.authState.next(false);
               resolve(res);
             });
           },
           err => reject(err));
-      //  }
      });
    }
 
-  userDetails() {
+  userAuth() {
      return firebase.auth().currentUser;
   }
 
   isAuthenticated() {
     return this.authState.value;
+  }
+
+  async getDataUser() {
+    return new Promise<any>((resolve, reject) => {
+      let usuario = new Usuario();
+      const uid = firebase.auth().currentUser.uid.toString();
+      this.crudService.read(this.tables.tablas().USUARIO).subscribe(data => {
+        const temp = (this.crudService.construir(data) as Array <Usuario>);
+        usuario = temp.filter(x => {
+         return x.uid === uid;
+        })[0];
+        usuario.fechaNacimiento = new Date(usuario.fechaNacimiento).toISOString();
+        resolve(usuario);
+      },
+      err => reject(err));
+    });
   }
 
 }

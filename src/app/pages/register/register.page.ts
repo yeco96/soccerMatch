@@ -7,7 +7,7 @@ import { CrudService } from 'src/app/service/crud.service';
 import { LoaderService } from 'src/app/services/loader.service';
 import { ModalController } from '@ionic/angular';
 import { Ubicacion, Canton } from 'src/app/models/ubicacion';
-import { Usuario,Telefono} from 'src/app/models/usuario';
+import { Usuario, Telefono} from 'src/app/models/usuario';
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
@@ -68,10 +68,7 @@ export class RegisterPage implements OnInit {
   ngOnInit() {
 
     this.usuarioObjeto = new Usuario();
-
     this.validations_form = this.formBuilder.group({
-
-
       nombre: new FormControl('', Validators.compose([
         Validators.required
       ])),
@@ -100,9 +97,10 @@ export class RegisterPage implements OnInit {
     this.authService.registerUser(value)
      .then((res: any) => {
        console.log(res);
-       this.errorMessage = ''; 
-       this.guardar(JSON.parse(JSON.stringify(value)) as Usuario)
-       this.successMessage = 'Your account has been created. Please log in.';     
+       value.uid = res.user.uid;
+       this.guardar(JSON.parse(JSON.stringify(value)) as Usuario);
+       this.successMessage = 'Your account has been created. Please log in.';
+       this.errorMessage = '';
      }, (err: { message: string; }) => {
        console.log(err);
        this.errorMessage = err.message;
@@ -110,12 +108,13 @@ export class RegisterPage implements OnInit {
      });
   }
 
-  goLoginPage(){
+  goLoginPage() {
     this.navCtrl.navigateBack('');
   }
 
-  guardar(value : Usuario) {
+  guardar(value: Usuario) {
     this.loader.showLoader();
+    value.fechaNacimiento = new Date(value.fechaNacimiento);
     this.crudService.create(this.tables.tablas().USUARIO, value).then(resp => {
       console.log(resp);
       this.loader.hideLoader();

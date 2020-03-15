@@ -37,9 +37,8 @@ usuario: Usuario;
 
   ngOnInit() {
     this.usuario = new Usuario();
-    this.crudService.read(this.tables.tablas().USUARIO).subscribe(data => {
-     this.usuario = (this.crudService.construir(data) as Array <Usuario>)[0];
-     this.usuario.fechaNacimiento = new Date(this.usuario.fechaNacimiento.seconds * 1000).toISOString();
+    this.authService.getDataUser().then(res => {
+      this.usuario = res;
     });
   }
 }
