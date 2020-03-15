@@ -1,3 +1,5 @@
+import { firestore } from 'firebase';
+
 export class Usuario {
     id: string;
     correo: string;
@@ -5,11 +7,12 @@ export class Usuario {
     apellidos: string;
     telefono: [Telefono];
     contrasena: string;
-    fechaNacimiento: Date;
+    fechaNacimiento: any;
     mascaraAcceso: string;
     inactivo: boolean;
     tipoLogueo: number;
-    imagen: string;}
+    imagen: string;
+}
 
 
 export class  Telefono {

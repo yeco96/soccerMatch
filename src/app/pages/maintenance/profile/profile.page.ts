@@ -13,6 +13,7 @@ import { finalize, tap } from 'rxjs/operators';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { Usuario } from 'src/app/models/usuario';
 
+
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.page.html',
@@ -20,10 +21,7 @@ import { Usuario } from 'src/app/models/usuario';
 })
 export class ProfilePage implements OnInit {
 
-
-
-  
-usuario:Usuario;
+usuario: Usuario;
 
   constructor(
     private authService: AuthenticationService,
@@ -34,17 +32,14 @@ usuario:Usuario;
     private crudService: CrudService,
     private tables: TablesService,
     public modalController: ModalController
-  ) { 
+  ) {
   }
 
   ngOnInit() {
     this.usuario = new Usuario();
-    this.crudService.read(this.tables.tablas().USUARIO).subscribe(data =>  {  
-     this.usuario =( this.crudService.construir(data) as Array <Usuario>)[0] ;
-     console.log (this.usuario)
+    this.crudService.read(this.tables.tablas().USUARIO).subscribe(data => {
+     this.usuario = (this.crudService.construir(data) as Array <Usuario>)[0];
+     this.usuario.fechaNacimiento = new Date(this.usuario.fechaNacimiento.seconds * 1000).toISOString();
     });
-  
-  
-
   }
 }
