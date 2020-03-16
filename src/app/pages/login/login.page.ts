@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { TablesService } from 'src/app/service/tables.service';
 import { NavController, IonDatetime } from '@ionic/angular';
 import { AuthenticationService } from '../../services/authentication.service';
 import { LoaderService } from '../../services/loader.service';
+import { ModalController } from '@ionic/angular';
+import { OlvidoContraseniaComponent } from 'src/app/components/olvido-contrasenia/olvido-contrasenia.component';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +21,8 @@ export class LoginPage implements OnInit {
     private navCtrl: NavController,
     private authService: AuthenticationService,
     private formBuilder: FormBuilder,
-    private loader: LoaderService
+    private loader: LoaderService,
+    public modalController: ModalController
   ) { }
 
 
@@ -72,4 +76,18 @@ export class LoginPage implements OnInit {
     this.navCtrl.navigateForward('/register');
   }
 
+  goToForgetPassword() {
+    this.navCtrl.navigateForward('/forgetPassword');
+  }
+
+  async presentModal() {
+    const modal = await this.modalController.create({
+      component: OlvidoContraseniaComponent,
+    });
+    return await modal.present();
+  }
+
+  mostrarModal() {
+    this.presentModal();
+  }
 }

@@ -15,7 +15,7 @@
 <ion-content class="ion-padding-top">
   <ion-card class="ion-padding-top">
 
-  <p class="ion-text-center">Iniciar Sesión</p>
+  <p class="ion-text-center">Digite su correo para restablecer su contrasena</p>
 
   <form class="form ion-padding-start ion-padding-end" [formGroup]="validationsForm"  (ngSubmit)="loginUser(validationsForm.value)">
 
@@ -31,36 +31,12 @@
       </ng-container>
     </div>
 
-    <ion-item>
-      <ion-label  position="floating" color="primary">Contraseña</ion-label>
-      <ion-input type="password" formControlName="password" class="form-controll" required></ion-input>
-    </ion-item>
-    <div class="validation-errors">
-      <ng-container *ngFor="let validation of validationMessages.password">
-        <div class="error-message" *ngIf="validationsForm.get('password').hasError(validation.type) && (validationsForm.get('password').dirty || validationsForm.get('password').touched)">
-          {{ validation.message }}
-        </div>
-      </ng-container>
-    </div>
-
     <div class="ion-text-center ion-padding-top">
-    <ion-button  class="submit-btn" type="submit"  [disabled]="!validationsForm.valid">INGRESAR</ion-button>
+    <ion-button  class="submit-btn" type="submit"  [disabled]="!validationsForm.valid">Restablecer</ion-button>
     </div>
     <label class="error-message">{{errorMessage}}</label>
   </form>
 
-
-  <p class="go-to-register ion-text-center"><a (click)="mostrarModal()">Olvido su contraseña?</a></p>
-
 </ion-card>
-
-<div class="ion-padding ion-text-center">
-
-  <p>Registro</p>
- 
-  <ion-button (click)="goToRegisterPage()" expand="full" color="primary">Email</ion-button>
-  <ion-button expand="full" color="google">Google</ion-button>
-
-</div>
 
 </ion-content>

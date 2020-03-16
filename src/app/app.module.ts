@@ -35,14 +35,15 @@ import * as firebase from 'firebase/app';
 import 'firebase/database';
 import 'firebase/auth';
 import 'firebase/storage';
+import { OlvidoContraseniaComponent } from './components/olvido-contrasenia/olvido-contrasenia.component';
 
 
 
 firebase.initializeApp(environment.firebase);
 
 @NgModule({
-  declarations: [AppComponent, MenuComponent, CrearRetoComponent, CrearCanchaComponent, FileSizeFormatPipe],
-  entryComponents: [MenuComponent, CrearRetoComponent, CrearCanchaComponent],
+  declarations: [AppComponent, MenuComponent, CrearRetoComponent, CrearCanchaComponent, FileSizeFormatPipe,OlvidoContraseniaComponent],
+  entryComponents: [MenuComponent, CrearRetoComponent, CrearCanchaComponent, OlvidoContraseniaComponent],
   imports: [BrowserModule, IonicModule.forRoot({ backButtonText: 'Atrás', scrollPadding: true, scrollAssist: false}), AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule, IonicStorageModule.forRoot({
