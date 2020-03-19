@@ -30,15 +30,18 @@ const routes: Routes = [
   },
   {
     path: 'cancha',
-    loadChildren: () => import('./pages/maintenance/cancha/cancha.module').then( m => m.CanchaPageModule)
+    loadChildren: () => import('./pages/maintenance/cancha/cancha.module').then( m => m.CanchaPageModule),
+    canActivate: [AuthGuardService]
   },
   {
     path: 'noticias',
-    loadChildren: () => import('./pages/noticias/noticias.module').then( m => m.NoticiasPageModule)
+    loadChildren: () => import('./pages/noticias/noticias.module').then( m => m.NoticiasPageModule),
+    canActivate: [AuthGuardService]
   },
   {
     path: 'ubicacion',
-    loadChildren: () => import('./pages/maintenance/ubicacion/ubicacion.module').then( m => m.UbicacionPageModule)
+    loadChildren: () => import('./pages/maintenance/ubicacion/ubicacion.module').then( m => m.UbicacionPageModule),
+    canActivate: [AuthGuardService]
   }
 
 
