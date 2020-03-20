@@ -1,355 +1,235 @@
 <ion-header>
-  <ion-toolbar color="primary">
-    <ion-title>Crear Cacha</ion-title>
-    <ion-buttons slot="start">
-      <ion-button (click)="cerrarModal()">
-        <ion-icon style="font-size: 25px;" md="close-circle"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
+    <ion-toolbar color="primary">
+        <ion-title>Crear Cacha</ion-title>
+        <ion-buttons slot="start">
+            <ion-button (click)="cerrarModal()">
+                <ion-icon style="font-size: 25px;" md="close-circle"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
 </ion-header>
-
 
 
 <ion-content>
 
+    <div *ngIf="!actualizar">
+        <ion-card class="ion-text-center" *ngIf="!isUploading && !isUploaded">
+            <ion-card-header>
+                <ion-card-title>Foto de Perfil</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+                <div class="fileUpload btn btn-primary">
+                    <input id="uploadBtn" type="file" class="upload" (change)="uploadFile($event.target.files)"/>
+                </div>
+            </ion-card-content>
+        </ion-card>
 
-    <ion-card class="ion-text-center" *ngIf="!isUploading && !isUploaded">
-      <ion-card-header>
-        <ion-card-title>Foto de Perfil</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <div class="fileUpload btn btn-primary">
-          <input
-            id="uploadBtn"
-            type="file"
-            class="upload"
-            (change)="uploadFile($event.target.files)"
-          />
-        </div>
-      </ion-card-content>
+        <ion-card class="ion-text-center" *ngIf="isUploading && !isUploaded">
+            <ion-card-header>
+                <ion-card-title>Archivo selecionado:<b>{{ fileName }}</b></ion-card-title>
+            </ion-card-header>
+
+            <ion-card-content>
+                <div *ngIf="percentage | async as pct">
+                    Progreso: {{ pct | number }}%
+                    <ion-progress-bar value="{{ pct / 100 }}"></ion-progress-bar>
+                </div>
+                <div *ngIf="snapshot | async as snap">
+                    <p class="ion-no-margin">Tamaño del archivo: {{ snap.totalBytes | fileSizePipe }}
+                        Transferido: {{ snap.bytesTransferred | fileSizePipe }}</p>
+                    <div *ngIf="snapshot && snap.bytesTransferred != snap.totalBytes">
+                        <ion-button
+                                color="warning"
+                                size="small"
+                                (click)="task.pause()"
+                                class="button is-warning">Pausar
+                        </ion-button>
+                        <ion-button
+                                size="small"
+                                (click)="task.resume()"
+                                class="button is-info">Resumir
+                        </ion-button>
+                        <ion-button
+                                color="danger"
+                                size="small"
+                                (click)="task.cancel()"
+                                class="button is-danger">Cancelar
+                        </ion-button>
+                    </div>
+                </div>
+            </ion-card-content>
+        </ion-card>
+    </div>
+
+    <div *ngIf="actualizar">
+        <img [src]="canchaObjeto.imagen"/>
+        <a [href]="canchaObjeto.imagen" target="_blank" rel="noopener">Download</a>
+    </div>
+
+    <ion-card>
+
+        <ion-card-content>
+            <form class="form" (ngSubmit)="guardar()">
+
+                <ion-item>
+                    <ion-label position="floating">Nombre</ion-label>
+                    <ion-input name="nombre" type="text" [(ngModel)]="canchaObjeto.nombre" required></ion-input>
+                </ion-item>
+
+                <ion-item>
+                    <ion-label position="floating">Provincia</ion-label>
+                    <ion-select name="codigoProvincia" [(ngModel)]="canchaObjeto.ubicacion.codigoProvincia"
+                                (ionChange)="changeProvincia()" required
+                                interface="action-sheet" cancelText="Cancelar" doneText="Aceptar">
+                        <ion-select-option *ngFor="let ubi of ubicacion"
+                                           value="{{ubi.codigoProvincia}}">{{ubi.descripcion}}</ion-select-option>
+                    </ion-select>
+                </ion-item>
+
+
+                <ion-item *ngIf="provincia">
+                    <ion-label position="floating">Cantón</ion-label>
+                    <ion-select name="codigoCanton" [(ngModel)]="canchaObjeto.ubicacion.codigoCanton" required
+                                interface="action-sheet" cancelText="Cancelar" doneText="Aceptar">
+                        <ion-select-option *ngFor="let cant of provincia.canton"
+                                           value="{{cant.codigoCanton}}">{{cant.descripcion}}</ion-select-option>
+                    </ion-select>
+                </ion-item>
+
+
+                <ion-item>
+                    <ion-label position="floating">Dirección</ion-label>
+                    <ion-input name="direccion" type="text" [(ngModel)]="canchaObjeto.direccion" required></ion-input>
+                </ion-item>
+
+
+                <ion-item>
+                    <ion-label position="floating">Monto por Equipo</ion-label>
+                    <ion-input name="montoEquipo" [(ngModel)]="canchaObjeto.montoEquipo" type="number"
+                               required></ion-input>
+                </ion-item>
+
+                <ion-item>
+                    <ion-label position="floating">Método de Pago</ion-label>
+                    <ion-select name="metodoPago" [(ngModel)]="canchaObjeto.metodoPago.tipo" required
+                                (ionChange)="changeProvincia()"
+                                interface="action-sheet" cancelText="Cancelar" doneText="Aceptar">
+                        <ion-select-option *ngFor="let ubi of ubicacion"
+                                           value="{{ubi.codigoProvincia}}">{{ubi.descripcion}}</ion-select-option>
+                    </ion-select>
+                </ion-item>
+
+
+                <ion-item>
+                    <ion-label position="floating">Telefono Principal</ion-label>
+                    <ion-input name="telefono" [(ngModel)]="canchaObjeto.telefono" required type="number"></ion-input>
+                </ion-item>
+
+
+                <ion-row>
+                    <ion-col size="6">
+                        <ion-item class="ion-no-padding">
+                            <ion-label>Parqueo</ion-label>
+                            <ion-toggle name="parqueo" [(ngModel)]="canchaObjeto.parqueo"></ion-toggle>
+                        </ion-item>
+                    </ion-col>
+                    <ion-col size="6">
+                        <ion-item class="ion-no-padding">
+                            <ion-label>Vestidor</ion-label>
+                            <ion-toggle name="bestidor" [(ngModel)]="canchaObjeto.bestidor"></ion-toggle>
+                        </ion-item>
+                    </ion-col>
+                </ion-row>
+
+                <ion-row>
+                    <ion-col size="6">
+                        <ion-item class="ion-no-padding">
+                            <ion-label>Uniforme</ion-label>
+                            <ion-toggle name="uniforme" [(ngModel)]="canchaObjeto.uniforme"></ion-toggle>
+                        </ion-item>
+                    </ion-col>
+                    <ion-col size="6">
+                        <ion-item class="ion-no-padding">
+                            <ion-label>Árbitro</ion-label>
+                            <ion-toggle name="arbitro" [(ngModel)]="canchaObjeto.arbitro"></ion-toggle>
+                        </ion-item>
+                    </ion-col>
+                </ion-row>
+
+                <ion-item-divider class="ion-padding-top">
+                    <ion-label>
+                        Horario
+                    </ion-label>
+                </ion-item-divider>
+
+
+                <ion-row>
+                    <ion-col size="4">
+                        <ion-item class="ion-no-padding">
+                            <ion-label position="floating">Inicio</ion-label>
+                            <ion-datetime name="horaInicio" [(ngModel)]="canchaObjeto.horario.horaInicio"
+                                          cancelText="Cancelar" required doneText="Aceptar"
+                                          displayFormat="h a"></ion-datetime>
+                        </ion-item>
+                    </ion-col>
+
+                    <ion-col size="4">
+                        <ion-item class="ion-no-padding">
+                            <ion-label position="floating">Fin</ion-label>
+                            <ion-datetime name="horaFin" [(ngModel)]="canchaObjeto.horario.horaFin"
+                                          cancelText="Cancelar" required doneText="Aceptar"
+                                          displayFormat="h a"></ion-datetime>
+                        </ion-item>
+                    </ion-col>
+
+                    <ion-col size="4">
+                        <ion-item class="ion-no-padding">
+                            <ion-label position="floating">Tiempo</ion-label>
+                            <ion-input name="tiempoJuego" type="number" [(ngModel)]="canchaObjeto.horario.tiempoJuego"
+                                       required></ion-input>
+                        </ion-item>
+                    </ion-col>
+                </ion-row>
+
+
+                <ion-item>
+                    <ion-label position="floating">Dias</ion-label>
+                    <ion-select multiple="true" name="dias" [(ngModel)]="canchaObjeto.horario.dias" required
+                                interface="action-sheet" cancelText="Cancelar" doneText="Aceptar">
+                        <ion-select-option *ngFor="let dia of dias" value="{{dia}}">{{dia}}</ion-select-option>
+                    </ion-select>
+                </ion-item>
+
+
+                <ion-card class="ion-text-center" *ngIf="!isUploading && isUploaded">
+                    <ion-card-content>
+                        <div *ngIf="UploadedFileURL | async as url">
+                            <img [src]="url"/>
+                            <a [href]="url" target="_blank" rel="noopener">Download</a>
+                        </div>
+                        <p class="ion-no-margin">Tamaño del archivo: {{ fileSize | fileSizePipe }}</p>
+                    </ion-card-content>
+                </ion-card>
+                <br>
+
+                <ion-item></ion-item>
+                <ion-button type="submit" class="ion-padding" expand="block" color="secondary">
+                    GUARDAR
+                </ion-button>
+
+                <br>
+            </form>
+
+            <ion-item *ngIf="actualizar" class="ion-no-padding">
+                <ion-label>Estado</ion-label>
+                <ion-toggle name="estado" [(ngModel)]="canchaObjeto.estado"></ion-toggle>
+            </ion-item>
+            <br>
+
+            <ion-button *ngIf="actualizar" (click)="elimiar()" class="ion-padding" expand="block" color="danger">
+                ELIMINAR
+            </ion-button>
+
+        </ion-card-content>
     </ion-card>
-    <ion-card class="ion-text-center" *ngIf="isUploading && !isUploaded">
-      <ion-card-header>
-        <ion-card-title
-          >Archivo selecionado:<b>{{ fileName }}</b></ion-card-title
-        >
-      </ion-card-header>
-   
-      <ion-card-content>
-        <div *ngIf="percentage | async as pct">
-          Progreso: {{ pct | number }}%
-          <ion-progress-bar value="{{ pct / 100 }}"></ion-progress-bar>
-        </div>
-        <div *ngIf="snapshot | async as snap">
-          <p class="ion-no-margin">Tamaño del archivo: {{ snap.totalBytes | fileSizePipe }} Transferido: {{ snap.bytesTransferred | fileSizePipe }}</p>
-          <div *ngIf="snapshot && snap.bytesTransferred != snap.totalBytes">
-            <ion-button
-              color="warning"
-              size="small"
-              (click)="task.pause()"
-              class="button is-warning"
-              >Pausar</ion-button
-            >
-            <ion-button
-              size="small"
-              (click)="task.resume()"
-              class="button is-info"
-              >Resumir</ion-button
-            >
-            <ion-button
-              color="danger"
-              size="small"
-              (click)="task.cancel()"
-              class="button is-danger"
-              >Cancelar</ion-button
-            >
-          </div>
-        </div>
-      </ion-card-content>
-    </ion-card>
-   
-   
-    <!-- <h2 text-center>Uploaded Freaky Images</h2>
-   
-    <ion-card color="light" text-center *ngFor="let item of images | async">
-      <ion-card-header>
-        <ion-card-title>
-          {{ item.name }}
-        </ion-card-title>
-      </ion-card-header>
-   
-      <ion-card-content>
-        <img [src]="item.filepath" />
-        <a [href]="item.filepath" target="_blank" rel="noopener">Download</a>
-      </ion-card-content>
-    </ion-card> -->
-
-
-  <!-- <ion-card text-center *ngIf="!isUploading && !isUploaded">
-    <ion-card-header>
-      <ion-card-title>Choose Images to Upload</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <div class="fileUpload btn btn-primary">
-        <span>Upload</span>
-        <input
-          id="uploadBtn"
-          type="file"
-          class="upload"
-          (change)="uploadFile($event.target.files)"
-        />
-      </div>
-    </ion-card-content>
-  </ion-card> -->
-
-      <!-- <form class="form" [formGroup]="validations_form"  (ngSubmit)="guardar(validations_form.value)">
-      <ion-item>
-        <ion-label position="floating">Nombre</ion-label>
-        <ion-input  type="text" formControlName="nombre" [(ngModel)]="canchaObjeto.nombre"></ion-input>
-      </ion-item> 
-      <div class="validation-errors">
-        <ng-container *ngFor="let validation of validation_messages.nombre">
-          <div class="error-message" *ngIf="validations_form.get('nombre').hasError(validation.type) && (validations_form.get('nombre').dirty || validations_form.get('nombre').touched)">
-            {{ validation.message }}
-          </div>
-        </ng-container>
-      </div>  
-      <ion-button type="submit" class="ion-padding" expand="block" color="secondary" [disabled]="!validations_form.valid">GUARDAR</ion-button>
-    </form>-->
-
-  <ion-card>
-    
-    <ion-card-content>
-      <form class="form" [formGroup]="validations_form"  (ngSubmit)="guardar(validations_form.value)">
-    <ion-item>
-      <ion-label position="floating">Nombre</ion-label>
-      <ion-input type="text" formControlName="nombre" [(ngModel)]="canchaObjeto.nombre"></ion-input>
-    </ion-item>
-    <div class="validation-errors">
-      <ng-container *ngFor="let validation of validation_messages.nombre">
-        <div class="error-message" *ngIf="validations_form.get('nombre').hasError(validation.type) && (validations_form.get('nombre').dirty || validations_form.get('nombre').touched)">
-          {{ validation.message }}
-        </div>
-      </ng-container>
-    </div>
-
-    
-    <ion-item>
-      <ion-label position="floating">Provincia</ion-label>
-      <ion-select formControlName="provincia" [(ngModel)]="canchaObjeto.ubicacion.codigoProvincia" (ionChange)="changeProvincia()" 
-      interface="action-sheet" cancelText="Cancelar" doneText="Aceptar">
-        <ion-select-option *ngFor="let ubi of ubicacion" value="{{ubi.codigoProvincia}}">{{ubi.descripcion}}</ion-select-option>
-      </ion-select>
-    </ion-item>
-    <div class="validation-errors">
-      <ng-container *ngFor="let validation of validation_messages.provincia">
-        <div class="error-message" *ngIf="validations_form.get('provincia').hasError(validation.type) && (validations_form.get('provincia').dirty || validations_form.get('provincia').touched)">
-          {{ validation.message }}
-        </div>
-      </ng-container>
-    </div>
-  
-
-    <ion-item *ngIf="provincia">
-      <ion-label position="floating" >Cantón</ion-label>
-      <ion-select   formControlName="canton" [(ngModel)]="canchaObjeto.ubicacion.codigoCanton" interface="action-sheet" cancelText="Cancelar" doneText="Aceptar">
-        <ion-select-option *ngFor="let cant of provincia.canton" value="{{cant.codigoCanton}}">{{cant.descripcion}}</ion-select-option>
-      </ion-select>
-    </ion-item>
-    <div class="validation-errors">
-      <ng-container *ngFor="let validation of validation_messages.canton">
-        <div class="error-message" *ngIf="validations_form.get('canton').hasError(validation.type) && (validations_form.get('canton').dirty || validations_form.get('canton').touched)">
-          {{ validation.message }}
-        </div>
-      </ng-container>
-    </div>
-
-    <ion-item>
-      <ion-label position="floating">Dirección</ion-label>
-      <ion-input type="text" formControlName="direccion" [(ngModel)]="canchaObjeto.direccion"></ion-input>
-    </ion-item>
-    <div class="validation-errors">
-      <ng-container *ngFor="let validation of validation_messages.direccion">
-        <div class="error-message" *ngIf="validations_form.get('direccion').hasError(validation.type) && (validations_form.get('direccion').dirty || validations_form.get('direccion').touched)">
-          {{ validation.message }}
-        </div>
-      </ng-container>
-    </div>
-
-    
-    <ion-item>
-      <ion-label position="floating">Monto por Equipo</ion-label>
-      <ion-input type="text" formControlName="montoEquipo" [(ngModel)]="canchaObjeto.montoEquipo" type="number"></ion-input>
-    </ion-item>
-    <div class="validation-errors">
-      <ng-container *ngFor="let validation of validation_messages.montoEquipo">
-        <div class="error-message" *ngIf="validations_form.get('montoEquipo').hasError(validation.type) && (validations_form.get('montoEquipo').dirty || validations_form.get('montoEquipo').touched)">
-          {{ validation.message }}
-        </div>
-      </ng-container>
-    </div>
-
-    
-    <ion-item>
-      <ion-label position="floating">Método de Pago</ion-label>
-      <ion-select formControlName="metodoPago" [(ngModel)]="canchaObjeto.metodoPago.tipo" (ionChange)="changeProvincia()" 
-      interface="action-sheet" cancelText="Cancelar" doneText="Aceptar">
-        <ion-select-option *ngFor="let ubi of ubicacion" value="{{ubi.codigoProvincia}}">{{ubi.descripcion}}</ion-select-option>
-      </ion-select>
-    </ion-item>
-    <div class="validation-errors">
-      <ng-container *ngFor="let validation of validation_messages.metodoPago">
-        <div class="error-message" *ngIf="validations_form.get('metodoPago').hasError(validation.type) && (validations_form.get('metodoPago').dirty || validations_form.get('metodoPago').touched)">
-          {{ validation.message }}
-        </div>
-      </ng-container>
-    </div>
-
-
-
-    <ion-item>
-      <ion-label position="floating">Telefono Principal</ion-label>
-      <ion-input formControlName="telefono" [(ngModel)]="canchaObjeto.telefono" type="number"></ion-input>
-    </ion-item>
-    <div class="validation-errors">
-      <ng-container *ngFor="let validation of validation_messages.telefono">
-        <div class="error-message" *ngIf="validations_form.get('telefono').hasError(validation.type) && (validations_form.get('telefono').dirty || validations_form.get('telefono').touched)">
-          {{ validation.message }}
-        </div>
-      </ng-container>
-    </div>
-
-    <ion-row>
-      <ion-col size="6">
-        <ion-item class="ion-no-padding">
-          <ion-label>Parqueo</ion-label>
-          <ion-toggle formControlName="parqueo" [(ngModel)]="canchaObjeto.parqueo"></ion-toggle>
-        </ion-item>
-      </ion-col>
-      <ion-col size="6">
-        <ion-item class="ion-no-padding">
-          <ion-label>Vestidor</ion-label>
-          <ion-toggle formControlName="vestidor" [(ngModel)]="canchaObjeto.bestidor"></ion-toggle>
-        </ion-item>
-      </ion-col>
-    </ion-row>
-
-    <ion-row>
-      <ion-col size="6">
-        <ion-item class="ion-no-padding">
-          <ion-label>Uniforme</ion-label>
-          <ion-toggle formControlName="uniforme" [(ngModel)]="canchaObjeto.uniforme"></ion-toggle>
-        </ion-item>
-      </ion-col>
-      <ion-col size="6">
-        <ion-item class="ion-no-padding">
-          <ion-label>Árbitro</ion-label>
-          <ion-toggle formControlName="arbitro" [(ngModel)]="canchaObjeto.arbitro"></ion-toggle>
-        </ion-item>
-      </ion-col>
-    </ion-row>
-
-    <ion-item-divider class="ion-padding-top">
-      <ion-label>
-        Horario
-      </ion-label>
-    </ion-item-divider>
-
-
-    <ion-row>
-      <ion-col size="6">
-        <ion-item class="ion-no-padding">
-          <ion-label position="floating">Inicio</ion-label>
-          <ion-datetime formControlName="inicio" [(ngModel)]="canchaObjeto.horario.horaInicio" cancelText="Cancelar" doneText="Aceptar" displayFormat="h a"></ion-datetime>
-        </ion-item>
-        <div class="validation-errors">
-          <ng-container *ngFor="let validation of validation_messages.inicio">
-            <div class="error-message" *ngIf="validations_form.get('inicio').hasError(validation.type) && (validations_form.get('inicio').dirty || validations_form.get('inicio').touched)">
-              {{ validation.message }}
-            </div>
-          </ng-container>
-        </div>
-      </ion-col>
-      <ion-col size="6">
-        <ion-item class="ion-no-padding">
-          <ion-label position="floating">Fin</ion-label>
-          <ion-datetime formControlName="fin" [(ngModel)]="canchaObjeto.horario.horaFin" cancelText="Cancelar" doneText="Aceptar" displayFormat="h a"></ion-datetime>
-        </ion-item>
-        <div class="validation-errors">
-          <ng-container *ngFor="let validation of validation_messages.fin">
-            <div class="error-message" *ngIf="validations_form.get('fin').hasError(validation.type) && (validations_form.get('fin').dirty || validations_form.get('fin').touched)">
-              {{ validation.message }}
-            </div>
-          </ng-container>
-        </div>
-      </ion-col>
-    </ion-row>
-
-
-
-
-    <ion-item>
-      <ion-label position="floating">Dias</ion-label>
-      <ion-select formControlName="dias" multiple="true" [(ngModel)]="canchaObjeto.horario.dias"
-      interface="action-sheet" cancelText="Cancelar" doneText="Aceptar">
-        <ion-select-option *ngFor="let dia of dias" value="{{dia}}">{{dia}}</ion-select-option>
-      </ion-select>
-    </ion-item>
-    <div class="validation-errors">
-      <ng-container *ngFor="let validation of validation_messages.fin">
-        <div class="error-message" *ngIf="validations_form.get('fin').hasError(validation.type) && (validations_form.get('fin').dirty || validations_form.get('fin').touched)">
-          {{ validation.message }}
-        </div>
-      </ng-container>
-    </div>
-
-
-    <ion-card class="ion-text-center" *ngIf="!isUploading && isUploaded">
-      <!-- <ion-card-header>
-        <ion-card-title>
-          <b>{{ fileName }}</b> Uploaded!
-        </ion-card-title>
-      </ion-card-header> -->
-   
-      <ion-card-content>
-        <div *ngIf="UploadedFileURL | async as url">
-          <img [src]="url" />
-          <a [href]="url" target="_blank" rel="noopener">Download</a>
-        </div>
-        <p class="ion-no-margin">Tamaño del archivo: {{ fileSize | fileSizePipe }}</p>
-
-        <!-- <ion-button
-          expand="full"
-          color="success"
-          (click)="isUploading = isUploaded = false"
-          >Upload More</ion-button
-        > -->
-        
-    
-      </ion-card-content>          
-    </ion-card>
-    
- 
-
-    <!-- <form class="form" [formGroup]="validations_form"  (ngSubmit)="guardar(validations_form.value)">
-      <ion-item>
-        <ion-label position="floating">Nombre</ion-label>
-        <ion-input  type="text" formControlName="nombre" [(ngModel)]="canchaObjeto.nombre"></ion-input>
-      </ion-item> 
-      <div class="validation-errors">
-        <ng-container *ngFor="let validation of validation_messages.nombre">
-          <div class="error-message" *ngIf="validations_form.get('nombre').hasError(validation.type) && (validations_form.get('nombre').dirty || validations_form.get('nombre').touched)">
-            {{ validation.message }}
-          </div>
-        </ng-container>
-      </div>  
-      <ion-button type="submit" class="ion-padding" expand="block" color="secondary" [disabled]="!validations_form.valid">GUARDAR</ion-button>
-    </form>-->
-    
-    <br>
-    <ion-button type="submit" class="ion-padding" expand="block" color="secondary" [disabled]="!validations_form.valid">GUARDAR</ion-button>
-  </form>
-    </ion-card-content>
-  </ion-card>
 </ion-content>

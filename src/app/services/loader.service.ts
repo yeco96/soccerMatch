@@ -1,6 +1,5 @@
-import { Injectable } from '@angular/core';
-import { LoadingController } from '@ionic/angular';
-import { async } from 'rxjs/internal/scheduler/async';
+import {Injectable} from '@angular/core';
+import {LoadingController} from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root'
@@ -58,6 +57,9 @@ export class LoaderService {
   }
 
   async hideLoader() {
+    if (!this.isLoading) {
+      return;
+    }
     this.isLoading = false;
     if (!this.loadingController) {
       return;
@@ -69,17 +71,17 @@ export class LoaderService {
 
   //////////////
 
-  async showLoading(loadingId: string, loadingMessage: string = 'Espere un momento por favor') {
-    const loading = await this.loadingController.create({
-      id: loadingId,
-      message: loadingMessage
-    });
-    return await loading.present();
-}
-
-  async dismissLoader(loadingId: string) {
-      return await this.loadingController.dismiss(null, null, loadingId).then(() => console.log('loading dismissed ' + loadingId));
-  }
+//   async showLoading(loadingId: string, loadingMessage: string = 'Espere un momento por favor') {
+//     const loading = await this.loadingController.create({
+//       id: loadingId,
+//       message: loadingMessage
+//     });
+//     return await loading.present();
+// }
+//
+//   async dismissLoader(loadingId: string) {
+//       return await this.loadingController.dismiss(null, null, loadingId).then(() => console.log('loading dismissed ' + loadingId));
+//   }
 
 
 }

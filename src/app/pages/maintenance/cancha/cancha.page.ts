@@ -14,10 +14,6 @@ import { CrearCanchaComponent } from 'src/app/pages/maintenance/canchaM/crear-ca
   styleUrls: ['./cancha.page.scss'],
 })
 export class CanchaPage implements OnInit {
-
-  loaderToShow: any;
-  imagenes = new Array<MyData>();
-
   constructor(
     private navCtrl: NavController,
     private authService: AuthenticationService,
@@ -31,40 +27,27 @@ export class CanchaPage implements OnInit {
 canchas = new Array<Cancha>();
 
   ngOnInit() {
-
-    // this.loader.showLoader();
+    this.loader.showLoader();
     this.crudService.read(this.tables.tablas().CANCHAS).subscribe(data => {
       this.canchas = this.crudService.construir(data) as Array<Cancha>;
-      console.log(this.canchas);
-    });
-  }
-
-  crearCanchaPrueba() {
-    this.loader.showLoader();
-
-    const canchas = new Cancha();
-
-    canchas.nombre = 'prueba';
-    canchas.direccion = 'san jose';
-    canchas.telefono = [{codigo: 506, telefono: 25465570, tipo: ''}];
-
-    const ubicacion = {codigoCanton : 5, codigoProvincia : 1};
-    canchas.ubicacion = ubicacion as UbicacionCancha;
-
-    this.crudService.create(this.tables.tablas().CANCHAS, canchas).then(resp => {
-      console.log(resp);
       this.loader.hideLoader();
-    })
-    .catch(error => {
-        console.log(error);
-        this.loader.hideLoader();
     });
   }
 
 
   async presentModal() {
     const modal = await this.modalController.create({
+      component: CrearCanchaComponent
+    });
+    return await modal.present();
+  }
+
+  async editar(obj : Cancha) {
+    const modal = await this.modalController.create({
       component: CrearCanchaComponent,
+      componentProps: {
+        obj: obj
+      }
     });
     return await modal.present();
   }

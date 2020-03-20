@@ -37,16 +37,17 @@ export class CrudService {
     return respuesta;
   }
 
-  update(tabla, recordId, record) {
-    this.firestore.doc(tabla + '/' + recordId).update(JSON.parse(JSON.stringify(record)));
+  update(tabla, record) {
+    return this.firestore.doc(tabla + '/' + record.id).update(JSON.parse(JSON.stringify(record)));
   }
 
   delete(tabla, recordId) {
-    this.firestore.doc(tabla + '/' + recordId).delete();
+    const doc = this.firestore.doc(tabla + '/' + recordId.id);
+    return doc.delete();
   }
 
   find(tabla, recordId) {
-    return this.firestore.collection(tabla).doc(recordId);
+    return this.firestore.collection(tabla).doc(recordId.id).delete();
   }
 
   get(tabla) {

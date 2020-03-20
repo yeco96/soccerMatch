@@ -74,7 +74,6 @@ export class Tab2Page implements OnInit {
     record['Name'] = recordRow.EditName;
     record['Age'] = recordRow.EditAge;
     record['Address'] = recordRow.EditAddress;
-    this.crudService.update(this.tables.tablas().ESTUDIANTES, recordRow.id, record);
     recordRow.isEdit = false;
   }
 
