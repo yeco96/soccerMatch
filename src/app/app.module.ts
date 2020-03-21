@@ -37,7 +37,7 @@ import 'firebase/auth';
 import 'firebase/storage';
 import { OlvidoContraseniaComponent } from './components/olvido-contrasenia/olvido-contrasenia.component';
 
-
+import {NgxMaskIonicModule} from 'ngx-mask-ionic'
 
 firebase.initializeApp(environment.firebase);
 
@@ -46,6 +46,7 @@ firebase.initializeApp(environment.firebase);
   entryComponents: [MenuComponent, CrearRetoComponent, CrearCanchaComponent, OlvidoContraseniaComponent],
   imports: [BrowserModule, IonicModule.forRoot({ backButtonText: 'Atrás', scrollPadding: true, scrollAssist: false}), AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
+    NgxMaskIonicModule.forRoot(),
     AngularFirestoreModule, IonicStorageModule.forRoot({
       name: '__mydb',
       driverOrder: ['indexeddb', 'sqlite', 'websql']

@@ -74,8 +74,8 @@ export class RegisterPage implements OnInit {
                 Validators.required
             ])),
             telefono: new FormControl('', Validators.compose([
-                Validators.minLength(8),
-                Validators.maxLength(8),
+                Validators.minLength(9),
+                Validators.maxLength(9),
                 Validators.required
             ])),
             fechaNacimiento: new FormControl('', Validators.compose([
