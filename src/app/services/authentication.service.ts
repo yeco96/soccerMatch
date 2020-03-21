@@ -98,4 +98,13 @@ export class AuthenticationService {
     });
   }
 
+  forgetPass(value: { email: string;}){
+    return new Promise<any>((resolve, reject) => {
+      firebase.auth().sendPasswordResetEmail(value.email)
+      .then(
+        res => resolve(res),
+        err => reject(err));
+    });
+  }
+
 }
