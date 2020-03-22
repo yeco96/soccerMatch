@@ -38,12 +38,13 @@ import 'firebase/storage';
 import { OlvidoContraseniaComponent } from './components/olvido-contrasenia/olvido-contrasenia.component';
 
 import {NgxMaskIonicModule} from 'ngx-mask-ionic'
+import {CrearReservaComponent} from "./components/crear-reserva/crear-reserva.component";
 
 firebase.initializeApp(environment.firebase);
 
 @NgModule({
-  declarations: [AppComponent, MenuComponent, CrearRetoComponent, CrearCanchaComponent, FileSizeFormatPipe,OlvidoContraseniaComponent],
-  entryComponents: [MenuComponent, CrearRetoComponent, CrearCanchaComponent, OlvidoContraseniaComponent],
+  declarations: [AppComponent, MenuComponent, CrearRetoComponent, CrearReservaComponent, CrearCanchaComponent, FileSizeFormatPipe,OlvidoContraseniaComponent],
+  entryComponents: [MenuComponent, CrearRetoComponent, CrearReservaComponent, CrearCanchaComponent, OlvidoContraseniaComponent],
   imports: [BrowserModule, IonicModule.forRoot({ backButtonText: 'Atrás', scrollPadding: true, scrollAssist: false}), AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
     NgxMaskIonicModule.forRoot(),
