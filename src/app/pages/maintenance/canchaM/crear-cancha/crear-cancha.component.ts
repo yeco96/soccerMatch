@@ -96,7 +96,6 @@ export class CrearCanchaComponent implements OnInit {
         this.provincia = this.ubicacion.find(x => x.codigoProvincia.toString() === this.canchaObjeto.ubicacion.codigoProvincia.toString());
     }
 
-
     guardar() {
 
         const result = Cancha.validar(this.canchaObjeto);
@@ -106,7 +105,6 @@ export class CrearCanchaComponent implements OnInit {
         }
 
         this.loader.showLoader();
-
         if (this.actualizar) {
             this.crudService.update(this.tables.tablas().CANCHAS, this.canchaObjeto).then(resp => {
                 this.loader.hideLoader();

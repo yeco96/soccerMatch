@@ -49,9 +49,9 @@
     <ion-row class="ion-padding-top" *ngFor="let cancha of canchas">
       <ion-col size="6">
         <div class="ion-text-center">
-          <img height="100" width="100" src="../../../../assets/img/cancha.jpg">
+          <img height="100" width="100" [src]="cancha.imagen">
           <h4 class="ion-no-margin">{{cancha.nombre}}</h4>
-          <p class="ion-text-start" class="ion-no-margin">Direcion: {{cancha.direccion}}</p>
+          <p class="ion-text-start ion-no-margin">Direcion: {{cancha.direccion}}</p>
         </div>
       </ion-col>
       <ion-col size="6">
@@ -63,7 +63,7 @@
           <p class="ion-no-margin">Costo equipo: ₡10,000</p>
           <p class="ion-no-margin">Método de Pago: en sitio</p>
           <div class="ion-padding-top">
-            <ion-button fill="outline" slot="end">
+            <ion-button fill="outline" slot="end" (click)="solicitar(cancha)">
               Solicitar
             </ion-button>
           </div>
