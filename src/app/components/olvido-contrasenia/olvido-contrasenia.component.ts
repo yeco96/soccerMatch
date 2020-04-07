@@ -33,10 +33,10 @@ export class OlvidoContraseniaComponent implements OnInit {
 
     validationsForm: FormGroup;
     errorMessage = '';
-  
-  
+
+
     validationMessages = {
-  
+
       email: [
         { type: 'required', message: 'El correo es requerido.' },
         { type: 'pattern', message: 'Por favor ingrese un correo valido' }
@@ -71,7 +71,7 @@ forgetPass(value :{email: string;}) {
       this.errorMessage = err.message;
       this.loader.hideLoader();
     });
-    
+
   }
 
   async presentToast(msj, status) {
@@ -83,5 +83,9 @@ forgetPass(value :{email: string;}) {
     });
     toast.present();
 }
-  
+
+  goLoginPage() {
+    this.navCtrl.navigateBack('');
+  }
+
 }
