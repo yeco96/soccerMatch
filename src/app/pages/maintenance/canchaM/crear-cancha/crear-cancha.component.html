@@ -35,8 +35,8 @@
                     <ion-progress-bar value="{{ pct / 100 }}"></ion-progress-bar>
                 </div>
                 <div *ngIf="snapshot | async as snap">
-                    <p class="ion-no-margin">Tamaño del archivo: {{ snap.totalBytes | fileSizePipe }}
-                        Transferido: {{ snap.bytesTransferred | fileSizePipe }}</p>
+                    <!--<p class="ion-no-margin">Tamaño del archivo: {{ snap.totalBytes | fileSizePipe }}-->
+                        <!--Transferido: {{ snap.bytesTransferred | fileSizePipe }}</p>-->
                     <div *ngIf="snapshot && snap.bytesTransferred != snap.totalBytes">
                         <ion-button
                                 color="warning"
@@ -207,7 +207,7 @@
                             <img [src]="url"/>
                             <a [href]="url" target="_blank" rel="noopener">Download</a>
                         </div>
-                        <p class="ion-no-margin">Tamaño del archivo: {{ fileSize | fileSizePipe }}</p>
+                        <!--<p class="ion-no-margin">Tamaño del archivo: {{ fileSize | fileSizePipe }}</p>-->
                     </ion-card-content>
                 </ion-card>
                 <br>
