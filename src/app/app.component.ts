@@ -14,6 +14,7 @@ import { AuthenticationService } from './services/authentication.service';
 })
 export class AppComponent implements OnInit {
 
+  public mostrar = false;
   public selectedIndex = 0;
   public selectedIndexMaintenance = 0;
   public appPages = [
@@ -63,8 +64,10 @@ export class AppComponent implements OnInit {
       this.authenticationService.authState.subscribe(state => {
         if (state) {
           this.router.navigate(['home']);
+          this.mostrar = true;
         } else {
           this.router.navigate(['login']);
+          this.mostrar = false;
         }
       });
 

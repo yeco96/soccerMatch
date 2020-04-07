@@ -59,10 +59,12 @@ export class CrearReservaComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.loader.showLoader();
         this.crudService.read(this.tables.ubicacion().UBICACION).subscribe(data => {
             this.ubicacion = this.crudService.construir(data) as Array<Ubicacion>;
             this.ubicacionJSON = JSON.parse(JSON.stringify(this.ubicacion));
-        });
+            this.loader.hideLoader();
+        }, error1 => this.loader.hideLoader());
     }
 
 
@@ -80,32 +82,33 @@ export class CrearReservaComponent implements OnInit {
             return this.presentToast("Debe selecionar una fecha", false);
         }
 
+        this.loader.showLoader();
         this.crudService.read(this.tables.tablas().CANCHAS).subscribe(data => {
             const respuesta = this.crudService.construir(data) as Array<Cancha>;
 
             this.canchas = respuesta.filter(x => x.ubicacion.codigoProvincia == this.codProvincia && x.ubicacion.codigoCanton == this.codCanton);
 
             if (this.canchas.length == 0) {
+                this.loader.hideLoader();
                 return this.presentToast("No existen resultados en estas ubicaciones", false);
             }
 
             this.canchas = this.canchas.filter(x => x.horario.dias.includes(CrearReservaComponent.diaSemana(this.fechaBuscar)));
 
             if (this.canchas.length == 0) {
+                this.loader.hideLoader();
                 return this.presentToast("No existen resultados en ese dia", false);
             }
 
-            const a = this.getHora(this.canchas[0].horario.horaInicio);
-            const b = this.getHora(this.canchas[0].horario.horaFin);
-            const c = this.getHora(this.fechaBuscar);
-
-            this.canchas = this.canchas.filter(x => this.getHora(x.horario.horaInicio) >= this.getHora(this.fechaBuscar) && this.getHora(x.horario.horaFin) <= this.getHora(this.fechaBuscar));
+            this.canchas = this.canchas.filter(x => this.getHora(x.horario.horaInicio) <= this.getHora(this.fechaBuscar) && this.getHora(x.horario.horaFin) >= this.getHora(this.fechaBuscar));
 
             if (this.canchas.length == 0) {
+                this.loader.hideLoader();
                 return this.presentToast("No existen resultados para esa hora", false);
             }
 
-        });
+            this.loader.hideLoader();
+        }, error1 => this.loader.hideLoader());
     }
 
     changeProvincia() {
