@@ -1,17 +1,17 @@
 import {Component, OnInit} from '@angular/core';
-import {TablesService} from 'src/app/service/tables.service';
-import {CrudService} from 'src/app/service/crud.service';
-import {LoaderService} from 'src/app/services/loader.service';
-import {ModalController, ToastController} from '@ionic/angular';
-import {Canton, Ubicacion} from 'src/app/models/ubicacion';
-import {Cancha} from 'src/app/models/cancha';
+import {TablesService} from "../../service/tables.service";
+import {CrudService} from "../../service/crud.service";
+import {LoaderService} from "../../services/loader.service";
+import {ModalController, ToastController} from "@ionic/angular";
+import {Canton, Ubicacion} from "../../models/ubicacion";
+import {Cancha} from "../../models/cancha";
 
 @Component({
-    selector: 'app-crear-reto',
-    templateUrl: './crear-reto.component.html',
-    styleUrls: ['./crear-reto.component.scss'],
+    selector: 'app-crear-reserva',
+    templateUrl: './crear-reserva.component.html',
+    styleUrls: ['./crear-reserva.component.scss'],
 })
-export class CrearRetoComponent implements OnInit {
+export class CrearReservaComponent implements OnInit {
 
     constructor(
         private tables: TablesService,
@@ -34,19 +34,18 @@ export class CrearRetoComponent implements OnInit {
 
     canchas = new Array<Cancha>();
 
-    diaSemana() {
-        const date = new Date(this.fechaBuscar);
-
-        const options = {
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-        };
-        console.log(date.toLocaleDateString('es-MX', options));
+    static diaSemana(dia) {
+        const dias = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo'];
+        const date = new Date(dia);
+        return dias[date.getDay() - 1];
     }
 
-    diaSemana2() {
+    getHora(dia) {
+        const date = new Date(dia);
+        return date.getHours();
+    }
+
+    fechaCompleta() {
         const dias = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo'];
         // tslint:disable-next-line: max-line-length
         const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
@@ -54,17 +53,18 @@ export class CrearRetoComponent implements OnInit {
         const date = new Date(this.fechaBuscar);
 
         const fechaNum = date.getDate();
-        // tslint:disable-next-line: variable-name
         const mes_name = date.getMonth();
 
         console.log(dias[date.getDay() - 1] + ' ' + fechaNum + ' de ' + meses[mes_name] + ' de ' + date.getFullYear());
     }
 
     ngOnInit() {
+        this.loader.showLoader();
         this.crudService.read(this.tables.ubicacion().UBICACION).subscribe(data => {
             this.ubicacion = this.crudService.construir(data) as Array<Ubicacion>;
             this.ubicacionJSON = JSON.parse(JSON.stringify(this.ubicacion));
-        });
+            this.loader.hideLoader();
+        }, error1 => this.loader.hideLoader());
     }
 
 
@@ -75,26 +75,45 @@ export class CrearRetoComponent implements OnInit {
     buscarCanchas() {
 
         if (this.codProvincia == null || this.codCanton == null) {
-            this.presentToast("Debe selecionar unar ubicacion validad", false);
+            return this.presentToast("Debe selecionar unar ubicacion validad", false);
         }
 
-        if (this.fechaBuscar) {
-            this.presentToast("debe selecionar una fecha", false);
+        if (this.fechaBuscar == null) {
+            return this.presentToast("Debe selecionar una fecha", false);
         }
 
+        this.loader.showLoader();
         this.crudService.read(this.tables.tablas().CANCHAS).subscribe(data => {
             const respuesta = this.crudService.construir(data) as Array<Cancha>;
-            // tslint:disable-next-line: triple-equals
+
             this.canchas = respuesta.filter(x => x.ubicacion.codigoProvincia == this.codProvincia && x.ubicacion.codigoCanton == this.codCanton);
-            this.diaSemana();
-            this.diaSemana2();
-        });
+
+            if (this.canchas.length == 0) {
+                this.loader.hideLoader();
+                return this.presentToast("No existen resultados en estas ubicaciones", false);
+            }
+
+            this.canchas = this.canchas.filter(x => x.horario.dias.includes(CrearReservaComponent.diaSemana(this.fechaBuscar)));
+
+            if (this.canchas.length == 0) {
+                this.loader.hideLoader();
+                return this.presentToast("No existen resultados en ese dia", false);
+            }
+
+            this.canchas = this.canchas.filter(x => this.getHora(x.horario.horaInicio) <= this.getHora(this.fechaBuscar) && this.getHora(x.horario.horaFin) >= this.getHora(this.fechaBuscar));
+
+            if (this.canchas.length == 0) {
+                this.loader.hideLoader();
+                return this.presentToast("No existen resultados para esa hora", false);
+            }
+
+            this.loader.hideLoader();
+        }, error1 => this.loader.hideLoader());
     }
 
     changeProvincia() {
-        // tslint:disable-next-line: triple-equals
         this.provincia = this.ubicacion.find(x => x.codigoProvincia == this.codProvincia);
-        console.log(this.provincia);
+        this.codCanton = undefined;
     }
 
     async presentToast(msj, status) {
@@ -107,4 +126,7 @@ export class CrearRetoComponent implements OnInit {
         toast.present();
     }
 
+    solicitar(cancha: Cancha) {
+
+    }
 }

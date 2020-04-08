@@ -3,9 +3,8 @@ import { TablesService } from 'src/app/service/tables.service';
 import { CrudService } from 'src/app/service/crud.service';
 import { LoaderService } from 'src/app/services/loader.service';
 import { ModalController } from '@ionic/angular';
-import { CrearRetoComponent } from 'src/app/components/crear-reto/crear-reto.component';
-import { Reto } from 'src/app/models/reto';
 import { Retos } from 'src/app/models/retos';
+import {CrearReservaComponent} from "../../components/crear-reserva/crear-reserva.component";
 
 @Component({
   selector: 'app-retos',
@@ -25,7 +24,7 @@ export class RetosPage implements OnInit {
 
   async presentModal() {
     const modal = await this.modalController.create({
-      component: CrearRetoComponent,
+      component: CrearReservaComponent,
     });
     return await modal.present();
   }

@@ -35,6 +35,11 @@
     <ion-button  class="submit-btn" type="submit"  [disabled]="!validationsForm.valid">Restablecer</ion-button>
     </div>
     <label class="error-message">{{errorMessage}}</label>
+
+    <div class="ion-text-center ion-padding">
+      <p class="go-to-login">Desea ingresar? <a (click)="goLoginPage()">Ingrese aquí.</a></p>
+    </div>
+
   </form>
 
 </ion-card>

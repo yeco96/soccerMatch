@@ -17,7 +17,6 @@ import {finalize, tap} from 'rxjs/operators';
     styleUrls: ['./crear-cancha.component.scss'],
 })
 export class CrearCanchaComponent implements OnInit {
-
     // Upload Task
     task: AngularFireUploadTask;
     // Progress in percentage
@@ -35,7 +34,6 @@ export class CrearCanchaComponent implements OnInit {
     isUploading: boolean;
     isUploaded: boolean;
 
-
     private imageCollection: AngularFirestoreCollection<MyData>;
 
     constructor(
@@ -47,7 +45,6 @@ export class CrearCanchaComponent implements OnInit {
         private database: AngularFirestore,
         public toastController: ToastController
     ) {
-
         this.isUploading = false;
         this.isUploaded = false;
         // Set collection where our documents/ images info will save
@@ -84,7 +81,7 @@ export class CrearCanchaComponent implements OnInit {
                 this.actualizar = true;
             }
             this.loader.hideLoader();
-        }, error1 => this.presentToast("Ocurrio un error al cargar las canchas", false));
+        }, error1 => this.presentToast('Ocurrio un error al cargar las canchas', false));
     }
 
     cerrarModal() {
@@ -96,7 +93,6 @@ export class CrearCanchaComponent implements OnInit {
         this.provincia = this.ubicacion.find(x => x.codigoProvincia.toString() === this.canchaObjeto.ubicacion.codigoProvincia.toString());
     }
 
-
     guardar() {
 
         const result = Cancha.validar(this.canchaObjeto);
@@ -106,13 +102,12 @@ export class CrearCanchaComponent implements OnInit {
         }
 
         this.loader.showLoader();
-
         if (this.actualizar) {
             this.crudService.update(this.tables.tablas().CANCHAS, this.canchaObjeto).then(resp => {
                 this.loader.hideLoader();
                 this.cerrarModal();
             }).catch(error => {
-                this.presentToast("Ocurrio un error al actualizar la cancha", false);
+                this.presentToast('Ocurrio un error al actualizar la cancha', false);
                 this.loader.hideLoader();
             });
             return;
@@ -122,7 +117,7 @@ export class CrearCanchaComponent implements OnInit {
             this.loader.hideLoader();
             this.cerrarModal();
         }).catch(error => {
-            this.presentToast("Ocurrio un error al crear la cancha", false);
+            this.presentToast('Ocurrio un error al crear la cancha', false);
             this.loader.hideLoader();
         });
 
@@ -135,7 +130,7 @@ export class CrearCanchaComponent implements OnInit {
             this.loader.hideLoader();
             this.cerrarModal();
         }).catch(error => {
-            this.presentToast("Ocurrio un error al borrar la cancha", false);
+            this.presentToast('Ocurrio un error al borrar la cancha', false);
             this.loader.hideLoader();
         });
     }
@@ -153,22 +148,16 @@ export class CrearCanchaComponent implements OnInit {
 
         this.isUploading = true;
         this.isUploaded = false;
-
-
         this.fileName = file.name;
 
         // The storage path
         const path = `SoccerMatchStorage/${new Date().getTime()}_${file.name}`;
-
         // Totally optional metadata
         const customMetadata = {app: 'Soccer Match Images'};
-
         // File reference
         const fileRef = this.storage.ref(path);
-
         // The main task
         this.task = this.storage.upload(path, file, {customMetadata});
-
         // Get file progress percentage
         this.percentage = this.task.percentageChanges();
 
@@ -208,14 +197,13 @@ export class CrearCanchaComponent implements OnInit {
         });
     }
 
-    async presentToast(msj, status) {
+    async presentToast(msj: string, status: boolean) {
         const toast = await this.toastController.create({
             message: msj,
             duration: 2000,
             position: 'top',
-            color: !status ? "danger" : "primary"
+            color: !status ? 'danger' : 'primary'
         });
         toast.present();
     }
-
 }
