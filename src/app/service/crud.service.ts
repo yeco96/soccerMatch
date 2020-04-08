@@ -20,6 +20,10 @@ export class CrudService {
     return this.firestore.collection(tabla).snapshotChanges();
   }
 
+  read_Change(tabla) {
+    return this.firestore.collection(tabla).stateChanges();
+  }
+
   construir(data): any {
     const lista = data.map(e => {
       return {
@@ -47,7 +51,7 @@ export class CrudService {
   }
 
   find(tabla, recordId) {
-    return this.firestore.collection(tabla).doc(recordId.id).delete();
+    return this.firestore.collection(tabla).doc(recordId.id).get();
   }
 
   get(tabla) {
@@ -66,9 +70,4 @@ export class CrudService {
     });
     });
   }
-
-  getSongDetail(songId: string): AngularFirestoreDocument<any> {
-    return this.firestore.collection('songList').doc(songId);
-  }
-
 }

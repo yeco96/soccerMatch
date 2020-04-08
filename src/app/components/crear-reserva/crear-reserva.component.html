@@ -38,7 +38,7 @@
             <ion-item>
                 <ion-label position="floating">Fecha y Hora</ion-label>
                 <ion-datetime [(ngModel)]="fechaBuscar" cancelText="Cancelar" doneText="Aceptar"
-                              displayFormat="D MMM YYYY H"></ion-datetime>
+                              displayFormat="D MMM YYYY H" min="{{this.fechaMnima}}"></ion-datetime>
             </ion-item>
             <ion-button (click)="buscarCanchas()" class="ion-padding" expand="block" color="secondary">BUSCAR
             </ion-button>
@@ -73,7 +73,7 @@
                             <p class="ion-text-start ion-no-margin">
                                 <strong>Parqueo:</strong> {{cancha.parqueo ? 'SI' : 'NO'}}</p>
                             <p class="ion-text-start ion-no-margin">
-                                <strong>Bestidor:</strong> {{cancha.bestidor ? 'SI' : 'NO'}}</p>
+                                <strong>Vestidor:</strong> {{cancha.vestidor ? 'SI' : 'NO'}}</p>
                             <p class="ion-text-start ion-no-margin">
                                 <strong>Uniforme:</strong> {{cancha.uniforme ? 'SI' : 'NO'}}</p>
                             <div class="ion-text-center ion-padding-top">

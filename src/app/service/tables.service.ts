@@ -28,6 +28,7 @@ export class TablesService {
       EQUIPO: 'Equipo',
       USUARIO: 'Usuario',
       RETOS: 'Retos',
+      RESERVA: 'Reserva',
       ESTUDIANTES: 'Students',
       NOTICIAS: 'Noticias',
       CLIENTES: 'Clientes'

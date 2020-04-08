@@ -7,12 +7,13 @@ export class Cancha {
     montoEquipo: number;
     metodoPago: MetodoPago;
     parqueo: boolean;
-    bestidor: boolean;
+    vestidor: boolean;
     uniforme: boolean;
     arbitro: boolean;
     horario: Horario;
     imagen: string;
     estado: boolean;
+    reserva: Array<Reserva>;
 
     constructor() {
     }
@@ -119,6 +120,12 @@ export interface MyData {
     name: string;
     filepath: string;
     size: number;
+}
+
+
+export class Reserva {
+    fecha: Date;
+    estado: string;
 }
 
 
