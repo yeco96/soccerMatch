@@ -42,7 +42,13 @@ const routes: Routes = [
     path: 'ubicacion',
     loadChildren: () => import('./pages/maintenance/ubicacion/ubicacion.module').then( m => m.UbicacionPageModule),
     canActivate: [AuthGuardService]
+  },
+  {
+    path: 'clientes',
+    loadChildren: () => import('./pages/maintenance/clientes/clientes.module').then( m => m.ClientesPageModule),
+    canActivate: [AuthGuardService]
   }
+
 
 
 

@@ -29,7 +29,8 @@ export class TablesService {
       USUARIO: 'Usuario',
       RETOS: 'Retos',
       ESTUDIANTES: 'Students',
-      NOTICIAS: 'Noticias'
+      NOTICIAS: 'Noticias',
+      CLIENTES: 'Clientes'
     };
   }
 }

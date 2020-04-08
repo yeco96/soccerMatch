@@ -40,7 +40,7 @@
             </ion-item>
           </ion-menu-toggle>
 
-          <ion-list-header class="ion-padding">Mantenimientos</ion-list-header>
+          <ion-list-header class="ion-padding">Mantenimiento</ion-list-header>
 
           <ion-menu-toggle auto-hide="false" *ngFor="let p of appMaintenance; let i = index">
             <ion-item (click)="selectedIndexMaintenance = i" routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false">
