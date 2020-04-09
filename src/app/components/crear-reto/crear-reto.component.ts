@@ -102,7 +102,7 @@ export class CrearRetoComponent implements OnInit {
             message: msj,
             duration: 2000,
             position: 'top',
-            color: !status ? "danger" : "primary"
+            color: !status ? "danger" : "success"
         });
         toast.present();
     }

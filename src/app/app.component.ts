@@ -20,7 +20,7 @@ export class AppComponent implements OnInit {
   public appPages = [
     {
       title: 'Reservas',
-      url: '/folder/Outbox',
+      url: '/reserva',
       icon: 'paper-plane'
     }
   ];
