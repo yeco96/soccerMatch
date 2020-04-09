@@ -4,6 +4,7 @@ export class Usuario {
     id: string;
     uid: string;
     correo: string;
+    email: string;
     nombre: string;
     apellidos: string;
     telefono: [Telefono];

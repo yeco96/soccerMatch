@@ -45,8 +45,10 @@
 
     <div class="ion-text-center ion-padding-top">
     <ion-button  class="submit-btn" type="submit"  [disabled]="!validationsForm.valid">INGRESAR</ion-button>
+      <br>
+      <label class="error-message">{{errorMessage}}</label>
     </div>
-    <label class="error-message">{{errorMessage}}</label>
+
   </form>
 
 
@@ -63,9 +65,9 @@
     &nbsp;
     Correo
   </ion-button>
-  <ion-button expand="full" color="google">
-    <ion-icon md="google"></ion-icon> &nbsp; Google
-  </ion-button>
+  <!--<ion-button expand="full" color="google">-->
+    <!--<ion-icon md="google"></ion-icon> &nbsp; Google-->
+  <!--</ion-button>-->
 
 </div>
 

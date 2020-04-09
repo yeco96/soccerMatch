@@ -40,7 +40,7 @@ export class AppComponent implements OnInit {
     {
     title: 'Clientes',
     url: '/clientes',
-    icon: 'football'
+    icon: 'people'
     }
   ];
 

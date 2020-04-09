@@ -1,8 +1,10 @@
+import {Usuario} from "./usuario";
+
 export class Noticias {
     id: string;
     descripcion: string;
-    fecha: string; 
+    fecha: any;
     tipo: string;
-    usuario: string;
-
+    usuario: Usuario;
+    estado: string;
 }

@@ -67,7 +67,8 @@ export class LoginPage implements OnInit {
       this.navCtrl.navigateForward('/home');
       this.loader.hideLoader();
     }, err => {
-      this.errorMessage = err.message;
+      // this.errorMessage = err.message;
+      this.errorMessage = 'Los datos del usuario no son correctos';
       this.loader.hideLoader();
     });
   }
