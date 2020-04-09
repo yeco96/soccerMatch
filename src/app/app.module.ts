@@ -39,6 +39,7 @@ import { OlvidoContraseniaComponent } from './components/olvido-contrasenia/olvi
 
 import {NgxMaskIonicModule} from 'ngx-mask-ionic'
 import {CrearReservaComponent} from "./components/crear-reserva/crear-reserva.component";
+import {HashLocationStrategy, LocationStrategy} from "@angular/common";
 
 firebase.initializeApp(environment.firebase);
 
@@ -57,7 +58,8 @@ firebase.initializeApp(environment.firebase);
     StatusBar,
     SplashScreen,
     AuthenticationService, AuthGuardService,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    {provide: LocationStrategy, useClass: HashLocationStrategy}
   ],
   bootstrap: [AppComponent]
 })
