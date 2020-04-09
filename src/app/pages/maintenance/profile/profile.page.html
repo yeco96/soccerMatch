@@ -19,28 +19,33 @@
 
   <ion-item>
     <ion-label position="floating">Nombre</ion-label>
-    <ion-input [(ngModel)]="usuario.nombre"></ion-input>
+    <ion-input [(ngModel)]="usuario.nombre" [disabled]="editar"></ion-input>
   </ion-item>
   <ion-item>
     <ion-label position="floating">Apellidos</ion-label>
-    <ion-input [(ngModel)]="usuario.apellidos"></ion-input>
+    <ion-input [(ngModel)]="usuario.apellidos" [disabled]="editar"></ion-input>
   </ion-item>
   <ion-item>
     <ion-label position="floating">Correo</ion-label>
-    <ion-input [(ngModel)]="usuario.email"></ion-input>
+    <ion-input [(ngModel)]="usuario.email" [disabled]="editar"></ion-input>
   </ion-item>
 
   <ion-item>
     <ion-label position="floating">Fecha Nacimiento</ion-label>
-    <ion-datetime  [(ngModel)]="usuario.fechaNacimiento" display-format="DD/MMMM/YYYY"
+    <ion-datetime [disabled]="editar"  [(ngModel)]="usuario.fechaNacimiento" display-format="DD/MMMM/YYYY"
     monthNames='Enero, Febrero, Marzo, Abril, Mayo, Junio, Julio, Agosto, Septiembre, Octubre, Noviembre, Diciembre'
     doneText="Aceptar" cancelText="Cancelar"></ion-datetime>
   </ion-item>
 
   <ion-item>
     <ion-label position="floating">Telefono</ion-label>
-    <ion-input [(ngModel)]="usuario.telefono"></ion-input>
+    <ion-input [(ngModel)]="usuario.telefono" [disabled]="editar"></ion-input>
   </ion-item>
+
+
+    <ion-button class="ion-padding" expand="block" color="secondary" (click)="editarPerfil()">
+      {{this.editar ? 'EDITAR' : 'GUARDAR'}}
+    </ion-button>
 
 
 </ion-content>
