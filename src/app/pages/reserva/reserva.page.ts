@@ -6,6 +6,7 @@ import {LoaderService} from "../../services/loader.service";
 import {CrudService} from "../../service/crud.service";
 import {TablesService} from "../../service/tables.service";
 import {Reserva} from "../../models/Reserva";
+import {Usuario} from "../../models/usuario";
 
 @Component({
     selector: 'app-reserva',
@@ -30,7 +31,15 @@ export class ReservaPage implements OnInit {
     ngOnInit() {
         this.loader.showLoader();
         this.crudService.read(this.tables.tablas().RESERVA).subscribe(data => {
-            this.reservas = this.crudService.construir(data) as Array<Reserva>;
+            const reservas = this.crudService.construir(data) as Array<Reserva>;
+
+            this.authService.getDataUser().then(res => {
+                const usuario = res as Usuario;
+                this.reservas = reservas.filter( reservas => {
+                    return reservas.usuario.id === usuario.id;
+                });
+            });
+
             this.loader.hideLoader();
         });
     }

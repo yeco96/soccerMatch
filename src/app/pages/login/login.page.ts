@@ -68,6 +68,7 @@ export class LoginPage implements OnInit {
       this.loader.hideLoader();
     }, err => {
       // this.errorMessage = err.message;
+      console.log(err.message);
       this.errorMessage = 'Los datos del usuario no son correctos';
       this.loader.hideLoader();
     });
