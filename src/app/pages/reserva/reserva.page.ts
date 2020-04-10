@@ -9,7 +9,6 @@ import {Reserva} from "../../models/Reserva";
 import {Usuario} from "../../models/usuario";
 import {SMS} from '@ionic-native/sms/ngx';
 import {CallNumber} from '@ionic-native/call-number/ngx';
-import {Cancha} from "../../models/cancha";
 import {AndroidPermissions} from '@ionic-native/android-permissions/ngx';
 import {MostrarCanchaComponent} from "../../components/mostrar-cancha/mostrar-cancha.component";
 
@@ -74,6 +73,7 @@ export class ReservaPage implements OnInit {
             alert(JSON.stringify(err));
         });
     }
+
     //
     // async mostrarCancha(cancha: Cancha) {
     //     const alert = await this.alertController.create({
@@ -163,7 +163,7 @@ export class ReservaPage implements OnInit {
     }
 
 
-    async mostrarModal(value) {
+    async mostrarModalAsync(value) {
         const modal = await this.modalController.create({
             component: MostrarCanchaComponent,
             cssClass: 'my-custom-modal-css',
@@ -172,6 +172,10 @@ export class ReservaPage implements OnInit {
             }
         });
         return await modal.present();
+    }
+
+    mostrarModal(value) {
+        this.mostrarModalAsync(value);
     }
 
 
