@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {AlertController, ModalController, NavController} from "@ionic/angular";
+import {AlertController, ModalController, NavController, ToastController} from "@ionic/angular";
 import {AuthenticationService} from "../../services/authentication.service";
 import {FormBuilder} from "@angular/forms";
 import {LoaderService} from "../../services/loader.service";
@@ -29,6 +29,7 @@ export class ReservaPage implements OnInit {
         private sms: SMS,
         private callNumber: CallNumber,
         public alertController: AlertController,
+        public toastController: ToastController
     ) {
     }
 
@@ -53,8 +54,9 @@ export class ReservaPage implements OnInit {
 
 
     pagar() {
-
-        this.sms.send('89582736', 'Hello world!');
+        this.sms.send('89582736', 'Hello world!')
+            .then(res => console.log('Launched dialer!', res))
+            .catch(err => this.presentToast('Error launching dialer ' + err, false));
     }
 
     async mostrarCancha(cancha: Cancha) {
@@ -124,7 +126,18 @@ export class ReservaPage implements OnInit {
     llamar() {
         this.callNumber.callNumber("89582736", true)
             .then(res => console.log('Launched dialer!', res))
-            .catch(err => console.log('Error launching dialer', err));
+            .catch(err => this.presentToast('Error launching dialer ' + err, false));
+    }
+
+
+    async presentToast(msj: string, status: boolean) {
+        const toast = await this.toastController.create({
+            message: msj,
+            duration: 2000,
+            position: 'bottom',
+            color: !status ? 'danger' : 'success'
+        });
+        toast.present();
     }
 
 }
