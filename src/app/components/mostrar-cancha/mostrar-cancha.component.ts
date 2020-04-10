@@ -27,7 +27,7 @@ export class MostrarCanchaComponent implements OnInit {
     llamar(numero) {
         this.callNumber.callNumber(numero, true)
             .then(res => console.log('Launched dialer!', res))
-            .catch(err => this.presentToast('Error launching dialer ' + err, false));
+            .catch(err => this.presentToast('Error al enviar al marcar: ' + err, false));
     }
 
 
@@ -42,11 +42,11 @@ export class MostrarCanchaComponent implements OnInit {
                 }
             };
 
-            this.sms.send(numero, 'Soccer Match', options)
+            this.sms.send(numero, 'Soccer Match: Solicitud de informacion sobre la reserva', options)
                 .then(res => console.log('Launched dialer!', res))
-                .catch(err => this.presentToast('Error launching dialer ' + err, false));
+                .catch(err => this.presentToast('Error al enviar al enviar el mensaje ' + err, false));
         }).catch((err) => {
-            alert(JSON.stringify(err));
+            this.presentToast('Error al enviar al enviar el mensaje ' + JSON.stringify(err), false)
         });
     }
 

@@ -11,6 +11,7 @@ import {SMS} from '@ionic-native/sms/ngx';
 import {CallNumber} from '@ionic-native/call-number/ngx';
 import {AndroidPermissions} from '@ionic-native/android-permissions/ngx';
 import {MostrarCanchaComponent} from "../../components/mostrar-cancha/mostrar-cancha.component";
+import {Cancha} from "../../models/cancha";
 
 @Component({
     selector: 'app-reserva',
@@ -55,7 +56,7 @@ export class ReservaPage implements OnInit {
     }
 
 
-    pagar() {
+    pagar(cancha: Cancha) {
         this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.SEND_SMS).then(() => {
 
             var options = {
@@ -66,15 +67,16 @@ export class ReservaPage implements OnInit {
                 }
             };
 
-            this.sms.send('89582736', 'Hello world!', options)
+            //const pago = "PASE " + cancha.metodoPago + " " + cancha.telefono + " -PAGO RESERVA CANCHA";
+            const pago = "SALDO";
+            this.sms.send("+2627", pago, options)
                 .then(res => console.log('Launched dialer!', res))
-                .catch(err => this.presentToast('Error launching dialer ' + err, false));
+                .catch(err => this.presentToast('Error al enviar al enviar el mensaje ' + err, false));
         }).catch((err) => {
-            alert(JSON.stringify(err));
+            this.presentToast('Error al enviar al enviar el mensaje ' + JSON.stringify(err), false)
         });
     }
 
-    //
     // async mostrarCancha(cancha: Cancha) {
     //     const alert = await this.alertController.create({
     //         header: cancha.nombre,
@@ -204,10 +206,10 @@ export class ReservaPage implements OnInit {
     }
 
 
-    async realizarPago() {
+    async realizarPago(cancha: Cancha) {
         const alert = await this.alertController.create({
             header: '¡Realizar Pago!',
-            message: "Desea enviar un SMS con el pago por Simpe Movil",
+            message: "Desea realizar el pago por Simpe Movil",
             buttons: [
                 {
                     text: 'Cancelar',
@@ -219,7 +221,7 @@ export class ReservaPage implements OnInit {
                 }, {
                     text: 'Aceptar',
                     handler: () => {
-                        this.pagar();
+                        this.pagar(cancha);
                     }
                 }
             ]
