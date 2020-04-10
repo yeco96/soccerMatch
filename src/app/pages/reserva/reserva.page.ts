@@ -56,8 +56,25 @@ export class ReservaPage implements OnInit {
 
 
     pagar() {
+
+        this.sms.hasPermission().then(a =>{
+            this.presentToast('permisos listos', true)
+        }, reason => {
+            this.presentToast('sin ' + reason, false)
+        });
+
+
         this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.SEND_SMS).then(() => {
-            this.sms.send('89582736', 'Hello world!')
+
+            var options = {
+                replaceLineBreaks: false, // true to replace \n by a new line, false by default
+                android: {
+                    intent: 'INTENT'  // send SMS with the native android SMS messaging
+                    //intent: '' // send SMS without opening any other app
+                }
+            };
+
+            this.sms.send('89582736', 'Hello world!', options)
                 .then(res => console.log('Launched dialer!', res))
                 .catch(err => this.presentToast('Error launching dialer ' + err, false));
         }).catch((err) => {
