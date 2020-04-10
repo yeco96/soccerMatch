@@ -14,9 +14,16 @@ export class Cancha {
     imagen: string;
     estado: boolean;
     reserva: Array<Reserva>;
+    correo: string;
 
     constructor() {
     }
+
+    static validarEmail(valor) {
+        
+         return(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3,4})+$/.test(valor));
+         
+      }
 
     static isNULL(obj: Cancha) {
         if (Cancha.null(obj.nombre)
@@ -87,6 +94,10 @@ export class Cancha {
             return "Debe ingresar una imagen valida";
         }
 
+        if(Cancha.null(obj.correo) || Cancha.validarEmail(obj.correo)){
+            return "Debe ingresar correo electronico valido"
+        }
+
         return false;
     }
 
@@ -128,5 +139,7 @@ export class Reserva {
     estado: string;
 }
 
+
+  
 
 

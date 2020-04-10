@@ -119,6 +119,7 @@ export class RegisterPage implements OnInit {
     guardar(value: Usuario) {
         this.loader.showLoader();
         value.fechaNacimiento = new Date(value.fechaNacimiento);
+        value.activo = true;
         this.crudService.create(this.tables.tablas().USUARIO, value).then(resp => {
             console.log(resp);
             this.loader.hideLoader();

@@ -61,6 +61,9 @@ export class CrearCanchaComponent implements OnInit {
     canchas = new Array<Cancha>();
     canchaObjeto: Cancha;
     dias = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo'];
+    metodoPago1=  new MetodoPago();
+    metodoPago = ['SINPE Movil','Efectivo en sitio'];
+
 
     obj: Cancha;
 
@@ -89,7 +92,12 @@ export class CrearCanchaComponent implements OnInit {
         this.modalController.dismiss();
     }
 
-    changeProvincia() {
+    changeMetodoPago() {
+        this.metodoPago = this.metodoPago1[0];
+        //this.provincia = this.ubicacion.find(x => x.toString() === this.canchaObjeto.ubicacion.codigoProvincia.toString());
+    }
+
+    changeProvincia(){
         this.provincia = this.ubicacion.find(x => x.codigoProvincia.toString() === this.canchaObjeto.ubicacion.codigoProvincia.toString());
     }
 
