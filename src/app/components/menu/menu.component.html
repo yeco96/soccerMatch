@@ -1,9 +1,11 @@
 <ion-content>
   <ion-list>
 
-    <ion-list-header class="ion-text-start">YEISON PICADO ABARCA</ion-list-header>
+    <ion-list-header  class="ion-text-start">
+    <span *ngIf="usuario.nombre"> {{(usuario.nombre + ' ' + usuario.apellidos).toUpperCase()}} </span>
+    </ion-list-header>
 
-    <ion-item button (click)="wifiSetting()">
+    <ion-item button (click)="perfil()">
       <ion-icon slot="start" md="person-sharp"></ion-icon>
       Perfil
     </ion-item>
