@@ -14,6 +14,9 @@ export class Usuario {
     inactivo: boolean;
     tipoLogueo: number;
     imagen: string;
+    estado: boolean;
+    sexo: string;
+
 }
 
 

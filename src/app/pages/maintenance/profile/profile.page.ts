@@ -34,7 +34,6 @@ export class ProfilePage implements OnInit {
         public toastController: ToastController
     ) {
     }
-    dias = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo'];
 
     ngOnInit() {
         this.usuario = new Usuario();
