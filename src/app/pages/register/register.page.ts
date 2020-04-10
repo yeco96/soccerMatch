@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {AuthenticationService} from '../../services/authentication.service';
-import {ModalController, NavController} from '@ionic/angular';
+import {ModalController, NavController, ToastController} from '@ionic/angular';
 import {TablesService} from 'src/app/service/tables.service';
 import {CrudService} from 'src/app/service/crud.service';
 import {LoaderService} from 'src/app/services/loader.service';
@@ -57,6 +57,7 @@ export class RegisterPage implements OnInit {
         public modalController: ModalController,
         private storage: AngularFireStorage,
         private database: AngularFirestore,
+        public toastController: ToastController
     ) {
     }
 
@@ -101,6 +102,9 @@ export class RegisterPage implements OnInit {
                 this.successMessage = 'Your account has been created. Please log in.';
                 this.navCtrl.navigateBack('');
                 this.errorMessage = '';
+                this.authService.validationEmail().then((respuesta:any) =>{
+                    this.presentToast('Se te envio un correo, favor verificalo');
+                });
             }, (err: { message: string; }) => {
                 console.log(err);
                 this.errorMessage = err.message;
@@ -125,4 +129,13 @@ export class RegisterPage implements OnInit {
             });
     }
 
+    async presentToast(msj: string) {
+        const toast = await this.toastController.create({
+            message: msj,
+            duration: 2000,
+            position: 'bottom',
+            color: 'primary'
+        });
+        toast.present();
+    }
 }

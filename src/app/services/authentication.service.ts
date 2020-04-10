@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase/app';
 import { Storage } from '@ionic/storage';
-
 import { Router } from '@angular/router';
-
-import { ToastController, Platform } from '@ionic/angular';
+import { Platform } from '@ionic/angular';
 import { BehaviorSubject } from 'rxjs';
 import { LoaderService } from './loader.service';
 import { CrudService } from '../service/crud.service';
@@ -21,7 +19,6 @@ export class AuthenticationService {
   constructor( private router: Router,
                private platform: Platform,
                private storage: Storage,
-               public toastController: ToastController,
                public loader: LoaderService,
                private crudService: CrudService,
                private tables: TablesService,
@@ -38,6 +35,7 @@ export class AuthenticationService {
   }
 
   registerUser(value: { email: string; password: string; }) {
+    
     return new Promise<any>((resolve, reject) => {
       firebase.auth().createUserWithEmailAndPassword(value.email, value.password)
       .then(
@@ -47,10 +45,16 @@ export class AuthenticationService {
   }
 
   loginUser(value: { email: string; password: string; }) {
+    
     return new Promise<any>((resolve, reject) => {
+      
       firebase.auth().signInWithEmailAndPassword(value.email, value.password)
       .then(
         res => {
+          const user = firebase.auth().currentUser;
+      if(!user.emailVerified){
+        return reject({message:'Favor verificar su correo'});
+      }
           this.storage.set('uid', res.user.uid).then((val) => {
             this.authState.next(true);
             resolve(res);
@@ -84,8 +88,9 @@ export class AuthenticationService {
 
   async getDataUser() {
     return new Promise<any>((resolve, reject) => {
+      const user = firebase.auth().currentUser;
       let usuario = new Usuario();
-      const uid = firebase.auth().currentUser.uid.toString();
+      const uid = user.uid.toString();
       this.crudService.read(this.tables.tablas().USUARIO).subscribe(data => {
         const temp = (this.crudService.construir(data) as Array <Usuario>);
         usuario = temp.filter(x => {
@@ -107,4 +112,24 @@ export class AuthenticationService {
     });
   }
 
+  /*disableAccount(value: { email: string;}){
+    return new Promise<any>((resolve, reject) => {
+      firebase.auth().(value.email)
+      .then(
+        res => resolve(res),
+        err => reject(err));
+    });
+  }*/
+
+  validationEmail(){
+    return new Promise<any>((resolve, reject) => {
+      const user = firebase.auth().currentUser;
+     user.sendEmailVerification()
+      .then(
+        res => resolve(res),
+        err => reject(err));
+    });
+  }
+
 }
+

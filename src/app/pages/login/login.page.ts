@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { TablesService } from 'src/app/service/tables.service';
-import { NavController, IonDatetime } from '@ionic/angular';
+import { NavController, IonDatetime, ToastController } from '@ionic/angular';
 import { AuthenticationService } from '../../services/authentication.service';
 import { LoaderService } from '../../services/loader.service';
 import { ModalController } from '@ionic/angular';
@@ -22,7 +22,8 @@ export class LoginPage implements OnInit {
     private authService: AuthenticationService,
     private formBuilder: FormBuilder,
     private loader: LoaderService,
-    public modalController: ModalController
+    public modalController: ModalController,
+    public toastController: ToastController
   ) { }
 
 
@@ -67,9 +68,7 @@ export class LoginPage implements OnInit {
       this.navCtrl.navigateForward('/home');
       this.loader.hideLoader();
     }, err => {
-      // this.errorMessage = err.message;
-      console.log(err.message);
-      this.errorMessage = 'Los datos del usuario no son correctos';
+      this.errorMessage = err.message;
       this.loader.hideLoader();
     });
   }
