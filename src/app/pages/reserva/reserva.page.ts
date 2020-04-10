@@ -11,7 +11,7 @@ import {SMS} from '@ionic-native/sms/ngx';
 import {CallNumber} from '@ionic-native/call-number/ngx';
 import {Cancha} from "../../models/cancha";
 import {AndroidPermissions} from '@ionic-native/android-permissions/ngx';
-import {CrearCanchaComponent} from "../maintenance/canchaM/crear-cancha/crear-cancha.component";
+import {MostrarCanchaComponent} from "../../components/mostrar-cancha/mostrar-cancha.component";
 
 @Component({
     selector: 'app-reserva',
@@ -57,13 +57,6 @@ export class ReservaPage implements OnInit {
 
 
     pagar() {
-        this.sms.hasPermission().then(a =>{
-            this.presentToast('permisos listos', true)
-        }, reason => {
-            this.presentToast('sin ' + reason, false)
-        });
-
-
         this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.SEND_SMS).then(() => {
 
             var options = {
@@ -81,43 +74,43 @@ export class ReservaPage implements OnInit {
             alert(JSON.stringify(err));
         });
     }
-
-    async mostrarCancha(cancha: Cancha) {
-        const alert = await this.alertController.create({
-            header: cancha.nombre,
-            cssClass: 'ion-text-center',
-            inputs: [
-                {
-                    name: 'Dirrección',
-                    type: 'text',
-                    value: cancha.direccion,
-                    disabled: true
-                },
-                {
-                    name: 'Telefono',
-                    type: 'text',
-                    value: cancha.telefono != undefined ? cancha.telefono : "Sin Telefono",
-                    disabled: true
-                }
-            ],
-            buttons: [
-                {
-                    text: 'Llamar',
-                    handler: () => {
-                        console.log('Confirm Ok');
-                    }
-                },
-                {
-                    text: 'Listo',
-                    handler: () => {
-                        console.log('Confirm Ok');
-                    }
-                }
-            ]
-        });
-
-        await alert.present();
-    }
+    //
+    // async mostrarCancha(cancha: Cancha) {
+    //     const alert = await this.alertController.create({
+    //         header: cancha.nombre,
+    //         cssClass: 'ion-text-center',
+    //         inputs: [
+    //             {
+    //                 name: 'Dirrección',
+    //                 type: 'text',
+    //                 value: cancha.direccion,
+    //                 disabled: true
+    //             },
+    //             {
+    //                 name: 'Telefono',
+    //                 type: 'text',
+    //                 value: cancha.telefono != undefined ? cancha.telefono : "Sin Telefono",
+    //                 disabled: true
+    //             }
+    //         ],
+    //         buttons: [
+    //             {
+    //                 text: 'Llamar',
+    //                 handler: () => {
+    //                     console.log('Confirm Ok');
+    //                 }
+    //             },
+    //             {
+    //                 text: 'Listo',
+    //                 handler: () => {
+    //                     console.log('Confirm Ok');
+    //                 }
+    //             }
+    //         ]
+    //     });
+    //
+    //     await alert.present();
+    // }
 
     fechaCompleta(dia, tipo) {
 
@@ -170,17 +163,17 @@ export class ReservaPage implements OnInit {
     }
 
 
-    async presentModal() {
+    async mostrarModal(value) {
         const modal = await this.modalController.create({
-            component: CrearCanchaComponent,
-            cssClass: 'my-custom-modal-css'
+            component: MostrarCanchaComponent,
+            cssClass: 'my-custom-modal-css',
+            componentProps: {
+                cancha: value
+            }
         });
         return await modal.present();
     }
 
-    mostrarModal() {
-        this.presentModal();
-    }
 
     async agregarEquipo() {
         const alert = await this.alertController.create({
@@ -222,7 +215,7 @@ export class ReservaPage implements OnInit {
                 }, {
                     text: 'Aceptar',
                     handler: () => {
-
+                        this.pagar();
                     }
                 }
             ]

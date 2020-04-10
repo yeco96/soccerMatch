@@ -27,6 +27,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { MenuComponent } from './components/menu/menu.component';
 import { CrearRetoComponent } from './components/crear-reto/crear-reto.component';
+import { MostrarCanchaComponent } from './components/mostrar-cancha/mostrar-cancha.component';
 import { CrearCanchaComponent } from './pages/maintenance/canchaM/crear-cancha/crear-cancha.component';
 
 
@@ -47,8 +48,8 @@ import {HashLocationStrategy, LocationStrategy} from "@angular/common";
 firebase.initializeApp(environment.firebase);
 
 @NgModule({
-  declarations: [AppComponent, MenuComponent, CrearRetoComponent, CrearReservaComponent, CrearCanchaComponent, FileSizeFormatPipe,OlvidoContraseniaComponent],
-  entryComponents: [MenuComponent, CrearRetoComponent, CrearReservaComponent, CrearCanchaComponent, OlvidoContraseniaComponent],
+  declarations: [AppComponent, MenuComponent, CrearRetoComponent, MostrarCanchaComponent, CrearReservaComponent, CrearCanchaComponent, FileSizeFormatPipe,OlvidoContraseniaComponent],
+  entryComponents: [MenuComponent, CrearRetoComponent, MostrarCanchaComponent, CrearReservaComponent, CrearCanchaComponent, OlvidoContraseniaComponent],
   imports: [BrowserModule, IonicModule.forRoot({ backButtonText: 'Atrás', scrollPadding: true, scrollAssist: false}), AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
     NgxMaskIonicModule.forRoot(),
