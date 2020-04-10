@@ -86,9 +86,10 @@
               <ion-input name="telefono1" [(ngModel)]="equipoObjeto.telefono" required type="number"></ion-input>
           </ion-item>
 
-          <ion-button *ngIf="actualizar" (click)="elimiar()" class="ion-padding" expand="block" color="danger">
-              Cancelar
+          <ion-button class="ion-padding" expand="block" color="secondary" (click)="guardar()">
+            {{this.editar ? 'Crear Equipo' : 'Editar Equipo'}}
           </ion-button>
+
           </form>
       </ion-card-content>
   </ion-card>
