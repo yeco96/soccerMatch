@@ -11,6 +11,7 @@ import {SMS} from '@ionic-native/sms/ngx';
 import {CallNumber} from '@ionic-native/call-number/ngx';
 import {Cancha} from "../../models/cancha";
 import {AndroidPermissions} from '@ionic-native/android-permissions/ngx';
+import {CrearCanchaComponent} from "../maintenance/canchaM/crear-cancha/crear-cancha.component";
 
 @Component({
     selector: 'app-reserva',
@@ -56,7 +57,6 @@ export class ReservaPage implements OnInit {
 
 
     pagar() {
-
         this.sms.hasPermission().then(a =>{
             this.presentToast('permisos listos', true)
         }, reason => {
@@ -101,6 +101,12 @@ export class ReservaPage implements OnInit {
                 }
             ],
             buttons: [
+                {
+                    text: 'Llamar',
+                    handler: () => {
+                        console.log('Confirm Ok');
+                    }
+                },
                 {
                     text: 'Listo',
                     handler: () => {
@@ -161,6 +167,68 @@ export class ReservaPage implements OnInit {
             color: !status ? 'danger' : 'success'
         });
         toast.present();
+    }
+
+
+    async presentModal() {
+        const modal = await this.modalController.create({
+            component: CrearCanchaComponent,
+            cssClass: 'my-custom-modal-css'
+        });
+        return await modal.present();
+    }
+
+    mostrarModal() {
+        this.presentModal();
+    }
+
+    async agregarEquipo() {
+        const alert = await this.alertController.create({
+            header: '¿Agregar un equipo?',
+            message: "Al selecionar un equipo se creara un reto",
+            buttons: [
+                {
+                    text: 'Cancelar',
+                    role: 'cancel',
+                    cssClass: 'cancelar',
+                    handler: () => {
+
+                    }
+                }, {
+                    text: 'Aceptar',
+                    handler: () => {
+
+                    }
+                }
+            ]
+        });
+
+        await alert.present();
+    }
+
+
+    async realizarPago() {
+        const alert = await this.alertController.create({
+            header: '¡Realizar Pago!',
+            message: "Desea enviar un SMS con el pago por Simpe Movil",
+            buttons: [
+                {
+                    text: 'Cancelar',
+                    role: 'cancel',
+                    cssClass: 'cancelar',
+                    handler: () => {
+
+                    }
+                }, {
+                    text: 'Aceptar',
+                    handler: () => {
+
+                    }
+                }
+            ]
+        });
+
+        await alert.present();
     }
 
 }
