@@ -67,7 +67,7 @@ export class CrearCanchaComponent implements OnInit {
     ngOnInit() {
         this.canchaObjeto = new Cancha();
         this.canchaObjeto.metodoPago = new MetodoPago();
-        this.canchaObjeto.telefono = new Array<Telefono>();
+        this.canchaObjeto.telefono = "";
         this.canchaObjeto.ubicacion = new UbicacionCancha();
         this.canchaObjeto.horario = new Horario();
 

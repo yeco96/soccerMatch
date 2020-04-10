@@ -15,9 +15,20 @@
         <hr>
     </div>
 
+
+
+    <ion-item>
+        <ion-label position="floating">Filtro:</ion-label>
+        <ion-select [(ngModel)]="filtro"
+                    interface="action-sheet" cancelText="Cancelar" doneText="Aceptar">
+            <ion-select-option value="PENDIENTE">Pendientes</ion-select-option>
+            <ion-select-option value="LISTO">Historial</ion-select-option>
+        </ion-select>
+    </ion-item>
+
     <div *ngFor="let reserva of reservas">
 
-        <ion-grid class="ion-no-padding">
+        <ion-grid class="ion-no-padding" *ngIf="reserva.estado == filtro">
             <ion-row class="">
                 <ion-col size="3">
                     <div class="ion-text-center">
@@ -48,12 +59,12 @@
 
                             <ion-col size="4">
                                 <ion-row>
-                                    <ion-button fill="outline" color="light">
+                                    <ion-button fill="outline" color="light"  (click)="llamar()">
                                         <ion-icon color="success" md="person-add-sharp"></ion-icon>
                                     </ion-button>
                                 </ion-row>
                                 <ion-row>
-                                    <ion-button fill="outline" color="light">
+                                    <ion-button fill="outline" color="light" (click)="pagar()">
                                         <ion-icon color="warning" md="football-outline"></ion-icon>
                                     </ion-button>
                                 </ion-row>

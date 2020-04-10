@@ -2,7 +2,7 @@ export class Cancha {
     id: string;
     nombre: string;
     direccion: string;
-    telefono: Array<Telefono>;
+    telefono: string;
     ubicacion: UbicacionCancha;
     montoEquipo: number;
     metodoPago: MetodoPago;
@@ -21,7 +21,7 @@ export class Cancha {
     static isNULL(obj: Cancha) {
         if (Cancha.null(obj.nombre)
             && Cancha.null(obj.direccion)
-            && (Cancha.null(obj.telefono) || Cancha.size(obj.telefono.length))
+            && (Cancha.null(obj.telefono))
             && (Cancha.null(obj.ubicacion) || Cancha.null(obj.ubicacion.codigoProvincia) || Cancha.null(obj.ubicacion.codigoCanton))
             && Cancha.null(obj.montoEquipo)
             && (Cancha.null(obj.metodoPago) || Cancha.null(obj.metodoPago.tipo))

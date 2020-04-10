@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ModalController, NavController} from "@ionic/angular";
+import {AlertController, ModalController, NavController} from "@ionic/angular";
 import {AuthenticationService} from "../../services/authentication.service";
 import {FormBuilder} from "@angular/forms";
 import {LoaderService} from "../../services/loader.service";
@@ -7,6 +7,9 @@ import {CrudService} from "../../service/crud.service";
 import {TablesService} from "../../service/tables.service";
 import {Reserva} from "../../models/Reserva";
 import {Usuario} from "../../models/usuario";
+import {SMS} from '@ionic-native/sms/ngx';
+import {CallNumber} from '@ionic-native/call-number/ngx';
+import {Cancha} from "../../models/cancha";
 
 @Component({
     selector: 'app-reserva',
@@ -22,11 +25,15 @@ export class ReservaPage implements OnInit {
         private loader: LoaderService,
         private crudService: CrudService,
         private tables: TablesService,
-        public modalController: ModalController
+        public modalController: ModalController,
+        private sms: SMS,
+        private callNumber: CallNumber,
+        public alertController: AlertController,
     ) {
     }
 
     reservas = new Array<Reserva>();
+    filtro: string;
 
     ngOnInit() {
         this.loader.showLoader();
@@ -35,15 +42,51 @@ export class ReservaPage implements OnInit {
 
             this.authService.getDataUser().then(res => {
                 const usuario = res as Usuario;
-                this.reservas = reservas.filter( reservas => {
+                this.reservas = reservas.filter(reservas => {
                     return reservas.usuario.id === usuario.id;
                 });
+                this.loader.hideLoader();
             });
-
-            this.loader.hideLoader();
         });
+        this.filtro = 'PENDIENTE';
     }
 
+
+    pagar() {
+
+        this.sms.send('89582736', 'Hello world!');
+    }
+
+    async mostrarCancha(cancha: Cancha) {
+        const alert = await this.alertController.create({
+            header: cancha.nombre,
+            cssClass: 'ion-text-center',
+            inputs: [
+                {
+                    name: 'Dirrección',
+                    type: 'text',
+                    value: cancha.direccion,
+                    disabled: true
+                },
+                {
+                    name: 'Telefono',
+                    type: 'text',
+                    value: cancha.telefono != undefined ? cancha.telefono : "Sin Telefono",
+                    disabled: true
+                }
+            ],
+            buttons: [
+                {
+                    text: 'Listo',
+                    handler: () => {
+                        console.log('Confirm Ok');
+                    }
+                }
+            ]
+        });
+
+        await alert.present();
+    }
 
     fechaCompleta(dia, tipo) {
 
@@ -76,6 +119,12 @@ export class ReservaPage implements OnInit {
         }
 
         return "";
+    }
+
+    llamar() {
+        this.callNumber.callNumber("89582736", true)
+            .then(res => console.log('Launched dialer!', res))
+            .catch(err => console.log('Error launching dialer', err));
     }
 
 }
