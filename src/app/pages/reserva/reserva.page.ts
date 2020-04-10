@@ -10,6 +10,7 @@ import {Usuario} from "../../models/usuario";
 import {SMS} from '@ionic-native/sms/ngx';
 import {CallNumber} from '@ionic-native/call-number/ngx';
 import {Cancha} from "../../models/cancha";
+import {AndroidPermissions} from '@ionic-native/android-permissions/ngx';
 
 @Component({
     selector: 'app-reserva',
@@ -29,7 +30,8 @@ export class ReservaPage implements OnInit {
         private sms: SMS,
         private callNumber: CallNumber,
         public alertController: AlertController,
-        public toastController: ToastController
+        public toastController: ToastController,
+        public androidPermissions: AndroidPermissions
     ) {
     }
 
@@ -54,9 +56,30 @@ export class ReservaPage implements OnInit {
 
 
     pagar() {
-        this.sms.send('89582736', 'Hello world!')
-            .then(res => console.log('Launched dialer!', res))
-            .catch(err => this.presentToast('Error launching dialer ' + err, false));
+
+        this.sms.hasPermission().then(a =>{
+            this.presentToast('permisos listos', true)
+        }, reason => {
+            this.presentToast('sin ' + reason, false)
+        });
+
+
+        this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.SEND_SMS).then(() => {
+
+            var options = {
+                replaceLineBreaks: false, // true to replace \n by a new line, false by default
+                android: {
+                    intent: 'INTENT'  // send SMS with the native android SMS messaging
+                    //intent: '' // send SMS without opening any other app
+                }
+            };
+
+            this.sms.send('89582736', 'Hello world!', options)
+                .then(res => console.log('Launched dialer!', res))
+                .catch(err => this.presentToast('Error launching dialer ' + err, false));
+        }).catch((err) => {
+            alert(JSON.stringify(err));
+        });
     }
 
     async mostrarCancha(cancha: Cancha) {

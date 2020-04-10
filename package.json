@@ -20,6 +20,7 @@
     "@angular/platform-browser": "~8.1.2",
     "@angular/platform-browser-dynamic": "~8.1.2",
     "@angular/router": "~8.1.2",
+    "@ionic-native/android-permissions": "^5.23.0",
     "@ionic-native/call-number": "^5.23.0",
     "@ionic-native/core": "^5.0.0",
     "@ionic-native/native-keyboard": "^5.22.0",
@@ -30,6 +31,7 @@
     "@ionic/storage": "^2.2.0",
     "call-number": "^1.0.1",
     "cordova-android": "8.1.0",
+    "cordova-plugin-android-permissions": "^1.0.2",
     "cordova-sms-plugin": "^1.0.0",
     "cordova-sqlite-storage": "^4.0.0",
     "core-js": "^2.5.4",
@@ -85,7 +87,8 @@
       "cordova-plugin-ionic-keyboard": {},
       "cordova-sqlite-storage": {},
       "cordova-sms-plugin": {},
-      "mx.ferreyra.callnumber": {}
+      "mx.ferreyra.callnumber": {},
+      "cordova-plugin-android-permissions": {}
     },
     "platforms": [
       "android"

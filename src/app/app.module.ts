@@ -8,6 +8,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { IonicStorageModule } from '@ionic/storage';
 import { SMS } from '@ionic-native/sms/ngx';
 import { CallNumber } from '@ionic-native/call-number/ngx';
+import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -61,6 +62,7 @@ firebase.initializeApp(environment.firebase);
     SplashScreen,
     SMS,
     CallNumber,
+    AndroidPermissions,
     AuthenticationService, AuthGuardService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     {provide: LocationStrategy, useClass: HashLocationStrategy}
