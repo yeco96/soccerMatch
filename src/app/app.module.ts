@@ -27,6 +27,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { MenuComponent } from './components/menu/menu.component';
 import { CrearRetoComponent } from './components/crear-reto/crear-reto.component';
+import { MostrarCanchaComponent } from './components/mostrar-cancha/mostrar-cancha.component';
 import { CrearCanchaComponent } from './pages/maintenance/canchaM/crear-cancha/crear-cancha.component';
 
 
@@ -43,12 +44,13 @@ import { OlvidoContraseniaComponent } from './components/olvido-contrasenia/olvi
 import {NgxMaskIonicModule} from 'ngx-mask-ionic'
 import {CrearReservaComponent} from "./components/crear-reserva/crear-reserva.component";
 import {HashLocationStrategy, LocationStrategy} from "@angular/common";
+import { CrearEquipoComponent } from './crear-equipo/crear-equipo.component';
 
 firebase.initializeApp(environment.firebase);
 
 @NgModule({
-  declarations: [AppComponent, MenuComponent, CrearRetoComponent, CrearReservaComponent, CrearCanchaComponent, FileSizeFormatPipe,OlvidoContraseniaComponent],
-  entryComponents: [MenuComponent, CrearRetoComponent, CrearReservaComponent, CrearCanchaComponent, OlvidoContraseniaComponent],
+  declarations: [AppComponent, MenuComponent, CrearRetoComponent, MostrarCanchaComponent, CrearReservaComponent, CrearCanchaComponent, FileSizeFormatPipe,OlvidoContraseniaComponent,CrearEquipoComponent],
+  entryComponents: [MenuComponent, CrearRetoComponent, MostrarCanchaComponent, CrearReservaComponent, CrearCanchaComponent, OlvidoContraseniaComponent,CrearEquipoComponent],
   imports: [BrowserModule, IonicModule.forRoot({ backButtonText: 'Atrás', scrollPadding: true, scrollAssist: false}), AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
     NgxMaskIonicModule.forRoot(),

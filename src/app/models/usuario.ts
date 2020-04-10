@@ -10,6 +10,7 @@ export class Usuario {
     telefono: [Telefono];
     contrasena: string;
     fechaNacimiento: any;
+    genero : string;
     mascaraAcceso: string;
     activo: boolean;
     tipoLogueo: number;

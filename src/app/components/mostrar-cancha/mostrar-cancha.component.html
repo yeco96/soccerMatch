@@ -1,0 +1,55 @@
+
+<ion-content class="ion-padding-top" >
+
+
+
+  <div class="ion-text-center">
+    <img [src]="cancha.imagen" alt="" style="width: 200px; height: 200px; border-radius: 50%">
+  </div>
+
+
+  <div class="ion-text-center">
+
+
+
+    <h1>{{cancha.nombre}}</h1>
+
+    <h4>{{cancha.direccion}}</h4>
+
+    <ion-item-divider>
+      <ion-label>
+      </ion-label>
+    </ion-item-divider>
+
+    <p>lacancha@hotmail.com</p>
+      <ion-row>
+        <ion-col size="6">
+          <ion-button fill="outline" color="light" (click)="llamar(cancha.telefono)">
+            <ion-icon color="primary" md="call-sharp"></ion-icon>
+          </ion-button>
+        </ion-col>
+        <ion-col size="6">
+          <ion-button fill="outline" color="light" (click)="mensaje(cancha.telefono)">
+            <ion-icon color="primary" md="mail-sharp"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+
+    <ion-row>
+      <ion-col size="6">
+        LLAMAR
+      </ion-col>
+      <ion-col size="6">
+       MENSAJE
+      </ion-col>
+    </ion-row>
+
+
+
+
+
+
+  </div>
+
+
+</ion-content>

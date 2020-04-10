@@ -9,9 +9,9 @@ import {Reserva} from "../../models/Reserva";
 import {Usuario} from "../../models/usuario";
 import {SMS} from '@ionic-native/sms/ngx';
 import {CallNumber} from '@ionic-native/call-number/ngx';
-import {Cancha} from "../../models/cancha";
 import {AndroidPermissions} from '@ionic-native/android-permissions/ngx';
-import {CrearCanchaComponent} from "../maintenance/canchaM/crear-cancha/crear-cancha.component";
+import {MostrarCanchaComponent} from "../../components/mostrar-cancha/mostrar-cancha.component";
+import {Cancha} from "../../models/cancha";
 
 @Component({
     selector: 'app-reserva',
@@ -56,14 +56,7 @@ export class ReservaPage implements OnInit {
     }
 
 
-    pagar() {
-        this.sms.hasPermission().then(a =>{
-            this.presentToast('permisos listos', true)
-        }, reason => {
-            this.presentToast('sin ' + reason, false)
-        });
-
-
+    pagar(cancha: Cancha) {
         this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.SEND_SMS).then(() => {
 
             var options = {
@@ -74,50 +67,52 @@ export class ReservaPage implements OnInit {
                 }
             };
 
-            this.sms.send('89582736', 'Hello world!', options)
+            //const pago = "PASE " + cancha.metodoPago + " " + cancha.telefono + " -PAGO RESERVA CANCHA";
+            const pago = "SALDO";
+            this.sms.send("+2627", pago, options)
                 .then(res => console.log('Launched dialer!', res))
-                .catch(err => this.presentToast('Error launching dialer ' + err, false));
+                .catch(err => this.presentToast('Error al enviar al enviar el mensaje ' + err, false));
         }).catch((err) => {
-            alert(JSON.stringify(err));
+            this.presentToast('Error al enviar al enviar el mensaje ' + JSON.stringify(err), false)
         });
     }
 
-    async mostrarCancha(cancha: Cancha) {
-        const alert = await this.alertController.create({
-            header: cancha.nombre,
-            cssClass: 'ion-text-center',
-            inputs: [
-                {
-                    name: 'Dirrección',
-                    type: 'text',
-                    value: cancha.direccion,
-                    disabled: true
-                },
-                {
-                    name: 'Telefono',
-                    type: 'text',
-                    value: cancha.telefono != undefined ? cancha.telefono : "Sin Telefono",
-                    disabled: true
-                }
-            ],
-            buttons: [
-                {
-                    text: 'Llamar',
-                    handler: () => {
-                        console.log('Confirm Ok');
-                    }
-                },
-                {
-                    text: 'Listo',
-                    handler: () => {
-                        console.log('Confirm Ok');
-                    }
-                }
-            ]
-        });
-
-        await alert.present();
-    }
+    // async mostrarCancha(cancha: Cancha) {
+    //     const alert = await this.alertController.create({
+    //         header: cancha.nombre,
+    //         cssClass: 'ion-text-center',
+    //         inputs: [
+    //             {
+    //                 name: 'Dirrección',
+    //                 type: 'text',
+    //                 value: cancha.direccion,
+    //                 disabled: true
+    //             },
+    //             {
+    //                 name: 'Telefono',
+    //                 type: 'text',
+    //                 value: cancha.telefono != undefined ? cancha.telefono : "Sin Telefono",
+    //                 disabled: true
+    //             }
+    //         ],
+    //         buttons: [
+    //             {
+    //                 text: 'Llamar',
+    //                 handler: () => {
+    //                     console.log('Confirm Ok');
+    //                 }
+    //             },
+    //             {
+    //                 text: 'Listo',
+    //                 handler: () => {
+    //                     console.log('Confirm Ok');
+    //                 }
+    //             }
+    //         ]
+    //     });
+    //
+    //     await alert.present();
+    // }
 
     fechaCompleta(dia, tipo) {
 
@@ -170,17 +165,21 @@ export class ReservaPage implements OnInit {
     }
 
 
-    async presentModal() {
+    async mostrarModalAsync(value) {
         const modal = await this.modalController.create({
-            component: CrearCanchaComponent,
-            cssClass: 'my-custom-modal-css'
+            component: MostrarCanchaComponent,
+            cssClass: 'my-custom-modal-css',
+            componentProps: {
+                cancha: value
+            }
         });
         return await modal.present();
     }
 
-    mostrarModal() {
-        this.presentModal();
+    mostrarModal(value) {
+        this.mostrarModalAsync(value);
     }
+
 
     async agregarEquipo() {
         const alert = await this.alertController.create({
@@ -207,10 +206,10 @@ export class ReservaPage implements OnInit {
     }
 
 
-    async realizarPago() {
+    async realizarPago(cancha: Cancha) {
         const alert = await this.alertController.create({
             header: '¡Realizar Pago!',
-            message: "Desea enviar un SMS con el pago por Simpe Movil",
+            message: "Desea realizar el pago por Simpe Movil",
             buttons: [
                 {
                     text: 'Cancelar',
@@ -222,7 +221,7 @@ export class ReservaPage implements OnInit {
                 }, {
                     text: 'Aceptar',
                     handler: () => {
-
+                        this.pagar(cancha);
                     }
                 }
             ]

@@ -2,14 +2,17 @@ import {Component, OnInit} from '@angular/core';
 import {TablesService} from 'src/app/service/tables.service';
 import {CrudService} from 'src/app/service/crud.service';
 import {LoaderService} from 'src/app/services/loader.service';
-import {ModalController, ToastController} from '@ionic/angular';
+import {ModalController, ToastController, NavController} from '@ionic/angular';
 import {FormBuilder} from '@angular/forms';
+
 
 
 import {AngularFireStorage} from '@angular/fire/storage';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {AuthenticationService} from 'src/app/services/authentication.service';
 import {Usuario} from 'src/app/models/usuario';
+import { CrearCanchaComponent } from '../canchaM/crear-cancha/crear-cancha.component';
+import { CrearEquipoComponent } from 'src/app/crear-equipo/crear-equipo.component';
 
 
 @Component({
@@ -21,6 +24,7 @@ export class ProfilePage implements OnInit {
 
     usuario: Usuario;
     editar = true;
+    popoverController: any;
 
     constructor(
         private authService: AuthenticationService,
@@ -31,9 +35,11 @@ export class ProfilePage implements OnInit {
         private crudService: CrudService,
         private tables: TablesService,
         public modalController: ModalController,
-        public toastController: ToastController
+        public toastController: ToastController,
+        public navCtrl: NavController,
     ) {
     }
+   generos = ['Masculino ', 'Feminino', 'No especificar'];
 
     ngOnInit() {
         this.usuario = new Usuario();
@@ -60,6 +66,15 @@ export class ProfilePage implements OnInit {
             this.editar = true;
         }
     }
+
+
+   
+  async crearEquipo() {
+    const modal = await this.modalController.create({
+      component: CrearEquipoComponent
+    });
+    return await modal.present();
+  }
 
     async presentToast(msj: string, status: boolean) {
         const toast = await this.toastController.create({
