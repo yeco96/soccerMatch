@@ -11,7 +11,7 @@ export class Usuario {
     contrasena: string;
     fechaNacimiento: any;
     mascaraAcceso: string;
-    inactivo: boolean;
+    activo: boolean;
     tipoLogueo: number;
     imagen: string;
     estado: boolean;

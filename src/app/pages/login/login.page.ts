@@ -6,6 +6,7 @@ import { AuthenticationService } from '../../services/authentication.service';
 import { LoaderService } from '../../services/loader.service';
 import { ModalController } from '@ionic/angular';
 import { OlvidoContraseniaComponent } from 'src/app/components/olvido-contrasenia/olvido-contrasenia.component';
+import { Usuario } from 'src/app/models/usuario';
 
 @Component({
   selector: 'app-login',
@@ -64,15 +65,35 @@ export class LoginPage implements OnInit {
     this.authService.loginUser(value)
     .then(res => {
       console.log(res);
-      this.errorMessage = '';
+      this.authService.getDataUser().then((value: Usuario) => {
+        if(value.activo){
+                this.errorMessage = '';
       this.navCtrl.navigateForward('/home');
       this.loader.hideLoader();
+
+        }else{
+          this.logout();
+          this.errorMessage = 'Usuario se encuentra inactivo';
+        }
+      })
+
     }, err => {
       this.errorMessage = err.message;
       this.loader.hideLoader();
     });
   }
 
+  logout() {
+    this.authService.logoutUser()
+    .then(res => {
+      console.log(res);
+      this.navCtrl.navigateForward('/login');
+      this.loader.hideLoader();
+    }, err => {
+      this.loader.hideLoader();
+    });
+  }
+  
   goToRegisterPage() {
     this.navCtrl.navigateForward('/register');
   }

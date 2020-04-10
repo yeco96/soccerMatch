@@ -27,6 +27,7 @@ export class AuthenticationService {
         this.ifLoggedIn();
       });
     }
+ 
 
   ifLoggedIn() {
     this.storage.get('uid').then((val) => {
