@@ -8,16 +8,13 @@
  * For more information on global stylesheets, visit the documentation:
  * https://ionicframework.com/docs/layout/global-stylesheets
  */
-
 /* Core CSS required for Ionic components to work properly */
 @import "~@ionic/angular/css/core.css";
-
 /* Basic CSS for apps built with Ionic */
 @import "~@ionic/angular/css/normalize.css";
 @import "~@ionic/angular/css/structure.css";
 @import "~@ionic/angular/css/typography.css";
 @import '~@ionic/angular/css/display.css';
-
 /* Optional CSS utils that can be commented out */
 @import "~@ionic/angular/css/padding.css";
 @import "~@ionic/angular/css/float-elements.css";
@@ -26,19 +23,12 @@
 @import "~@ionic/angular/css/flex-utils.css";
 
 
-.scroll-content
-{
+.scroll-content {
   padding-bottom: 0 !important;
 }
 
-.modal80 {
+.my-custom-modal-css .modal-wrapper {
   height: 80%;
   width: 80%;
 }
-
-//div.modal-wrapper.md.sc-ion-modal-md {
-//  height: 80%;
-//  width: 80%;
-//}
-
 
