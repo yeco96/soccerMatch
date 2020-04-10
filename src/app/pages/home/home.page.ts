@@ -17,11 +17,12 @@ export class HomePage implements OnInit {
   ngOnInit() {
   }
 
-  async settingsPopover() {
+  async settingsPopover(ev: any) {
     const popover = await this.popoverController.create({
       component: MenuComponent,
-      componentProps: { page: 'home' },
-      cssClass: 'popover_class',
+      event: ev,
+      animated: true,
+      translucent: true
     });
     return await popover.present();
   }
