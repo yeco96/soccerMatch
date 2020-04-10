@@ -3,6 +3,7 @@ import { PopoverController, NavParams, NavController } from '@ionic/angular';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { LoaderService } from 'src/app/services/loader.service';
 import { ProfilePage } from 'src/app/pages/maintenance/profile/profile.page';
+import {Usuario} from "../../models/usuario";
 
 
 @Component({
@@ -12,6 +13,7 @@ import { ProfilePage } from 'src/app/pages/maintenance/profile/profile.page';
 })
 export class MenuComponent implements OnInit {
   page;
+  usuario: Usuario;
 
   constructor(
     private navParams: NavParams,
@@ -23,9 +25,13 @@ export class MenuComponent implements OnInit {
 
   ngOnInit() {
     this.page = this.navParams.get('data');
+    this.usuario = new Usuario();
+    this.authService.getDataUser().then(res => {
+      this.usuario = res;
+    });
   }
 
-  wifiSetting() {
+  perfil() {
     this.navCtrl.navigateForward('/profile');
     this.popoverController.dismiss();
   }
