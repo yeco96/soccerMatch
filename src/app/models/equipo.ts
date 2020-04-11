@@ -1,3 +1,5 @@
+import {Usuario} from "./usuario";
+
 export class Equipo {
     id: string;
     nombre: string;
@@ -6,13 +8,11 @@ export class Equipo {
     imagen: string;
     creacion: string;
     lider: string;
-    a: string;
-    b: string;
+    jugardores: Array<Jugador>;
 
 constructor() {
 
 }
-
 
 static isNULL(obj: Equipo) {
     if (Equipo.null(obj.nombre)
@@ -81,6 +81,13 @@ filepath: string;
 size: number;
 }
 
+
+export class Jugador {
+    usuario: Usuario;
+    miembro: boolean;
+    estado: string;
+    lider: boolean;
+}
 
 
 

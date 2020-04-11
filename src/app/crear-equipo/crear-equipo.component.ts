@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {TablesService} from 'src/app/service/tables.service';
 import {CrudService} from 'src/app/service/crud.service';
 import {LoaderService} from 'src/app/services/loader.service';
-import {ModalController, ToastController} from '@ionic/angular';
+import {AlertController, ModalController, ToastController} from '@ionic/angular';
 import {MyData} from 'src/app/models/equipo';
 import {AngularFireStorage, AngularFireUploadTask} from '@angular/fire/storage';
 import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
@@ -50,7 +50,8 @@ export class CrearEquipoComponent implements OnInit {
         private storage: AngularFireStorage,
         private database: AngularFirestore,
         public toastController: ToastController,
-        public  authService: AuthenticationService
+        public  authService: AuthenticationService,
+        public alertController: AlertController
     ) {
         this.isUploading = false;
         this.isUploaded = false;
@@ -68,6 +69,10 @@ export class CrearEquipoComponent implements OnInit {
     obj: Equipo;
     esLiber: boolean;
     tieneEquipo: boolean;
+
+    listaEquipos = new Array<Equipo>();
+    listaEquiposTemp = new Array<Equipo>();
+    listaEquiposMostrar = new Array<Equipo>();
 
     ngOnInit() {
         this.equipoObjeto = new Equipo();
@@ -87,8 +92,8 @@ export class CrearEquipoComponent implements OnInit {
             }
 
             this.crudService.read(this.tables.tablas().EQUIPO).subscribe(data => {
-                const equipo = this.crudService.construir(data) as Array<Equipo>;
-                this.equipoObjeto = equipo.filter(x => {
+                this.listaEquipos = this.crudService.construir(data) as Array<Equipo>;
+                this.equipoObjeto = this.listaEquipos.filter(x => {
                     return x.id === this.usuario.liderEquipo;
                 })[0];
                 this.esLiber = true;
@@ -101,13 +106,62 @@ export class CrearEquipoComponent implements OnInit {
         });
     }
 
+    mostrarEquipos() {
+
+    }
+
     cerrarModal() {
         this.actualizar = false;
         this.modalController.dismiss();
     }
 
+    async enviarSolicitud(equipo: Equipo) {
 
-    crearEquipo() {
+
+        if (equipo.jugardores) {
+            const validar = equipo.jugardores.filter(x => x.usuario.uid == this.usuario.uid);
+            if (validar.length > 0) {
+                return this.presentToast('Ya existe una solicitud al equipo', false);
+            }
+        }
+
+
+        const alert = await this.alertController.create({
+            header: 'Enviar solicitud',
+            message: "¿Desea solicitar ingresar al equipo?",
+            buttons: [
+                {
+                    text: 'Cancelar',
+                    role: 'cancel',
+                    cssClass: 'cancelar',
+                    handler: () => {
+
+                    }
+                }, {
+                    text: 'Aceptar',
+                    handler: () => {
+                        if (equipo.jugardores == undefined) {
+                            equipo.jugardores = [];
+                        }
+                        equipo.jugardores.push({usuario: this.usuario, miembro: false, estado: 'PENDIENTE'});
+                        this.loader.showLoader();
+                        this.crudService.update(this.tables.tablas().EQUIPO, equipo).then(resp => {
+                            this.presentToast('Solicitud enviada', true);
+                            this.loader.hideLoader();
+                        }).catch(error => {
+                            this.presentToast('Ocurrio un error al actualizar  EL EQUIPO', false);
+                            this.loader.hideLoader();
+                        });
+                    }
+                }
+            ]
+        });
+
+        await alert.present();
+    }
+
+
+    async crearEquipo() {
 
         const result = Equipo.validar(this.equipoObjeto);
 
@@ -115,8 +169,8 @@ export class CrearEquipoComponent implements OnInit {
             return this.presentToast(result, false);
         }
 
-        this.loader.showLoader();
         if (this.actualizar) {
+            this.loader.showLoader();
             this.crudService.update(this.tables.tablas().EQUIPO, this.equipoObjeto).then(resp => {
                 this.loader.hideLoader();
             }).catch(error => {
@@ -126,21 +180,58 @@ export class CrearEquipoComponent implements OnInit {
             return;
         }
 
-        this.crudService.create(this.tables.tablas().EQUIPO, this.equipoObjeto).then(resp => {
-            this.usuario.liderEquipo = resp.id;
-            this.crudService.update(this.tables.tablas().USUARIO, this.usuario).then(resp => {
-                this.loader.hideLoader();
-                this.obtenerDatos();
-                this.presentToast('Usuario guardado correctamente', true);
-            }).catch(error => {
-                this.presentToast('Ocurrio un error al actualizar el usuario', false);
-                this.loader.hideLoader();
-            });
-        }).catch(error => {
-            this.presentToast('Ocurrio un error al crear EL EQUIPO', false);
-            this.loader.hideLoader();
+
+        const alert = await this.alertController.create({
+            header: 'Crear un equipo',
+            message: "¿Desea crear un equipo?",
+            buttons: [
+                {
+                    text: 'Cancelar',
+                    role: 'cancel',
+                    cssClass: 'cancelar',
+                    handler: () => {
+
+                    }
+                }, {
+                    text: 'Aceptar',
+                    handler: () => {
+                        this.loader.showLoader();
+                        this.crudService.create(this.tables.tablas().EQUIPO, this.equipoObjeto).then(resp => {
+                            this.usuario.liderEquipo = resp.id;
+                            this.crudService.update(this.tables.tablas().USUARIO, this.usuario).then(resp => {
+                                this.loader.hideLoader();
+                                this.obtenerDatos();
+                                this.listaEquiposMostrar = [];
+                                this.presentToast('Usuario guardado correctamente', true);
+                            }).catch(error => {
+                                this.presentToast('Ocurrio un error al actualizar el usuario', false);
+                                this.loader.hideLoader();
+                            });
+                        }).catch(error => {
+                            this.presentToast('Ocurrio un error al crear EL EQUIPO', false);
+                            this.loader.hideLoader();
+                        });
+
+                    }
+                }
+            ]
         });
 
+        await alert.present();
+    }
+
+    buscarEquipos() {
+        const result = Equipo.validar(this.equipoObjeto);
+        if (result) {
+            return this.presentToast(result, false);
+        }
+        this.loader.showLoader();
+        this.crudService.read(this.tables.tablas().EQUIPO).subscribe(data => {
+            this.listaEquiposMostrar = this.crudService.construir(data) as Array<Equipo>;
+            this.listaEquiposTemp = this.listaEquiposMostrar;
+            this.listaEquiposMostrar = this.listaEquiposMostrar.filter(x => x.nombre.toLowerCase().includes(this.equipoObjeto.nombre.toLowerCase()));
+            this.loader.hideLoader();
+        }, error1 => this.loader.hideLoader());
     }
 
 
