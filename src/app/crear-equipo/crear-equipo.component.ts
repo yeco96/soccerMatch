@@ -38,6 +38,8 @@ export class CrearEquipoComponent implements OnInit {
     isUploading: boolean;
     isUploaded: boolean;
 
+    tab: string;
+
     private imageCollection: AngularFirestoreCollection<MyData>;
 
     constructor(
@@ -55,6 +57,7 @@ export class CrearEquipoComponent implements OnInit {
         // Set collection where our documents/ images info will save
         this.imageCollection = database.collection<MyData>('imagenesCancha');
         this.images = this.imageCollection.valueChanges();
+        this.tab = 'INFO';
     }
 
 

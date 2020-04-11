@@ -7,7 +7,7 @@
             </ion-button>
         </ion-buttons>
         <ion-buttons slot="end" *ngIf="tieneEquipo">
-            <ion-button (click)="editarEquipo()" >
+            <ion-button (click)="editarEquipo()">
                 <ion-icon *ngIf="editar" style="font-size: 25px;" md="save-sharp"></ion-icon>
                 <ion-icon *ngIf="!editar" style="font-size: 25px;" md="create-sharp"></ion-icon>
             </ion-button>
@@ -30,28 +30,69 @@
             <div *ngIf="!tieneEquipo">
                 <p class="ion-no-margin ion-text-center">NOMBRE EQUIPO</p>
                 <ion-item>
-                    <ion-input type="text" class="ion-text-center" [(ngModel)]="equipoObjeto.nombre" required></ion-input>
+                    <ion-input type="text" class="ion-text-center" [(ngModel)]="equipoObjeto.nombre"
+                               required></ion-input>
                 </ion-item>
             </div>
             <div *ngIf="editar">
                 <p class="ion-no-margin ion-text-center">NOMBRE EQUIPO</p>
                 <ion-item>
                     <ion-label position="floating"></ion-label>
-                    <ion-input type="text" class="ion-text-center" [(ngModel)]="equipoObjeto.nombre" required></ion-input>
+                    <ion-input type="text" class="ion-text-center" [(ngModel)]="equipoObjeto.nombre"
+                               required></ion-input>
                 </ion-item>
                 <p class="ion-no-margin ion-text-center">DESCRIPCIÓN</p>
                 <ion-item>
                     <ion-label position="floating"></ion-label>
-                    <ion-input type="text" class="ion-text-center" [(ngModel)]="equipoObjeto.descripcion" required></ion-input>
+                    <ion-input type="text" class="ion-text-center" [(ngModel)]="equipoObjeto.descripcion"
+                               required></ion-input>
                 </ion-item>
             </div>
         </ion-card-content>
     </ion-card>
 
-
-
     <ion-button *ngIf="!tieneEquipo" class="ion-padding" expand="block" color="secondary" (click)="crearEquipo()">
         Crear Equipo
     </ion-button>
+
+
+    <div *ngIf="!editar && tieneEquipo">
+
+        <div class="tab">
+            <button [ngClass]="tab == 'INFO' ? 'active' : ''" (click)="tab = 'INFO'">Información</button>
+            <button [ngClass]="tab == 'JUGADOR' ? 'active' : ''" (click)="tab = 'JUGADOR'">Jugadores</button>
+            <button [ngClass]="tab == 'HISTORIAL' ? 'active' : ''" (click)="tab = 'HISTORIAL'">Historial</button>
+        </div>
+
+        <div class="ion-text-center ion-padding">
+            <div *ngIf="tab == 'INFO'">
+                INFO
+            </div>
+
+            <div *ngIf="tab == 'JUGADOR'">
+                JUGADOR
+
+                <ion-fab horizontal="end" vertical="bottom" slot="fixed">
+                    <ion-fab-button color="secondary" class="">
+                        <ion-icon md="share-social-sharp"></ion-icon>
+                    </ion-fab-button>
+                    <ion-fab-list side="top">
+                        <ion-fab-button color="primary" data-desc="SMS">
+                            <ion-icon md="mail-sharp"></ion-icon>
+                        </ion-fab-button>
+                        <ion-fab-button color="primary" data-desc="Whatsapp">
+                            <ion-icon md="logo-whatsapp"></ion-icon>
+                        </ion-fab-button>
+                    </ion-fab-list>
+                </ion-fab>
+
+            </div>
+
+            <div *ngIf="tab == 'HISTORIAL'">
+                HISTORIAL
+            </div>
+        </div>
+
+    </div>
 
 </ion-content>
