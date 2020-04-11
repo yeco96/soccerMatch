@@ -75,7 +75,7 @@ export class Cancha {
             return "Debe ingresar una dirección valida";
         }
 
-        if (Cancha.null(obj.telefono) || Cancha.size(obj.telefono.length) || obj.telefono.length <9 ) {
+        if ((Cancha.null(obj.telefono)) || (Cancha.size(obj.telefono.toString().length)) || (obj.telefono.toString().length <9) ) {
             return "Debe ingresar un telefono valido";
         }
 
@@ -102,8 +102,8 @@ export class Cancha {
         if(Cancha.null(obj.correo) || Cancha.validarEmail(obj.correo)){
             return "Debe ingresar correo electronico valido"
         }
-        if(( (obj.metodoPago.tipo="SINPE") || (obj.metodoPago.tipo='AMBOS')) && Cancha.null(obj.telefonoSinpe) || (obj.telefonoSinpe.length) <9){
-            return "Debe ingresar numero sinpe";
+        if(( (obj.metodoPago.tipo=="SINPE") || (obj.metodoPago.tipo=='AMBOS')) && ((Cancha.null(obj.telefonoSinpe)) || (obj.telefonoSinpe.toString().length <9)) ){
+            return "Debe ingresar numero sinpe valido";
         }
         return false;
     }
