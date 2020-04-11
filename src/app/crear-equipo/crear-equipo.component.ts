@@ -143,7 +143,7 @@ export class CrearEquipoComponent implements OnInit {
                         if (equipo.jugardores == undefined) {
                             equipo.jugardores = [];
                         }
-                        equipo.jugardores.push({usuario: this.usuario, miembro: false, estado: 'PENDIENTE'});
+                        equipo.jugardores.push({usuario: this.usuario, miembro: false, estado: 'PENDIENTE', lider: false});
                         this.loader.showLoader();
                         this.crudService.update(this.tables.tablas().EQUIPO, equipo).then(resp => {
                             this.presentToast('Solicitud enviada', true);
@@ -196,6 +196,7 @@ export class CrearEquipoComponent implements OnInit {
                     text: 'Aceptar',
                     handler: () => {
                         this.loader.showLoader();
+                        this.equipoObjeto.jugardores.push({usuario: this.usuario, miembro: false, estado: 'PENDIENTE', lider: true});
                         this.crudService.create(this.tables.tablas().EQUIPO, this.equipoObjeto).then(resp => {
                             this.usuario.liderEquipo = resp.id;
                             this.crudService.update(this.tables.tablas().USUARIO, this.usuario).then(resp => {
