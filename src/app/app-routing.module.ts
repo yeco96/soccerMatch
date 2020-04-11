@@ -51,6 +51,11 @@ const routes: Routes = [
   {
     path: 'reserva',
     loadChildren: () => import('./pages/reserva/reserva.module').then(m => m.ReservaPageModule)
+  },
+  {
+    path: 'equipos',
+    loadChildren: () => import('./pages/maintenance/equipos/equipos.module').then( m => m.EquiposPageModule),
+    canActivate: [AuthGuardService]
   }
 
 

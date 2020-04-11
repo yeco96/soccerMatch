@@ -3,13 +3,14 @@
 
     <ion-list-header  class="ion-text-start">
     <span *ngIf="usuario.nombre"> {{(usuario.nombre + ' ' + usuario.apellidos).toUpperCase()}} </span>
+      <span *ngIf="!usuario.nombre"> USUARIO </span>
     </ion-list-header>
 
     <ion-item button (click)="perfil()">
       <ion-icon slot="start" md="person-sharp"></ion-icon>
       Perfil
     </ion-item>
-    <ion-item button>
+    <ion-item button  (click)="equipo()">
       <ion-icon slot="start" md="football-sharp"></ion-icon>
       Equipo
     </ion-item>

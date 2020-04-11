@@ -20,6 +20,10 @@ import { Equipo } from '../models/equipo';
   styleUrls: ['./crear-equipo.component.scss'],
 })
 export class CrearEquipoComponent implements OnInit {
+    equipo:Equipo;
+    editar=true;
+    popoverController: any;
+
  // Upload Task
  task: AngularFireUploadTask;
  // Progress in percentage
@@ -38,7 +42,7 @@ export class CrearEquipoComponent implements OnInit {
  isUploaded: boolean;
 
  private imageCollection: AngularFirestoreCollection<MyData>;
-
+ 
  constructor(
      private tables: TablesService,
      private crudService: CrudService,
@@ -55,7 +59,7 @@ export class CrearEquipoComponent implements OnInit {
      this.images = this.imageCollection.valueChanges();
  }
 
-
+ 
  actualizar: boolean;
  equipos = new Array<Equipo>();
  equipoObjeto: Equipo;
@@ -74,7 +78,7 @@ cerrarModal() {
 }
 
 
-guardar() {
+crearEquipo() {
 
   const result = Equipo.validar(this.equipoObjeto);
 
@@ -88,7 +92,7 @@ guardar() {
           this.loader.hideLoader();
           this.cerrarModal();
       }).catch(error => {
-          this.presentToast('Ocurrio un error al actualizar la EL EQUIPO', false);
+          this.presentToast('Ocurrio un error al actualizar  EL EQUIPO', false);
           this.loader.hideLoader();
       });
       return;
@@ -176,6 +180,24 @@ addImagetoDB(image: MyData) {
   }).catch(error => {
       console.log('error ' + error);
   });
+}
+
+editarEquipo() {
+    if (this.editar) {
+        this.editar = false;
+        return;
+    }
+    if (!this.editar) {
+        this.crudService.update(this.tables.tablas().EQUIPO, this.equipos).then(resp => {
+            this.loader.hideLoader();
+            this.presentToast('Equipo guardado correctamente', true);
+        }).catch(error => {
+            this.presentToast('Ocurrio un error al actualizar el EQUIPO', false);
+            this.loader.hideLoader();
+        });
+
+        this.editar = true;
+    }
 }
 
 async presentToast(msj: string, status: boolean) {

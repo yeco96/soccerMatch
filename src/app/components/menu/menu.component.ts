@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { PopoverController, NavParams, NavController } from '@ionic/angular';
+import { PopoverController, NavParams, NavController, ModalController } from '@ionic/angular';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { LoaderService } from 'src/app/services/loader.service';
 import { ProfilePage } from 'src/app/pages/maintenance/profile/profile.page';
 import {Usuario} from "../../models/usuario";
+import { CrearEquipoComponent } from 'src/app/crear-equipo/crear-equipo.component';
 
 
 @Component({
@@ -14,13 +15,14 @@ import {Usuario} from "../../models/usuario";
 export class MenuComponent implements OnInit {
   page;
   usuario: Usuario;
-
+  
   constructor(
     private navParams: NavParams,
     private popoverController: PopoverController,
     private authService: AuthenticationService,
     private loader: LoaderService,
     private navCtrl: NavController,
+    public  modalController: ModalController,
   ) { }
 
   ngOnInit() {
@@ -35,6 +37,15 @@ export class MenuComponent implements OnInit {
     this.navCtrl.navigateForward('/profile');
     this.popoverController.dismiss();
   }
+
+  async equipo () {
+    const modal = await this.modalController.create({
+        component: CrearEquipoComponent
+    });
+    this.popoverController.dismiss();
+    return await modal.present();
+}
+
 
   logout() {
     this.loader.showLoader();

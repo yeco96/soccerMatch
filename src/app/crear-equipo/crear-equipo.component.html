@@ -69,7 +69,7 @@
   <ion-card>
 
       <ion-card-content>
-          <form class="form" (ngSubmit)="guardar()">
+          <form class="form">
 
               <ion-item>
                   <ion-label position="floating">Nombre del Equipo</ion-label>
@@ -86,11 +86,15 @@
               <ion-input name="telefono1" [(ngModel)]="equipoObjeto.telefono" required type="number"></ion-input>
           </ion-item>
 
-          <ion-button *ngIf="actualizar" (click)="elimiar()" class="ion-padding" expand="block" color="danger">
-              Cancelar
+          <ion-button class="ion-padding" expand="block" color="secondary" (click)="crearEquipo()">
+            {{editar ? 'Crear Equipo' : 'Editar Equipo'}}
           </ion-button>
+
+          <ion-button class="ion-padding" expand="block" color="secondary" (click)="editarEquipo()">
+            {{editar ? 'Editar Equipo' : 'GUARDAR'}}
+          </ion-button>
+
           </form>
       </ion-card-content>
   </ion-card>
 </ion-content>
- 
