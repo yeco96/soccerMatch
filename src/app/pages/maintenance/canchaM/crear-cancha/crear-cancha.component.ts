@@ -84,7 +84,7 @@ export class CrearCanchaComponent implements OnInit {
     canchaObjeto: Cancha;
     dias = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo'];
     noticia = new Noticias();
-
+    canchasTemp:Cancha;
 
 
     obj: Cancha;
@@ -95,6 +95,7 @@ export class CrearCanchaComponent implements OnInit {
         this.canchaObjeto.telefono = "";
         this.canchaObjeto.ubicacion = new UbicacionCancha();
         this.canchaObjeto.horario = new Horario();
+        
 
         this.validations_form = this.formBuilder.group({
             telefono: new FormControl('', Validators.compose([
@@ -113,8 +114,10 @@ export class CrearCanchaComponent implements OnInit {
         this.crudService.read(this.tables.ubicacion().UBICACION).subscribe(data => {
             this.ubicacion = this.crudService.construir(data) as Array<Ubicacion>;
             this.ubicacionJSON = JSON.parse(JSON.stringify(this.ubicacion));
-            if (this.obj) {
-                this.canchaObjeto = this.obj;
+            if (this.obj) { 
+                
+                this.canchaObjeto = this.obj;               
+                this.canchasTemp = Object.assign({}, this.canchaObjeto);
                 this.actualizar = true;
             }
             this.loader.hideLoader();
@@ -143,7 +146,14 @@ export class CrearCanchaComponent implements OnInit {
 
         this.loader.showLoader();
         if (this.actualizar) {
-            this.crudService.update(this.tables.tablas().CANCHAS, this.canchaObjeto).then(resp => {
+            this.noticia=new Noticias();
+            if(this.canchaObjeto.montoEquipo!=this.canchasTemp.montoEquipo){
+                this.noticia.descripcion='Cambio el monto de la cancha';            
+                this.noticia.fecha= this.formattedDate();
+                this.noticia.tipo='Cancha'
+            } 
+            this.crudService.update(this.tables.tablas().CANCHAS, this.canchaObjeto, this.noticia.descripcion?this.noticia:undefined).then(resp => {
+ 
                 this.loader.hideLoader();
                 this.cerrarModal();
             }).catch(error => {
@@ -263,8 +273,8 @@ export class CrearCanchaComponent implements OnInit {
         const toast = await this.toastController.create({
             message: msj,
             duration: 2000,
-            position: 'bottom',
-            color: !status ? 'danger' : 'success'
+            position: 'top',
+            color: !status ? 'danger' : 'primary'
         });
         toast.present();
     }

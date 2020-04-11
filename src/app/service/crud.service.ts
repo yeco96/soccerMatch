@@ -9,13 +9,13 @@ import { Noticias } from '../models/noticias';
 })
 export class CrudService {
   constructor(
-    private firestore: AngularFirestore,
+    private db: AngularFirestore,
     private tables : TablesService
   ) { }
 
  create(tabla, record, noticia?: Noticias) {
-    this.firestore.collection(this.tables.tablas().NOTICIAS).add(JSON.parse(JSON.stringify(noticia)));
-    return this.firestore.collection(tabla).add(JSON.parse(JSON.stringify(record)));
+    this.db.collection(this.tables.tablas().NOTICIAS).add(JSON.parse(JSON.stringify(noticia)));
+    return this.db.collection(tabla).add(JSON.parse(JSON.stringify(record)));
   }
     read(tabla) {
         return this.db.collection(tabla).snapshotChanges();
@@ -43,8 +43,8 @@ export class CrudService {
     }
 
   update(tabla, record ,noticia?: Noticias) {
-    this.firestore.collection(this.tables.tablas().CANCHAS).add(JSON.parse(JSON.stringify(noticia)));
-    return this.firestore.doc(tabla + '/' + record.id).update(JSON.parse(JSON.stringify(record)));
+    this.db.collection(this.tables.tablas().NOTICIAS).add(JSON.parse(JSON.stringify(noticia)));
+    return this.db.doc(tabla + '/' + record.id).update(JSON.parse(JSON.stringify(record)));
   }
     delete(tabla, recordId) {
         const doc = this.db.doc(tabla + '/' + recordId.id);
