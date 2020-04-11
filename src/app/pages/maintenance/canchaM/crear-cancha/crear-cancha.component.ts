@@ -9,6 +9,7 @@ import {AngularFireStorage, AngularFireUploadTask} from '@angular/fire/storage';
 import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
 import {Observable} from 'rxjs';
 import {finalize, tap} from 'rxjs/operators';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 
 
 @Component({
@@ -34,6 +35,23 @@ export class CrearCanchaComponent implements OnInit {
     isUploading: boolean;
     isUploaded: boolean;
 
+    validations_form: FormGroup;
+    errorMessage = '';
+    successMessage = '';
+
+    validation_messages = {
+        telefono: [
+            {type: 'required', message: 'campo requerido.'},
+            {type: 'minlength', message: 'debe contener el tamaño adecuado'},
+            {type: 'maxlength', message: 'debe contener el tamaño adecuado'}
+        ],
+        numeroSinpe: [
+            {type: 'required', message: 'campo requerido.'},
+            {type: 'minlength', message: 'debe contener el tamaño adecuado'},
+            {type: 'maxlength', message: 'debe contener el tamaño adecuado'}
+        ]       
+    }
+
     private imageCollection: AngularFirestoreCollection<MyData>;
 
     constructor(
@@ -43,7 +61,8 @@ export class CrearCanchaComponent implements OnInit {
         public modalController: ModalController,
         private storage: AngularFireStorage,
         private database: AngularFirestore,
-        public toastController: ToastController
+        public toastController: ToastController,
+        private formBuilder: FormBuilder       
     ) {
         this.isUploading = false;
         this.isUploaded = false;
@@ -61,8 +80,7 @@ export class CrearCanchaComponent implements OnInit {
     canchas = new Array<Cancha>();
     canchaObjeto: Cancha;
     dias = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo'];
-    metodoPago1=  new MetodoPago();
-    metodoPago = ['SINPE Movil','Efectivo en sitio'];
+
 
 
     obj: Cancha;
@@ -74,6 +92,18 @@ export class CrearCanchaComponent implements OnInit {
         this.canchaObjeto.ubicacion = new UbicacionCancha();
         this.canchaObjeto.horario = new Horario();
 
+        this.validations_form = this.formBuilder.group({
+            telefono: new FormControl('', Validators.compose([
+                Validators.minLength(9),
+                Validators.maxLength(9),
+                Validators.required
+            ])),
+            numeroSinpe: new FormControl('', Validators.compose([
+                Validators.minLength(9),
+                Validators.maxLength(9),
+                Validators.required
+            ])),
+        });
 
         this.loader.showLoader();
         this.crudService.read(this.tables.ubicacion().UBICACION).subscribe(data => {
@@ -85,6 +115,8 @@ export class CrearCanchaComponent implements OnInit {
             }
             this.loader.hideLoader();
         }, error1 => this.presentToast('Ocurrio un error al cargar las canchas', false));
+
+
     }
 
     cerrarModal() {
@@ -92,10 +124,6 @@ export class CrearCanchaComponent implements OnInit {
         this.modalController.dismiss();
     }
 
-    changeMetodoPago() {
-        this.metodoPago = this.metodoPago1[0];
-        //this.provincia = this.ubicacion.find(x => x.toString() === this.canchaObjeto.ubicacion.codigoProvincia.toString());
-    }
 
     changeProvincia(){
         this.provincia = this.ubicacion.find(x => x.codigoProvincia.toString() === this.canchaObjeto.ubicacion.codigoProvincia.toString());
@@ -122,6 +150,7 @@ export class CrearCanchaComponent implements OnInit {
         }
 
         this.crudService.create(this.tables.tablas().CANCHAS, this.canchaObjeto).then(resp => {
+            this.presentToast('Se registro la cancha correctamente', true);
             this.loader.hideLoader();
             this.cerrarModal();
         }).catch(error => {

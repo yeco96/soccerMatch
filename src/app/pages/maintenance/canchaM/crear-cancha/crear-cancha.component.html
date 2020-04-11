@@ -112,18 +112,33 @@
                 <ion-item>
                     <ion-label position="floating">Método de Pago</ion-label>
                     <ion-select name="metodoPago" [(ngModel)]="canchaObjeto.metodoPago.tipo" required
-                                (ionChange)="changeMetodoPago()"
+                                
                                 interface="action-sheet" cancelText="Cancelar" doneText="Aceptar">
-                                <ion-select-option value="SINPE Movil">SINPE Movil</ion-select-option>
-                                <ion-select-option value="Efecivo en sitio">Efectivo en sitio</ion-select-option>
-                                <ion-select-option value="Ambos">Ambos</ion-select-option>
+                                <ion-select-option value="SINPE">SINPE Movil</ion-select-option>
+                                <ion-select-option value="EFECTIVO">Efectivo en sitio</ion-select-option>
+                                <ion-select-option value="AMBOS">Ambos</ion-select-option>
                     </ion-select>
                 </ion-item>
 
 
+                <ion-item *ngIf="canchaObjeto.metodoPago.tipo != null && canchaObjeto.metodoPago.tipo != 'EFECTIVO' ">
+                    <ion-label position="floating">Numero sinpe</ion-label>
+                    <ion-input name="telefonoSinpe" [(ngModel)]="canchaObjeto.telefonoSinpe" required type="number" 
+                             mask="0000-0000"
+                             type="text"
+                             maxlength="9"
+                             >
+                    </ion-input>
+                </ion-item>
+
                 <ion-item>
                     <ion-label position="floating">Telefono Principal</ion-label>
-                    <ion-input name="telefono" [(ngModel)]="canchaObjeto.telefono" required type="number"></ion-input>
+                    <ion-input name="telefono" [(ngModel)]="canchaObjeto.telefono" required type="number" 
+                            mask="0000-0000"
+                            type="text"
+                            maxlength="9"
+                             >
+                    </ion-input>
                 </ion-item>
 
                 <ion-item>

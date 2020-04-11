@@ -15,15 +15,20 @@ export class Cancha {
     estado: boolean;
     reserva: Array<Reserva>;
     correo: string;
+    telefonoSinpe: string;
 
     constructor() {
     }
 
     static validarEmail(valor) {
-        
+
          return(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3,4})+$/.test(valor));
          
       }
+
+    static validarNumero(valor){
+
+    }
 
     static isNULL(obj: Cancha) {
         if (Cancha.null(obj.nombre)
@@ -70,7 +75,7 @@ export class Cancha {
             return "Debe ingresar una dirección valida";
         }
 
-        if (Cancha.null(obj.telefono) || Cancha.size(obj.telefono.length)) {
+        if (Cancha.null(obj.telefono) || Cancha.size(obj.telefono.length) || obj.telefono.length <9 ) {
             return "Debe ingresar un telefono valido";
         }
 
@@ -97,7 +102,9 @@ export class Cancha {
         if(Cancha.null(obj.correo) || Cancha.validarEmail(obj.correo)){
             return "Debe ingresar correo electronico valido"
         }
-
+        if(( (obj.metodoPago.tipo="SINPE") || (obj.metodoPago.tipo='AMBOS')) && Cancha.null(obj.telefonoSinpe) || (obj.telefonoSinpe.length) <9){
+            return "Debe ingresar numero sinpe";
+        }
         return false;
     }
 
