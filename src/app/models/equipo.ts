@@ -51,17 +51,17 @@ static validar(obj: Equipo) {
         return "Debe ingresar un nombre valido";
     }
 
-    if (Equipo.null(obj.descripcion)) {
-        return "Debe ingresar una descripcion valida";
-    }
+    // if (Equipo.null(obj.descripcion)) {
+    //     return "Debe ingresar una descripcion valida";
+    // }
+    //
+    // if (Equipo.null(obj.telefono)) {
+    //     return "Debe ingresar un telefono valido";
+    // }
 
-    if (Equipo.null(obj.telefono)) {
-        return "Debe ingresar un telefono valido";
-    }
-
-    if (Equipo.null(obj.imagen)) {
-        return "Debe ingresar una imagen valida";
-    }
+    // if (Equipo.null(obj.imagen)) {
+    //     return "Debe ingresar una imagen valida";
+    // }
 
     return false;
 }

@@ -2,6 +2,7 @@ import { firestore } from 'firebase';
 
 export class Usuario {
     id: string;
+    liderEquipo: string;
     uid: string;
     correo: string;
     email: string;
@@ -16,7 +17,6 @@ export class Usuario {
     imagen: string;
     estado: boolean;
     sexo: string;
-
 }
 
 
