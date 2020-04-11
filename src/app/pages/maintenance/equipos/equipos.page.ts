@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController, ModalController } from '@ionic/angular';
+import { NavController, ModalController, ToastController } from '@ionic/angular';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder,FormGroup, FormControl, Validators  } from '@angular/forms';
 import { LoaderService } from 'src/app/services/loader.service';
 import { CrudService } from 'src/app/service/crud.service';
 import { TablesService } from 'src/app/service/tables.service';
 import { Equipo } from 'src/app/models/equipo';
+import * as firebase from 'firebase/app';
 
 @Component({
   selector: 'app-equipos',
@@ -50,7 +51,7 @@ export class EquiposPage implements OnInit {
 
    buscar(){
     this.equipos=this.equiposTemp;
-    this.equiposTemp=this.equipos.filter(x => (x.nombre + ' ' + x.telefono).toLowerCase().includes(this.texto.toLowerCase()))
+    this.equipos=this.equipos.filter(x => (x.nombre + ' ' + x.telefono).toLowerCase().includes(this.texto.toLowerCase()))
 
   }
  

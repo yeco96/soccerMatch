@@ -4,9 +4,6 @@ import {CrudService} from 'src/app/service/crud.service';
 import {LoaderService} from 'src/app/services/loader.service';
 import {ModalController, ToastController, NavController} from '@ionic/angular';
 import {FormBuilder} from '@angular/forms';
-
-
-
 import {AngularFireStorage} from '@angular/fire/storage';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {AuthenticationService} from 'src/app/services/authentication.service';
@@ -72,13 +69,7 @@ export class ProfilePage implements OnInit {
     }
 
 
-   
-  async crearEquipo() {
-    const modal = await this.modalController.create({
-      component: CrearEquipoComponent
-    });
-    return await modal.present();
-  }
+  
 
     async presentToast(msj: string, status: boolean) {
         const toast = await this.toastController.create({
