@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import * as firebase from 'firebase/app';
 import {Storage} from '@ionic/storage';
 import {Router} from '@angular/router';
-import {Platform} from '@ionic/angular';
+import {LoadingController, Platform} from '@ionic/angular';
 import {BehaviorSubject} from 'rxjs';
 import {LoaderService} from './loader.service';
 import {CrudService} from '../service/crud.service';
@@ -22,6 +22,7 @@ export class AuthenticationService {
                 public loader: LoaderService,
                 private crudService: CrudService,
                 private tables: TablesService,
+                private loadingController: LoadingController
     ) {
         this.platform.ready().then(() => {
             this.ifLoggedIn();
@@ -87,8 +88,11 @@ export class AuthenticationService {
 
     async getDataUser() {
         return new Promise<any>((resolve, reject) => {
-            const user = firebase.auth().currentUser;
+            let user = firebase.auth().currentUser;
             let usuario = new Usuario();
+            if (user == undefined) {
+                user = firebase.auth().currentUser;
+            }
             const uid = user.uid.toString();
             this.crudService.read(this.tables.tablas().USUARIO).subscribe(data => {
                     const temp = (this.crudService.construir(data) as Array<Usuario>);

@@ -245,8 +245,8 @@ export class CrearCanchaComponent implements OnInit {
         const toast = await this.toastController.create({
             message: msj,
             duration: 2000,
-            position: 'top',
-            color: !status ? 'danger' : 'primary'
+            position: 'bottom',
+            color: !status ? 'danger' : 'success'
         });
         toast.present();
     }

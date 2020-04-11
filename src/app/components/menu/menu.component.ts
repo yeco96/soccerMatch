@@ -28,8 +28,12 @@ export class MenuComponent implements OnInit {
   ngOnInit() {
     this.page = this.navParams.get('data');
     this.usuario = new Usuario();
+    this.loader.showLoader();
     this.authService.getDataUser().then(res => {
       this.usuario = res;
+      this.loader.hideLoader();
+    }, reason => {
+      this.loader.hideLoader();
     });
   }
 

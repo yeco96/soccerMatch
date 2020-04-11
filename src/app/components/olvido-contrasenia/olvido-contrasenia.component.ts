@@ -78,8 +78,8 @@ forgetPass(value :{email: string;}) {
     const toast = await this.toastController.create({
         message: msj,
         duration: 2000,
-        position: 'top',
-        color: !status ? "danger" : "success"
+      position: 'bottom',
+      color: !status ? 'danger' : 'success'
     });
     toast.present();
 }

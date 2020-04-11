@@ -50,6 +50,8 @@ export class ReservaPage implements OnInit {
                     return reservas.usuario.id === usuario.id;
                 });
                 this.loader.hideLoader();
+            }, reason => {
+                this.loader.hideLoader();
             });
         });
         this.filtro = 'PENDIENTE';

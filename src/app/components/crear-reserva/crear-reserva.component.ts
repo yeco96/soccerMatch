@@ -92,8 +92,12 @@ export class CrearReservaComponent implements OnInit {
         }, error1 => this.loader.hideLoader());
 
         this.usuario = new Usuario();
+        this.loader.showLoader();
         this.authenticationService.getDataUser().then(res => {
             this.usuario = res;
+            this.loader.hideLoader();
+        }, reason => {
+            this.loader.hideLoader();
         });
 
         this.fechaMnima = this.formattedDate();
@@ -186,8 +190,8 @@ export class CrearReservaComponent implements OnInit {
         const toast = await this.toastController.create({
             message: msj,
             duration: 2000,
-            position: 'top',
-            color: !status ? "danger" : "success"
+            position: 'bottom',
+            color: !status ? 'danger' : 'success'
         });
         toast.present();
     }
