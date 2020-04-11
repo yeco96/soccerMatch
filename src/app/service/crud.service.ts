@@ -2,21 +2,25 @@ import {Injectable} from '@angular/core';
 import {TablesService} from 'src/app/service/tables.service';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {RespuestaData} from '../models/respuesta-data';
-import { Noticias } from '../models/noticias';
+import {Noticias} from '../models/noticias';
 
 @Injectable({
     providedIn: 'root'
 })
 export class CrudService {
-  constructor(
-    private db: AngularFirestore,
-    private tables : TablesService
-  ) { }
+    constructor(
+        private db: AngularFirestore,
+        private tables: TablesService
+    ) {
+    }
 
- create(tabla, record, noticia?: Noticias) {
-    this.db.collection(this.tables.tablas().NOTICIAS).add(JSON.parse(JSON.stringify(noticia)));
-    return this.db.collection(tabla).add(JSON.parse(JSON.stringify(record)));
-  }
+    create(tabla, record, noticia?: Noticias) {
+        if (noticia) {
+            this.db.collection(this.tables.tablas().NOTICIAS).add(JSON.parse(JSON.stringify(noticia)));
+        }
+        return this.db.collection(tabla).add(JSON.parse(JSON.stringify(record)));
+    }
+
     read(tabla) {
         return this.db.collection(tabla).snapshotChanges();
     }
@@ -42,10 +46,13 @@ export class CrudService {
         return respuesta;
     }
 
-  update(tabla, record ,noticia?: Noticias) {
-    this.db.collection(this.tables.tablas().NOTICIAS).add(JSON.parse(JSON.stringify(noticia)));
-    return this.db.doc(tabla + '/' + record.id).update(JSON.parse(JSON.stringify(record)));
-  }
+    update(tabla, record, noticia?: Noticias) {
+        if (noticia) {
+            this.db.collection(this.tables.tablas().NOTICIAS).add(JSON.parse(JSON.stringify(noticia)));
+        }
+        return this.db.doc(tabla + '/' + record.id).update(JSON.parse(JSON.stringify(record)));
+    }
+
     delete(tabla, recordId) {
         const doc = this.db.doc(tabla + '/' + recordId.id);
         return doc.delete();
