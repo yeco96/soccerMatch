@@ -10,6 +10,7 @@ import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firest
 import {Observable} from 'rxjs';
 import {finalize, tap} from 'rxjs/operators';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {AuthenticationService} from 'src/app/services/authentication.service';
 
 
 @Component({
@@ -62,7 +63,8 @@ export class CrearCanchaComponent implements OnInit {
         private storage: AngularFireStorage,
         private database: AngularFirestore,
         public toastController: ToastController,
-        private formBuilder: FormBuilder       
+        private formBuilder: FormBuilder,
+        private authService: AuthenticationService      
     ) {
         this.isUploading = false;
         this.isUploaded = false;
@@ -149,14 +151,19 @@ export class CrearCanchaComponent implements OnInit {
             return;
         }
 
-        this.crudService.create(this.tables.tablas().CANCHAS, this.canchaObjeto).then(resp => {
-            this.presentToast('Se registro la cancha correctamente', true);
-            this.loader.hideLoader();
-            this.cerrarModal();
-        }).catch(error => {
-            this.presentToast('Ocurrio un error al crear la cancha', false);
-            this.loader.hideLoader();
+        this.authService.getDataUser().then(res => {
+        this.canchaObjeto.usuarioCrea = res;    
+            this.crudService.create(this.tables.tablas().CANCHAS, this.canchaObjeto).then(resp => {
+                this.presentToast('Se registro la cancha correctamente', true);
+                this.loader.hideLoader();
+                this.cerrarModal();
+            }).catch(error => {
+                this.presentToast('Ocurrio un error al crear la cancha', false);
+                this.loader.hideLoader();
+            });
         });
+
+
 
     }
 

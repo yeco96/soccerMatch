@@ -8,7 +8,6 @@ export class Usuario {
     nombre: string;
     apellidos: string;
     telefono: [Telefono];
-    contrasena: string;
     fechaNacimiento: any;
     genero : string;
     mascaraAcceso: string;

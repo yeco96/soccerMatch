@@ -1,3 +1,5 @@
+import { Usuario } from './usuario';
+
 export class Cancha {
     id: string;
     nombre: string;
@@ -16,6 +18,7 @@ export class Cancha {
     reserva: Array<Reserva>;
     correo: string;
     telefonoSinpe: string;
+    usuarioCrea: Usuario;
 
     constructor() {
     }

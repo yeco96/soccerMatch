@@ -116,11 +116,12 @@ export class RegisterPage implements OnInit {
         this.navCtrl.navigateBack('');
     }
 
-    guardar(value: Usuario) {
+    guardar(value: any) {
         this.loader.showLoader();
         value.fechaNacimiento = new Date(value.fechaNacimiento);
+        value.password = undefined;
         value.activo = true;
-        this.crudService.create(this.tables.tablas().USUARIO, value).then(resp => {
+        this.crudService.create(this.tables.tablas().USUARIO, value as Usuario).then(resp => {
             console.log(resp);
             this.loader.hideLoader();
         })
