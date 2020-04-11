@@ -8,21 +8,25 @@
 
   <h1 class="ion-text-center">NOTICIAS</h1>
 
-  <!--<ion-card>-->
-    <!--<ion-card-content>-->
-      <!--<ion-list>-->
-        <!--<ion-item *ngFor="let noticia of noticias">-->
-          <!--<ion-label>-->
-            <!--<h2>{{noticia.tipo}}</h2>-->
-            <!--<h3>{{noticia.descripcion}}</h3>-->
-            <!--<h5>{{noticia.usuario}}</h5>-->
-            <!--<h5>{{noticia.fecha}}</h5>-->
-          <!--</ion-label>-->
-          <!--<ion-button fill="outline" slot="end">-->
-            <!--Ver-->
-          <!--</ion-button>-->
-        <!--</ion-item>-->
-      <!--</ion-list>-->
-    <!--</ion-card-content>-->
-  <!--</ion-card>-->
+  <ion-card>
+    <ion-card-content>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+      <ion-list>
+        <ion-item *ngFor="let noticia of noticias">
+          <ion-label>
+            <h2>{{noticia.tipo}}</h2>
+            <div>{{noticia.descripcion}}</div>
+            <h5>{{noticia.fecha}}</h5>
+          </ion-label>
+          <!-- <ion-button fill="outline" slot="end">
+          </ion-button> -->
+        </ion-item>
+      </ion-list>
+    </ion-col>
+    </ion-row>
+    </ion-grid>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

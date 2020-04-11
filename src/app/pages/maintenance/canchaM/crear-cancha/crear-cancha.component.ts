@@ -11,6 +11,7 @@ import {Observable} from 'rxjs';
 import {finalize, tap} from 'rxjs/operators';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {AuthenticationService} from 'src/app/services/authentication.service';
+import {Noticias} from 'src/app/models/noticias';
 
 
 @Component({
@@ -82,6 +83,7 @@ export class CrearCanchaComponent implements OnInit {
     canchas = new Array<Cancha>();
     canchaObjeto: Cancha;
     dias = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo'];
+    noticia = new Noticias();
 
 
 
@@ -153,8 +155,12 @@ export class CrearCanchaComponent implements OnInit {
 
         this.authService.getDataUser().then(res => {
         this.canchaObjeto.usuarioCrea = res;    
-            this.crudService.create(this.tables.tablas().CANCHAS, this.canchaObjeto).then(resp => {
+        this.noticia.fecha= this.formattedDate();
+        this.noticia.tipo='Cancha'
+        this.noticia.descripcion='Se agrego la cancha '+this.canchaObjeto.nombre+' con el telefono: '+this.canchaObjeto.telefono;
+            this.crudService.create(this.tables.tablas().CANCHAS, this.canchaObjeto, this.noticia).then(resp => {
                 this.presentToast('Se registro la cancha correctamente', true);
+                this.canchaObjeto.nombre
                 this.loader.hideLoader();
                 this.cerrarModal();
             }).catch(error => {
@@ -162,10 +168,22 @@ export class CrearCanchaComponent implements OnInit {
                 this.loader.hideLoader();
             });
         });
-
-
-
     }
+
+    formattedDate(d = new Date) {
+        let month = String(d.getMonth() + 1);
+        let day = String(d.getDate());
+        const year = String(d.getFullYear());
+        let hours = String(d.getHours());
+        let minutes = String(d.getMinutes());
+
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+        if (hours.length < 2) hours = '0' + hours;
+        if (minutes.length < 2) minutes = '0' + minutes;
+        return `${year}-${month}-${day}T${hours}:${minutes}`;
+    }
+
 
 
     elimiar() {
