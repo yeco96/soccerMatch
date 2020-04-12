@@ -50,7 +50,8 @@ const routes: Routes = [
   },
   {
     path: 'reserva',
-    loadChildren: () => import('./pages/reserva/reserva.module').then(m => m.ReservaPageModule)
+    loadChildren: () => import('./pages/reserva/reserva.module').then(m => m.ReservaPageModule),
+    canActivate: [AuthGuardService]
   },
   {
     path: 'equipos',
@@ -60,9 +61,6 @@ const routes: Routes = [
     path: 'reportes',
     loadChildren: () => import('./Reportes/reportes/reportes.module').then( m => m.ReportesPageModule)
   }
-
-
-
 
 
 

@@ -5,7 +5,7 @@ import {ModalController, NavController, ToastController} from '@ionic/angular';
 import {TablesService} from 'src/app/service/tables.service';
 import {CrudService} from 'src/app/service/crud.service';
 import {LoaderService} from 'src/app/services/loader.service';
-import {Usuario} from 'src/app/models/usuario';
+import {Acceso, Usuario} from 'src/app/models/usuario';
 
 @Component({
     selector: 'app-register',
@@ -116,6 +116,10 @@ export class RegisterPage implements OnInit {
         value.fechaNacimiento = new Date(value.fechaNacimiento);
         value.password = undefined;
         value.activo = true;
+        if (!value.acceso) {
+            value.acceso = new Acceso();
+        }
+        value.acceso.mascara = "1";
         this.crudService.create(this.tables.tablas().USUARIO, value as Usuario).then(resp => {
             console.log(resp);
             this.loader.hideLoader();

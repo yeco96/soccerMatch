@@ -5,7 +5,7 @@ import {FormBuilder} from '@angular/forms';
 import {LoaderService} from 'src/app/services/loader.service';
 import {CrudService} from 'src/app/service/crud.service';
 import {TablesService} from 'src/app/service/tables.service';
-import {Usuario} from 'src/app/models/usuario';
+import {Acceso, Usuario} from 'src/app/models/usuario';
 
 
 @Component({
@@ -33,6 +33,11 @@ export class ClientesPage implements OnInit {
         this.loader.showLoader();
         this.crudService.read(this.tables.tablas().USUARIO).subscribe(data => {
             this.usuarios = this.crudService.construir(data) as Array<Usuario>;
+            this.usuarios.forEach(x => {
+                if (!x.acceso) {
+                    x.acceso = new Acceso();
+                }
+            });
             this.usuariosTemp = this.usuarios;
             this.loader.hideLoader();
         });

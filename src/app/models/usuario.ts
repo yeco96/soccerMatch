@@ -12,7 +12,7 @@ export class Usuario {
     telefono: [Telefono];
     fechaNacimiento: any;
     genero : string;
-    mascaraAcceso: string;
+    acceso: Acceso;
     activo: boolean;
     tipoLogueo: number;
     imagen: string;
@@ -24,4 +24,8 @@ export class Usuario {
 export class  Telefono {
     codigo: number;
     telefono: number;
+}
+
+export class  Acceso {
+    mascara: string;
 }

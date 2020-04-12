@@ -40,7 +40,7 @@
 
             <ion-item>
                 <ion-label position="floating">ROL</ion-label>
-                <ion-select interface="action-sheet" cancelText="Cancelar" doneText="Aceptar">
+                <ion-select (ionChange)="actualizar(usuario)" interface="action-sheet" cancelText="Cancelar" [(ngModel)]="usuario.acceso.mascara" doneText="Aceptar">
                     <ion-select-option value="1">JUGADOR</ion-select-option>
                     <ion-select-option value="2">CANCHA</ion-select-option>
                     <ion-select-option value="3">SISTEMA</ion-select-option>
