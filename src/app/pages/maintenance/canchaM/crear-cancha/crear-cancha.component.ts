@@ -12,6 +12,7 @@ import {finalize, tap} from 'rxjs/operators';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {AuthenticationService} from 'src/app/services/authentication.service';
 import {Noticias} from 'src/app/models/noticias';
+import { stringify } from 'querystring';
 
 
 @Component({
@@ -117,7 +118,7 @@ export class CrearCanchaComponent implements OnInit {
             if (this.obj) { 
                 
                 this.canchaObjeto = this.obj;               
-                this.canchasTemp = Object.assign({}, this.canchaObjeto);
+                this.canchasTemp = (JSON.parse(JSON.stringify(this.canchaObjeto)));
                 this.actualizar = true;
             }
             this.loader.hideLoader();
@@ -136,9 +137,14 @@ export class CrearCanchaComponent implements OnInit {
         this.provincia = this.ubicacion.find(x => x.codigoProvincia.toString() === this.canchaObjeto.ubicacion.codigoProvincia.toString());
     }
 
+    diasHorario:string;
+    cantDias:number;
+
+
     guardar() {
 
         const result = Cancha.validar(this.canchaObjeto);
+        
 
         if (result) {
             return this.presentToast(result, false);
@@ -147,11 +153,35 @@ export class CrearCanchaComponent implements OnInit {
         this.loader.showLoader();
         if (this.actualizar) {
             this.noticia=new Noticias();
+            this.noticia.descripcion='Hubo un cambio en la cancha'+this.canchaObjeto.nombre+'. ';
+
+
             if(this.canchaObjeto.montoEquipo!=this.canchasTemp.montoEquipo){
-                this.noticia.descripcion='Cambio el monto de la cancha';            
+                this.noticia.descripcion=this.noticia.descripcion+'El monto ahora es de '+this.canchaObjeto.montoEquipo+' por equipo. ';   
                 this.noticia.fecha= this.formattedDate();
-                this.noticia.tipo='Cancha'
+                this.noticia.tipo='Cancha'         
             } 
+
+            if(JSON.stringify(this.canchaObjeto.horario.dias) != JSON.stringify(this.canchasTemp.horario.dias) ){
+                var i;
+                this.cantDias=this.canchaObjeto.horario.dias.length;
+                for(i=0;i<this.cantDias;i++){
+                    if(this.diasHorario==undefined){
+                        this.diasHorario='';
+                    }
+                    this.diasHorario=this.diasHorario+ ', '+JSON.stringify(this.canchaObjeto.horario.dias[i]);
+                }
+                this.noticia.descripcion=this.noticia.descripcion+'Estara abierta los dias '+ this.diasHorario;+'. ';
+                this.noticia.fecha= this.formattedDate();
+                this.noticia.tipo='Cancha'          
+            }
+
+            if(this.canchaObjeto.horario.horaInicio!=this.canchasTemp.horario.horaInicio || this.canchaObjeto.horario.horaFin!=this.canchasTemp.horario.horaFin ){
+                this.noticia.descripcion=this.noticia.descripcion+'Con horario de '+this.canchaObjeto.horario.horaInicio+' a '+this.canchaObjeto.horario.horaFin;
+                this.noticia.fecha= this.formattedDate();
+                this.noticia.tipo='Cancha'            
+            } 
+
             this.crudService.update(this.tables.tablas().CANCHAS, this.canchaObjeto, this.noticia.descripcion?this.noticia:undefined).then(resp => {
  
                 this.loader.hideLoader();
