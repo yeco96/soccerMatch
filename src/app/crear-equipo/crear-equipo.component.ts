@@ -83,6 +83,7 @@ export class CrearEquipoComponent implements OnInit {
     ubicacionJSON: any;
     provincia: Ubicacion;
     canton: Canton;
+    cantidadJugadores: any;
 
 
     canchasTemp: Cancha;
@@ -105,12 +106,22 @@ export class CrearEquipoComponent implements OnInit {
                 this.listaEquipos = this.crudService.construir(data) as Array<Equipo>;
 
                 this.equipoObjeto = this.listaEquipos.filter(x => {
-                    return x.id === this.usuario.liderEquipo;
+
+                    if (this.usuario.liderEquipo) {
+                        return x.id === this.usuario.liderEquipo;
+                    }
+
+                    if (this.usuario.perteneceEquipo) {
+                        return x.id === this.usuario.perteneceEquipo;
+                    }
+
                 })[0];
 
                 if (this.equipoObjeto.ubicacion == undefined) {
                     this.equipoObjeto.ubicacion = new UbicacionEquipo();
                 }
+
+                this.cantidadJugadores = this.equipoObjeto.jugardores.filter(x => x.miembro).length;
 
                 if (this.usuario.liderEquipo) {
                     this.esLider = true;
@@ -145,23 +156,43 @@ export class CrearEquipoComponent implements OnInit {
         this.authService.getDataUser().then(res => {
             this.usuario = res;
 
-            if (!this.usuario.liderEquipo) {
+            if ((!this.usuario.liderEquipo || this.usuario.liderEquipo == "") && (!this.usuario.perteneceEquipo || this.usuario.perteneceEquipo == "")) {
                 this.loader.hideLoader();
                 return;
             }
 
             this.crudService.read(this.tables.tablas().EQUIPO).subscribe(data => {
                 this.listaEquipos = this.crudService.construir(data) as Array<Equipo>;
+
                 this.equipoObjeto = this.listaEquipos.filter(x => {
-                    return x.id === this.usuario.liderEquipo;
+
+                    if (this.usuario.liderEquipo) {
+                        return x.id === this.usuario.liderEquipo;
+                    }
+
+                    if (this.usuario.perteneceEquipo) {
+                        return x.id === this.usuario.perteneceEquipo;
+                    }
+
                 })[0];
 
                 if (this.equipoObjeto.ubicacion == undefined) {
                     this.equipoObjeto.ubicacion = new UbicacionEquipo();
                 }
 
-                this.esLider = true;
-                this.tieneEquipo = true;
+                this.cantidadJugadores = this.equipoObjeto.jugardores.filter(x => x.miembro).length;
+
+                if (this.usuario.liderEquipo) {
+                    this.esLider = true;
+                    this.tieneEquipo = true;
+                }
+
+                if (this.usuario.perteneceEquipo) {
+                    this.esLider = false;
+                    this.tieneEquipo = true;
+                }
+
+
                 this.loader.hideLoader();
             });
 
@@ -373,8 +404,7 @@ export class CrearEquipoComponent implements OnInit {
                         });
 
                         this.crudService.update(this.tables.tablas().EQUIPO, this.equipoObjeto).then(resp => {
-                            this.usuario.perteneceEquipo = this.equipoObjeto.id;
-                            this.crudService.update(this.tables.tablas().USUARIO, this.usuario).then(resp => {
+                            this.crudService.update_S(this.tables.tablas().USUARIO, jugador.usuario.id, {perteneceEquipo: this.equipoObjeto.id}).then(resp => {
                                 this.loader.hideLoader();
                                 this.listaEquiposMostrar = [];
                             }).catch(error => {
