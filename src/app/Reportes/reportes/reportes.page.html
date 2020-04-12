@@ -1,0 +1,101 @@
+<ion-header>
+  <ion-toolbar color="primary">
+      <ion-buttons slot="start">
+          <ion-back-button [text]="''" defaultHref="home"></ion-back-button>
+      </ion-buttons>
+      <ion-title>Reportes</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+
+  <div class="ion-text-center" *ngIf="reservas.length === 0">
+      <h1>No hay resultados</h1>
+      <hr>
+  </div>
+
+
+
+  <ion-item class="ion-text-center">
+      <ion-label position="floating"></ion-label>
+      <ion-select [(ngModel)]="filtro"
+                  interface="action-sheet" cancelText="Cancelar" doneText="Aceptar">
+          <ion-select-option value="PENDIENTE">Pendientes</ion-select-option>
+          <ion-select-option value="LISTO">Historial</ion-select-option>
+      </ion-select>
+  </ion-item>
+
+  <div *ngFor="let reserva of reservas">
+
+      <ion-grid class="ion-no-padding" *ngIf="reserva.estado == filtro">
+          <ion-row class="">
+              <ion-col size="0">
+                  <div class="ion-text-center">
+                      <!-- <div class="centrarTexto">
+                          <h1 class="ion-no-margin">{{fechaCompleta(reserva.fechaReserva, "numero")}}</h1>
+                          <h4 class="ion-no-margin"
+                              style="font-size: 15px;"> {{fechaCompleta(reserva.fechaReserva, "mes")}} </h4>
+                          <h4 class="ion-no-margin"> {{fechaCompleta(reserva.fechaReserva, "hora")}} </h4>
+                      </div> -->
+                  </div>
+              </ion-col>
+              <ion-col size="12">
+                  <ion-card style="height: 95px">
+
+
+                      <ion-row class="">
+                          <ion-col size="12" (click)="mostrarModal(reserva.cancha)">
+                              <div class="ion-padding-top ion-padding-start ion-padding-bottom" style="height: 90px">
+                                  <h1 style="font-size: 20px;" class="ion-no-margin">
+                                      {{reserva.cancha.nombre}}</h1>
+                                  <h3 style="font-size: 15px; display: inline-flex" class="ion-no-margin">
+                                      Monto: ₡{{reserva.cancha.montoEquipo}}
+                                  </h3>
+                                  <h4 style="font-size: 15px;" class="ion-no-margin">
+                                      Estado: {{reserva.estado.toLocaleLowerCase()}}</h4>
+                              </div>
+                          </ion-col>
+
+                          <!-- <ion-col size="4">
+                              <ion-row>
+                                  <ion-button fill="outline" color="light"  (click)="agregarEquipo()">
+                                      <ion-icon color="primary" md="person-add"></ion-icon>
+                                  </ion-button>
+                              </ion-row>
+                              <ion-row>
+                                  <ion-button fill="outline" color="light" (click)="realizarPago(reserva.cancha)">
+                                      <ion-icon color="success" md="wallet"></ion-icon>
+                                  </ion-button>
+                              </ion-row>
+                          </ion-col> -->
+                      </ion-row>
+
+
+                  </ion-card>
+              </ion-col>
+          </ion-row>
+      </ion-grid>
+
+  </div>
+
+
+  <!--<ion-card>-->
+  <!--<ion-card-content>-->
+  <!--<ion-list>-->
+  <!--<ion-item *ngFor="let reserva of reservas">-->
+  <!--<ion-avatar slot="start">-->
+  <!--</ion-avatar>-->
+  <!--<ion-label>-->
+  <!--<h2>{{reserva.fecha}}</h2>-->
+  <!--<h3></h3>-->
+  <!--<p>{{reserva.estado}}</p>-->
+  <!--</ion-label>-->
+  <!--&lt;!&ndash;<ion-button fill="outline" slot="end" (click)="editar(cancha);">&ndash;&gt;-->
+  <!--&lt;!&ndash;Editar&ndash;&gt;-->
+  <!--&lt;!&ndash;</ion-button>&ndash;&gt;-->
+  <!--</ion-item>-->
+  <!--</ion-list>-->
+  <!--</ion-card-content>-->
+  <!--</ion-card>-->
+</ion-content>
