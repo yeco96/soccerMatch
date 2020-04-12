@@ -85,7 +85,7 @@ forgetPass(value :{email: string;}) {
 }
 
   goLoginPage() {
-    this.navCtrl.navigateBack('');
+    this.cerrarModal();
   }
 
 }
