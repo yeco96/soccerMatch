@@ -89,6 +89,15 @@ export class AuthenticationService {
 
 
             this.storage.get('uid').then((val) => {
+
+                if (!val) {
+                    this.storage.remove('uid').then(() => {
+                        this.authState.next(false);
+                        resolve("El usuario no existe");
+                    });
+                    return;
+                }
+
                 const uid = val.toString();
                 this.crudService.read(this.tables.tablas().USUARIO).subscribe(data => {
                     const temp = (this.crudService.construir(data) as Array<Usuario>);

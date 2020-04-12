@@ -9,6 +9,8 @@ import {AuthenticationService} from './services/authentication.service';
 import {Usuario} from "./models/usuario";
 import {LoaderService} from "./services/loader.service";
 import {TablesService} from "./service/tables.service";
+import {CrudService} from "./service/crud.service";
+import {Storage} from "@ionic/storage";
 
 @Component({
     selector: 'app-root',
@@ -34,6 +36,8 @@ export class AppComponent implements OnInit {
         private platform: Platform,
         private splashScreen: SplashScreen,
         private statusBar: StatusBar,
+        private storage: Storage,
+        private crudService: CrudService,
         private authenticationService: AuthenticationService,
         private router: Router,
         private loader: LoaderService,
@@ -54,6 +58,7 @@ export class AppComponent implements OnInit {
 
             this.authenticationService.authState.subscribe(state => {
                 if (state) {
+                    this.leerData();
                     this.router.navigate(['home']);
                     this.mostrar = true;
                 } else {
@@ -69,59 +74,16 @@ export class AppComponent implements OnInit {
 
         this.usuario = new Usuario();
         this.loader.showLoader();
-        this.authService.getDataUser().then(res => {
-            this.usuario = res;
 
 
-            this.appPages = [
-                {
-                    title: 'Reservas',
-                    url: '/reserva',
-                    icon: 'paper-plane',
-                    visible: this.tables.permiso(this.usuario.acceso.mascara, this.tables.roles().JUGADOR)
-                }
-            ];
+        this.leerData();
 
-            this.appMaintenance = [
-                {
-                    title: 'Canchas',
-                    url: '/cancha',
-                    icon: 'football',
-                    visible: this.tables.permiso(this.usuario.acceso.mascara, this.tables.roles().ADMIN)
-                },
-                {
-                    title: 'Ubicación',
-                    url: '/ubicacion',
-                    icon: 'compass',
-                    visible: this.tables.permiso(this.usuario.acceso.mascara, this.tables.roles().ADMIN)
-                },
-                {
-                    title: 'Clientes',
-                    url: '/clientes',
-                    icon: 'person',
-                    visible: this.tables.permiso(this.usuario.acceso.mascara, this.tables.roles().ADMIN)
-                },
-                {
-                    title: 'Equipos',
-                    url: '/equipos',
-                    icon: 'people',
-                    visible: this.tables.permiso(this.usuario.acceso.mascara, this.tables.roles().ADMIN)
-                }
-            ];
-
-            this.appReportes = [
-                {
-                    title: 'Reportes',
-                    url: '/reportes',
-                    icon: 'compass',
-                    visible: this.tables.permiso(this.usuario.acceso.mascara, this.tables.roles().CANCHA)
-                }
-            ];
-
-            this.loader.hideLoader();
-        }, reason => {
-            this.loader.hideLoader();
-        });
+        // this.authService.getDataUser().then(res => {
+        //
+        //     this.loader.hideLoader();
+        // }, reason => {
+        //     this.loader.hideLoader();
+        // });
 
 
         const path = window.location.pathname.split('login/')[1];
@@ -130,6 +92,82 @@ export class AppComponent implements OnInit {
             this.selectedIndexReportes = this.appPages.findIndex(page => page.title.toLowerCase() === path.toLowerCase());
             this.selectedIndexMaintenance = this.appPages.findIndex(page => page.title.toLowerCase() === path.toLowerCase());
         }
+    }
+
+    leerData() {
+        this.crudService.read(this.tables.tablas().USUARIO).subscribe(data => {
+            const temp = (this.crudService.construir(data) as Array<Usuario>);
+
+            this.storage.get('uid').then((val) => {
+
+                if (!val) {
+                    this.loader.hideLoader();
+                    return;
+                }
+
+                const uid = val.toString();
+
+                this.usuario = temp.filter(x => {
+                    return x.uid === uid;
+                })[0];
+
+                if (!this.usuario.uid) {
+                    this.loader.hideLoader();
+                    return;
+                }
+
+
+                this.appPages = [
+                    {
+                        title: 'Reservas',
+                        url: '/reserva',
+                        icon: 'paper-plane',
+                        visible: this.tables.permiso(this.usuario.acceso.mascara, this.tables.roles().JUGADOR)
+                    }
+                ];
+
+                this.appMaintenance = [
+                    {
+                        title: 'Canchas',
+                        url: '/cancha',
+                        icon: 'football',
+                        visible: this.tables.permiso(this.usuario.acceso.mascara, this.tables.roles().ADMIN)
+                    },
+                    {
+                        title: 'Ubicación',
+                        url: '/ubicacion',
+                        icon: 'compass',
+                        visible: this.tables.permiso(this.usuario.acceso.mascara, this.tables.roles().ADMIN)
+                    },
+                    {
+                        title: 'Clientes',
+                        url: '/clientes',
+                        icon: 'person',
+                        visible: this.tables.permiso(this.usuario.acceso.mascara, this.tables.roles().ADMIN)
+                    },
+                    {
+                        title: 'Equipos',
+                        url: '/equipos',
+                        icon: 'people',
+                        visible: this.tables.permiso(this.usuario.acceso.mascara, this.tables.roles().ADMIN)
+                    }
+                ];
+
+                this.appReportes = [
+                    {
+                        title: 'Reportes',
+                        url: '/reportes',
+                        icon: 'compass',
+                        visible: this.tables.permiso(this.usuario.acceso.mascara, this.tables.roles().CANCHA)
+                    }
+                ];
+
+
+                this.loader.hideLoader();
+
+            });
+
+        }, err => this.loader.hideLoader());
     }
 
 }
