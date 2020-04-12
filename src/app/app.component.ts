@@ -17,6 +17,7 @@ export class AppComponent implements OnInit {
   public mostrar = false;
   public selectedIndex = 0;
   public selectedIndexMaintenance = 0;
+  public selectedIndexReportes = 0;
   public appPages = [
     {
       title: 'Reservas',
@@ -47,6 +48,14 @@ export class AppComponent implements OnInit {
       url: '/equipos',
       icon: 'people'
       }
+  ];
+
+  public appReportes = [
+    {
+      title: 'Reportes',
+      url: '/reportes',
+      icon: 'compass'
+    }
   ];
 
 
@@ -93,6 +102,7 @@ export class AppComponent implements OnInit {
     const path = window.location.pathname.split('login/')[1];
     if (path !== undefined) {
       this.selectedIndex = this.appPages.findIndex(page => page.title.toLowerCase() === path.toLowerCase());
+      this.selectedIndexReportes = this.appPages.findIndex(page => page.title.toLowerCase() === path.toLowerCase());
       this.selectedIndexMaintenance = this.appPages.findIndex(page => page.title.toLowerCase() === path.toLowerCase());
     }
   }
