@@ -53,6 +53,14 @@ export class CrudService {
         return this.db.doc(tabla + '/' + record.id).update(JSON.parse(JSON.stringify(record)));
     }
 
+
+    update_S(tabla, id, record, noticia?: Noticias) {
+        if (noticia) {
+            this.db.collection(this.tables.tablas().NOTICIAS).add(JSON.parse(JSON.stringify(noticia)));
+        }
+        return this.db.collection(tabla).doc(id).update(JSON.parse(JSON.stringify(record)));
+    }
+
     delete(tabla, recordId) {
         const doc = this.db.doc(tabla + '/' + recordId.id);
         return doc.delete();

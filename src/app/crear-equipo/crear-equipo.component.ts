@@ -96,8 +96,7 @@ export class CrearEquipoComponent implements OnInit {
             this.usuario = res;
 
 
-
-            if ((!this.usuario.liderEquipo || this.usuario.liderEquipo == "") || (!this.usuario.liderEquipo || this.usuario.liderEquipo == "")) {
+            if ((!this.usuario.liderEquipo || this.usuario.liderEquipo == "") && (!this.usuario.perteneceEquipo || this.usuario.perteneceEquipo == "")) {
                 this.loader.hideLoader();
                 return;
             }
@@ -331,6 +330,11 @@ export class CrearEquipoComponent implements OnInit {
         }
         this.loader.showLoader();
         this.crudService.read(this.tables.tablas().EQUIPO).subscribe(data => {
+
+            if (this.tieneEquipo) {
+                return;
+            }
+
             this.listaEquiposMostrar = this.crudService.construir(data) as Array<Equipo>;
             this.listaEquiposTemp = this.listaEquiposMostrar;
             this.listaEquiposMostrar = this.listaEquiposMostrar.filter(x => x.nombre.toLowerCase().includes(this.equipoObjeto.nombre.toLowerCase()));
@@ -413,17 +417,18 @@ export class CrearEquipoComponent implements OnInit {
                     handler: () => {
 
                         this.usuario.liderEquipo = "";
-                        this.crudService.update(this.tables.tablas().USUARIO, this.usuario).then(resp => {
-                            this.crudService.delete(this.tables.tablas().EQUIPO, this.equipoObjeto);
-                            this.cerrarModal();
-                            this.loader.hideLoader();
-                            this.listaEquiposMostrar = [];
-                            this.presentToast('Usuario guardado correctamente', true);
-                        }).catch(error => {
-                            this.presentToast('Ocurrio un error al actualizar el usuario', false);
-                            this.loader.hideLoader();
+
+                        this.equipoObjeto.jugardores.forEach(value => {
+                            this.crudService.update_S(this.tables.tablas().USUARIO, value.usuario.id, {
+                                liderEquipo: "",
+                                perteneceEquipo: ""
+                            })
                         });
 
+                        this.crudService.delete(this.tables.tablas().EQUIPO, this.equipoObjeto);
+                        this.cerrarModal();
+                        this.loader.hideLoader();
+                        this.listaEquiposMostrar = [];
                     }
                 }
             ]
