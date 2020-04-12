@@ -87,10 +87,14 @@ const routes: Routes = [
             role: tables.roles().ADMIN
         }
     },
-  {
-    path: 'reportes',
-    loadChildren: () => import('./Reportes/reportes/reportes.module').then( m => m.ReportesPageModule)
-  }
+    {
+        path: 'reportes',
+        loadChildren: () => import('./Reportes/reportes/reportes.module').then(m => m.ReportesPageModule),
+        canActivate: [AuthGuardService],
+        data: {
+            role: tables.roles().CANCHA
+        }
+    }
 
 
 ];

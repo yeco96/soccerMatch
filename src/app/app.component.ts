@@ -21,10 +21,12 @@ export class AppComponent implements OnInit {
     public mostrar = false;
     public selectedIndex = 0;
     public selectedIndexMaintenance = 0;
+    public selectedIndexReportes = 0;
     public appPages = [];
     tables = new TablesService();
 
     public appMaintenance;
+    public appReportes = [];
 
 
     constructor(
@@ -44,24 +46,11 @@ export class AppComponent implements OnInit {
             this.statusBar.styleDefault();
             this.splashScreen.hide();
 
-  public appReportes = [
-    {
-      title: 'Reportes',
-      url: '/reportes',
-      icon: 'compass'
-    }
-  ];
+            // // let status bar overlay webview
+            // this.statusBar.overlaysWebView(true);
 
-
-  constructor(
-    private platform: Platform,
-    private splashScreen: SplashScreen,
-    private statusBar: StatusBar,
-    private authenticationService: AuthenticationService,
-    private router: Router,
-  ) {
-    this.initializeApp();
-  }
+            // // set status bar to white
+            // this.statusBar.backgroundColorByHexString('#003300');
 
             this.authenticationService.authState.subscribe(state => {
                 if (state) {
@@ -84,17 +73,63 @@ export class AppComponent implements OnInit {
             this.usuario = res;
 
 
-  ngOnInit() {
-    /*
-    * adwajndak
-    * adaopidjaoiw
-    *
-    * */
-    const path = window.location.pathname.split('login/')[1];
-    if (path !== undefined) {
-      this.selectedIndex = this.appPages.findIndex(page => page.title.toLowerCase() === path.toLowerCase());
-      this.selectedIndexReportes = this.appPages.findIndex(page => page.title.toLowerCase() === path.toLowerCase());
-      this.selectedIndexMaintenance = this.appPages.findIndex(page => page.title.toLowerCase() === path.toLowerCase());
+            this.appPages = [
+                {
+                    title: 'Reservas',
+                    url: '/reserva',
+                    icon: 'paper-plane',
+                    visible: this.tables.permiso(this.usuario.acceso.mascara, this.tables.roles().JUGADOR)
+                }
+            ];
+
+            this.appMaintenance = [
+                {
+                    title: 'Canchas',
+                    url: '/cancha',
+                    icon: 'football',
+                    visible: this.tables.permiso(this.usuario.acceso.mascara, this.tables.roles().ADMIN)
+                },
+                {
+                    title: 'Ubicación',
+                    url: '/ubicacion',
+                    icon: 'compass',
+                    visible: this.tables.permiso(this.usuario.acceso.mascara, this.tables.roles().ADMIN)
+                },
+                {
+                    title: 'Clientes',
+                    url: '/clientes',
+                    icon: 'person',
+                    visible: this.tables.permiso(this.usuario.acceso.mascara, this.tables.roles().ADMIN)
+                },
+                {
+                    title: 'Equipos',
+                    url: '/equipos',
+                    icon: 'people',
+                    visible: this.tables.permiso(this.usuario.acceso.mascara, this.tables.roles().ADMIN)
+                }
+            ];
+
+            this.appReportes = [
+                {
+                    title: 'Reportes',
+                    url: '/reportes',
+                    icon: 'compass',
+                    visible: this.tables.permiso(this.usuario.acceso.mascara, this.tables.roles().CANCHA)
+                }
+            ];
+
+            this.loader.hideLoader();
+        }, reason => {
+            this.loader.hideLoader();
+        });
+
+
+        const path = window.location.pathname.split('login/')[1];
+        if (path !== undefined) {
+            this.selectedIndex = this.appPages.findIndex(page => page.title.toLowerCase() === path.toLowerCase());
+            this.selectedIndexReportes = this.appPages.findIndex(page => page.title.toLowerCase() === path.toLowerCase());
+            this.selectedIndexMaintenance = this.appPages.findIndex(page => page.title.toLowerCase() === path.toLowerCase());
+        }
     }
 
 }

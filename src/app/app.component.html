@@ -52,7 +52,7 @@
           <ion-list-header class="ion-padding">Reportes</ion-list-header>
 
           <ion-menu-toggle auto-hide="false" *ngFor="let p of appReportes; let i = index">
-            <ion-item (click)="selectedIndexReportes = i" routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false">
+            <ion-item *ngIf="p.visible" (click)="selectedIndexReportes = i" routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false">
               <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
               <ion-label>{{ p.title }}</ion-label>
             </ion-item>
