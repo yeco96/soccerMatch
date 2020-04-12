@@ -111,6 +111,13 @@ export class AppComponent implements OnInit {
                     return x.uid === uid;
                 })[0];
 
+                if (!this.usuario && uid) {
+                    this.storage.remove('uid').then(() => {
+                        this.loader.hideLoader();
+                    });
+                    return;
+                }
+
                 if (!this.usuario.uid) {
                     this.loader.hideLoader();
                     return;
