@@ -90,7 +90,6 @@ export class LoaderService {
     }
 
     async hideLoader() {
-
         if (this.loader) {
             return await this.loader.dismiss();
         }
@@ -114,8 +113,6 @@ export class LoaderService {
         // return await this.loadingController.dismiss().then(() => console.log('loading dismissed'));
     }
 
-
-    //////////////
 
 //   async showLoading(loadingId: string, loadingMessage: string = 'Espere un momento por favor') {
 //     const loading = await this.loadingController.create({

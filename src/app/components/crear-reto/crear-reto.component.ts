@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {TablesService} from 'src/app/service/tables.service';
 import {CrudService} from 'src/app/service/crud.service';
-import {LoaderService} from 'src/app/services/loader.service';
 import {ModalController, ToastController} from '@ionic/angular';
 import {Canton, Ubicacion} from 'src/app/models/ubicacion';
 import {Cancha} from 'src/app/models/cancha';
@@ -16,7 +15,6 @@ export class CrearRetoComponent implements OnInit {
     constructor(
         private tables: TablesService,
         private crudService: CrudService,
-        private loader: LoaderService,
         public modalController: ModalController,
         public toastController: ToastController
     ) {
@@ -24,10 +22,8 @@ export class CrearRetoComponent implements OnInit {
 
     ubicacion = new Array<Ubicacion>();
     ubicacionJSON: any;
-
     codProvincia: number;
     codCanton: number;
-
     provincia: Ubicacion;
     canton: Canton;
     fechaBuscar: any;

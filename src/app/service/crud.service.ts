@@ -25,10 +25,6 @@ export class CrudService {
         return this.db.collection(tabla).snapshotChanges();
     }
 
-    read_Change(tabla) {
-        return this.db.collection(tabla).stateChanges();
-    }
-
     construir(data): any {
         const lista = data.map(e => {
             return {
@@ -46,6 +42,10 @@ export class CrudService {
         return respuesta;
     }
 
+    /*
+    * Actualizar directo
+    *
+    * */
     update(tabla, record, noticia?: Noticias) {
         if (noticia) {
             this.db.collection(this.tables.tablas().NOTICIAS).add(JSON.parse(JSON.stringify(noticia)));
@@ -53,7 +53,10 @@ export class CrudService {
         return this.db.doc(tabla + '/' + record.id).update(JSON.parse(JSON.stringify(record)));
     }
 
-
+    /*
+    * Actualizar ingresando al documento
+    *
+    * */
     update_S(tabla, id, record, noticia?: Noticias) {
         if (noticia) {
             this.db.collection(this.tables.tablas().NOTICIAS).add(JSON.parse(JSON.stringify(noticia)));
@@ -66,12 +69,6 @@ export class CrudService {
         return doc.delete();
     }
 
-    find(tabla, recordId) {
-        return this.db.collection(tabla).doc(recordId.id).get();
-    }
 
-    get(tabla) {
-        return this.db.collection(tabla).get();
-    }
 
 }

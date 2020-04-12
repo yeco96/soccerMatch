@@ -28,16 +28,14 @@ export class CanchaPage implements OnInit {
 
     canchas = new Array<Cancha>();
     canchasTemp = new Array<Cancha>();
-    texto:string;
+    texto: string;
 
     ngOnInit() {
         this.loader.showLoader();
         this.crudService.read(this.tables.tablas().CANCHAS).subscribe(data => {
             this.canchas = this.crudService.construir(data) as Array<Cancha>;
-            this.canchasTemp=this.canchas;
+            this.canchasTemp = this.canchas;
             this.loader.hideLoader();
-            //      this.usuarios = this.crudService.construir(data) as Array<Usuario>;    
-            // this.usuariosTemp=this.usuarios;
         });
     }
 
@@ -62,9 +60,9 @@ export class CanchaPage implements OnInit {
         this.presentModal();
     }
 
-    buscar(){
-        this.canchas=this.canchasTemp;
-        this.canchas=this.canchas.filter(x => (x.nombre ).toLowerCase().includes(this.texto.toLowerCase()))    
-      }
-      
+    buscar() {
+        this.canchas = this.canchasTemp;
+        this.canchas = this.canchas.filter(x => (x.nombre).toLowerCase().includes(this.texto.toLowerCase()))
+    }
+
 }

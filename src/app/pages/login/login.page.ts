@@ -12,10 +12,6 @@ import {Usuario} from 'src/app/models/usuario';
     styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
-
-    loaderToShow: any;
-    titulo: string;
-
     constructor(
         private navCtrl: NavController,
         private authService: AuthenticationService,
@@ -26,18 +22,15 @@ export class LoginPage implements OnInit {
     ) {
     }
 
-
     validationsForm: FormGroup;
     errorMessage = '';
 
 
     validationMessages = {
-
         email: [
             {type: 'required', message: 'El correo es requerido.'},
             {type: 'pattern', message: 'Por favor ingrese un correo valido'}
         ],
-
         password: [
             {type: 'required', message: 'La contraseña es requerida'},
             {type: 'minlength', message: 'Por favor ingrese una contraseña valida'}
@@ -45,7 +38,6 @@ export class LoginPage implements OnInit {
     };
 
     ngOnInit() {
-
         this.validationsForm = this.formBuilder.group({
             email: new FormControl('', Validators.compose([
                 Validators.required,
@@ -99,9 +91,6 @@ export class LoginPage implements OnInit {
         this.navCtrl.navigateForward('/register');
     }
 
-    goToForgetPassword() {
-        this.navCtrl.navigateForward('/forgetPassword');
-    }
 
     async presentModal() {
         const modal = await this.modalController.create({

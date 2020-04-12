@@ -39,13 +39,10 @@ export class ClientesPage implements OnInit {
     }
 
     actualizar(value: Usuario) {
-        // this.loader.showLoader();
         this.crudService.update(this.tables.tablas().USUARIO, value).then(resp => {
             console.log(resp);
-            // this.loader.hideLoader();
         }).catch(error => {
             console.log(error);
-            // this.loader.hideLoader();
         });
     }
 

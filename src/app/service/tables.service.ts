@@ -1,37 +1,38 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class TablesService {
 
-  constructor() { }
+    constructor() {
+    }
 
-  public ubicacion() {
-    return {
-      UBICACION: 'Ubicacion',
-      PROVINCIA: 'provincia',
-      CANTON: 'canton',
-      DISTITO: 'distrito'
-    };
-  }
+    public ubicacion() {
+        return {
+            UBICACION: 'Ubicacion',
+            PROVINCIA: 'provincia',
+            CANTON: 'canton',
+            DISTITO: 'distrito'
+        };
+    }
 
-  public imagenes() {
-    return {
-      CANCHAS: 'imagenesCancha'
-    };
-  }
+    public imagenes() {
+        return {
+            CANCHAS: 'imagenesCancha'
+        };
+    }
 
-  public tablas() {
-    return {
-      CANCHAS: 'Canchas',
-      EQUIPO: 'Equipo',
-      USUARIO: 'Usuario',
-      RETOS: 'Retos',
-      RESERVA: 'Reserva',
-      ESTUDIANTES: 'Students',
-      NOTICIAS: 'Noticias',
-      CLIENTES: 'Clientes'
-    };
-  }
+    public tablas() {
+        return {
+            CANCHAS: 'Canchas',
+            EQUIPO: 'Equipo',
+            USUARIO: 'Usuario',
+            RETOS: 'Retos',
+            RESERVA: 'Reserva',
+            ESTUDIANTES: 'Students',
+            NOTICIAS: 'Noticias',
+            CLIENTES: 'Clientes'
+        };
+    }
 }

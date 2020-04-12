@@ -4,7 +4,7 @@ import {CrudService} from 'src/app/service/crud.service';
 import {LoaderService} from 'src/app/services/loader.service';
 import {ModalController, ToastController} from '@ionic/angular';
 import {Canton, Ubicacion} from 'src/app/models/ubicacion';
-import {Cancha, Horario, MetodoPago, MyData, Telefono, UbicacionCancha} from 'src/app/models/cancha';
+import {Cancha, Horario, MetodoPago, MyData, UbicacionCancha} from 'src/app/models/cancha';
 import {AngularFireStorage, AngularFireUploadTask} from '@angular/fire/storage';
 import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
 import {Observable} from 'rxjs';
@@ -12,7 +12,6 @@ import {finalize, tap} from 'rxjs/operators';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {AuthenticationService} from 'src/app/services/authentication.service';
 import {Noticias} from 'src/app/models/noticias';
-import { stringify } from 'querystring';
 
 
 @Component({
@@ -52,8 +51,8 @@ export class CrearCanchaComponent implements OnInit {
             {type: 'required', message: 'campo requerido.'},
             {type: 'minlength', message: 'debe contener el tamaño adecuado'},
             {type: 'maxlength', message: 'debe contener el tamaño adecuado'}
-        ]       
-    }
+        ]
+    };
 
     private imageCollection: AngularFirestoreCollection<MyData>;
 
@@ -66,7 +65,7 @@ export class CrearCanchaComponent implements OnInit {
         private database: AngularFirestore,
         public toastController: ToastController,
         private formBuilder: FormBuilder,
-        private authService: AuthenticationService      
+        private authService: AuthenticationService
     ) {
         this.isUploading = false;
         this.isUploaded = false;
@@ -85,7 +84,7 @@ export class CrearCanchaComponent implements OnInit {
     canchaObjeto: Cancha;
     dias = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo'];
     noticia = new Noticias();
-    canchasTemp:Cancha;
+    canchasTemp: Cancha;
 
 
     obj: Cancha;
@@ -96,7 +95,7 @@ export class CrearCanchaComponent implements OnInit {
         this.canchaObjeto.telefono = "";
         this.canchaObjeto.ubicacion = new UbicacionCancha();
         this.canchaObjeto.horario = new Horario();
-        
+
 
         this.validations_form = this.formBuilder.group({
             telefono: new FormControl('', Validators.compose([
@@ -115,9 +114,9 @@ export class CrearCanchaComponent implements OnInit {
         this.crudService.read(this.tables.ubicacion().UBICACION).subscribe(data => {
             this.ubicacion = this.crudService.construir(data) as Array<Ubicacion>;
             this.ubicacionJSON = JSON.parse(JSON.stringify(this.ubicacion));
-            if (this.obj) { 
-                
-                this.canchaObjeto = this.obj;               
+            if (this.obj) {
+
+                this.canchaObjeto = this.obj;
                 this.canchasTemp = (JSON.parse(JSON.stringify(this.canchaObjeto)));
                 this.actualizar = true;
             }
@@ -133,18 +132,18 @@ export class CrearCanchaComponent implements OnInit {
     }
 
 
-    changeProvincia(){
+    changeProvincia() {
         this.provincia = this.ubicacion.find(x => x.codigoProvincia.toString() === this.canchaObjeto.ubicacion.codigoProvincia.toString());
     }
 
-    diasHorario:string;
-    cantDias:number;
+    diasHorario: string;
+    cantDias: number;
 
 
     guardar() {
 
         const result = Cancha.validar(this.canchaObjeto);
-        
+
 
         if (result) {
             return this.presentToast(result, false);
@@ -152,38 +151,38 @@ export class CrearCanchaComponent implements OnInit {
 
         this.loader.showLoader();
         if (this.actualizar) {
-            this.noticia=new Noticias();
-            this.noticia.descripcion='Hubo un cambio en la cancha'+this.canchaObjeto.nombre+'. ';
+            this.noticia = new Noticias();
+            this.noticia.descripcion = 'Hubo un cambio en la cancha' + this.canchaObjeto.nombre + '. ';
 
 
-            if(this.canchaObjeto.montoEquipo!=this.canchasTemp.montoEquipo){
-                this.noticia.descripcion=this.noticia.descripcion+'El monto ahora es de '+this.canchaObjeto.montoEquipo+' por equipo. ';   
-                this.noticia.fecha= this.formattedDate();
-                this.noticia.tipo='Cancha'         
-            } 
-
-            if(JSON.stringify(this.canchaObjeto.horario.dias) != JSON.stringify(this.canchasTemp.horario.dias) ){
-                var i;
-                this.cantDias=this.canchaObjeto.horario.dias.length;
-                for(i=0;i<this.cantDias;i++){
-                    if(this.diasHorario==undefined){
-                        this.diasHorario='';
-                    }
-                    this.diasHorario=this.diasHorario+ ', '+JSON.stringify(this.canchaObjeto.horario.dias[i]);
-                }
-                this.noticia.descripcion=this.noticia.descripcion+'Estara abierta los dias '+ this.diasHorario;+'. ';
-                this.noticia.fecha= this.formattedDate();
-                this.noticia.tipo='Cancha'          
+            if (this.canchaObjeto.montoEquipo != this.canchasTemp.montoEquipo) {
+                this.noticia.descripcion = this.noticia.descripcion + 'El monto ahora es de ' + this.canchaObjeto.montoEquipo + ' por equipo. ';
+                this.noticia.fecha = this.formattedDate();
+                this.noticia.tipo = 'Cancha'
             }
 
-            if(this.canchaObjeto.horario.horaInicio!=this.canchasTemp.horario.horaInicio || this.canchaObjeto.horario.horaFin!=this.canchasTemp.horario.horaFin ){
-                this.noticia.descripcion=this.noticia.descripcion+'Con horario de '+this.canchaObjeto.horario.horaInicio+' a '+this.canchaObjeto.horario.horaFin;
-                this.noticia.fecha= this.formattedDate();
-                this.noticia.tipo='Cancha'            
-            } 
+            if (JSON.stringify(this.canchaObjeto.horario.dias) != JSON.stringify(this.canchasTemp.horario.dias)) {
+                var i;
+                this.cantDias = this.canchaObjeto.horario.dias.length;
+                for (i = 0; i < this.cantDias; i++) {
+                    if (this.diasHorario == undefined) {
+                        this.diasHorario = '';
+                    }
+                    this.diasHorario = this.diasHorario + ', ' + JSON.stringify(this.canchaObjeto.horario.dias[i]);
+                }
+                this.noticia.descripcion = this.noticia.descripcion + 'Estara abierta los dias ' + this.diasHorario + '. ';
+                this.noticia.fecha = this.formattedDate();
+                this.noticia.tipo = 'Cancha'
+            }
 
-            this.crudService.update(this.tables.tablas().CANCHAS, this.canchaObjeto, this.noticia.descripcion?this.noticia:undefined).then(resp => {
- 
+            if (this.canchaObjeto.horario.horaInicio != this.canchasTemp.horario.horaInicio || this.canchaObjeto.horario.horaFin != this.canchasTemp.horario.horaFin) {
+                this.noticia.descripcion = this.noticia.descripcion + 'Con horario de ' + this.canchaObjeto.horario.horaInicio + ' a ' + this.canchaObjeto.horario.horaFin;
+                this.noticia.fecha = this.formattedDate();
+                this.noticia.tipo = 'Cancha'
+            }
+
+            this.crudService.update(this.tables.tablas().CANCHAS, this.canchaObjeto, this.noticia.descripcion ? this.noticia : undefined).then(resp => {
+
                 this.loader.hideLoader();
                 this.cerrarModal();
             }).catch(error => {
@@ -194,13 +193,12 @@ export class CrearCanchaComponent implements OnInit {
         }
 
         this.authService.getDataUser().then(res => {
-        this.canchaObjeto.usuarioCrea = res;    
-        this.noticia.fecha= this.formattedDate();
-        this.noticia.tipo='Cancha'
-        this.noticia.descripcion='Se agrego la cancha '+this.canchaObjeto.nombre+' con el telefono: '+this.canchaObjeto.telefono;
+            this.canchaObjeto.usuarioCrea = res;
+            this.noticia.fecha = this.formattedDate();
+            this.noticia.tipo = 'Cancha';
+            this.noticia.descripcion = 'Se agrego la cancha ' + this.canchaObjeto.nombre + ' con el telefono: ' + this.canchaObjeto.telefono;
             this.crudService.create(this.tables.tablas().CANCHAS, this.canchaObjeto, this.noticia).then(resp => {
                 this.presentToast('Se registro la cancha correctamente', true);
-                this.canchaObjeto.nombre
                 this.loader.hideLoader();
                 this.cerrarModal();
             }).catch(error => {
@@ -223,7 +221,6 @@ export class CrearCanchaComponent implements OnInit {
         if (minutes.length < 2) minutes = '0' + minutes;
         return `${year}-${month}-${day}T${hours}:${minutes}`;
     }
-
 
 
     elimiar() {
@@ -290,7 +287,6 @@ export class CrearCanchaComponent implements OnInit {
     addImagetoDB(image: MyData) {
         // Create an ID for document
         const id = this.database.createId();
-
         // Set document id with value in database
         this.imageCollection.doc(id).set(image).then(resp => {
             console.log(resp);

@@ -1,30 +1,31 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
-import { PopoverController } from '@ionic/angular';
-import { MenuComponent } from '../../components/menu/menu.component';
+import {PopoverController} from '@ionic/angular';
+import {MenuComponent} from '../../components/menu/menu.component';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.page.html',
-  styleUrls: ['./home.page.scss'],
+    selector: 'app-home',
+    templateUrl: './home.page.html',
+    styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
 
-  constructor(
-    private popoverController: PopoverController
-  ) { }
+    constructor(
+        private popoverController: PopoverController
+    ) {
+    }
 
-  ngOnInit() {
-  }
+    ngOnInit() {
+    }
 
-  async settingsPopover(ev: any) {
-    const popover = await this.popoverController.create({
-      component: MenuComponent,
-      event: ev,
-      animated: true,
-      translucent: true
-    });
-    return await popover.present();
-  }
+    async settingsPopover(ev: any) {
+        const popover = await this.popoverController.create({
+            component: MenuComponent,
+            event: ev,
+            animated: true,
+            translucent: true
+        });
+        return await popover.present();
+    }
 
 }

@@ -99,7 +99,6 @@ export class CrearReservaComponent implements OnInit {
             });
 
 
-
         }, error1 => this.loader.hideLoader());
 
 
@@ -199,15 +198,6 @@ export class CrearReservaComponent implements OnInit {
 
 
     async solicitar(cancha: Cancha) {
-        // this.crudService.get(this.tables.tablas().RESERVA).then(resp => {
-        //     this.loader.hideLoader();
-        //     this.cerrarModal();
-        //     this.presentToast("La reserva se realizo correctamente", true);
-        // }).catch(error => {
-        //     this.presentToast('Ocurrio un error al crear la reserva', false);
-        //     this.loader.hideLoader();
-        // });
-
         this.enviarReserva(cancha);
     }
 

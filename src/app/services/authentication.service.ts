@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import * as firebase from 'firebase/app';
 import {Storage} from '@ionic/storage';
 import {Router} from '@angular/router';
-import {LoadingController, Platform} from '@ionic/angular';
+import {Platform} from '@ionic/angular';
 import {BehaviorSubject} from 'rxjs';
 import {LoaderService} from './loader.service';
 import {CrudService} from '../service/crud.service';
@@ -21,9 +21,7 @@ export class AuthenticationService {
                 private storage: Storage,
                 public loader: LoaderService,
                 private crudService: CrudService,
-                private tables: TablesService,
-                private loadingController: LoadingController
-    ) {
+                private tables: TablesService) {
         this.platform.ready().then(() => {
             this.ifLoggedIn();
         });
@@ -46,35 +44,30 @@ export class AuthenticationService {
     }
 
     loginUser(value: { email: string; password: string; }) {
-
         return new Promise<any>((resolve, reject) => {
             firebase.auth().signInWithEmailAndPassword(value.email, value.password)
-                .then(
-                    res => {
-                        const user = firebase.auth().currentUser;
-                        if (!user.emailVerified) {
-                            return reject({message: 'Favor verificar su correo'});
-                        }
-                        this.storage.set('uid', res.user.uid).then((val) => {
-                            this.authState.next(true);
-                            resolve(res);
-                        });
-                    },
-                    err => reject(err));
+                .then(res => {
+                    const user = firebase.auth().currentUser;
+                    if (!user.emailVerified) {
+                        return reject({message: 'Favor verificar su correo'});
+                    }
+                    this.storage.set('uid', res.user.uid).then((val) => {
+                        this.authState.next(true);
+                        resolve(res);
+                    });
+                }, err => reject(err));
         });
     }
 
     logoutUser() {
         return new Promise<any>((resolve, reject) => {
             firebase.auth().signOut()
-                .then(
-                    res => {
-                        this.storage.remove('uid').then(() => {
-                            this.authState.next(false);
-                            resolve(res);
-                        });
-                    },
-                    err => reject(err));
+                .then(res => {
+                    this.storage.remove('uid').then(() => {
+                        this.authState.next(false);
+                        resolve(res);
+                    });
+                }, err => reject(err));
         });
     }
 
@@ -123,21 +116,11 @@ export class AuthenticationService {
         });
     }
 
-    /*disableAccount(value: { email: string;}){
-      return new Promise<any>((resolve, reject) => {
-        firebase.auth().(value.email)
-        .then(
-          res => resolve(res),
-          err => reject(err));
-      });
-    }*/
-
     validationEmail() {
         return new Promise<any>((resolve, reject) => {
             const user = firebase.auth().currentUser;
             user.sendEmailVerification()
-                .then(
-                    res => resolve(res),
+                .then(res => resolve(res),
                     err => reject(err));
         });
     }

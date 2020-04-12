@@ -8,7 +8,6 @@ import {TablesService} from "../../service/tables.service";
 import {Reserva} from "../../models/Reserva";
 import {Usuario} from "../../models/usuario";
 import {SMS} from '@ionic-native/sms/ngx';
-import {CallNumber} from '@ionic-native/call-number/ngx';
 import {AndroidPermissions} from '@ionic-native/android-permissions/ngx';
 import {MostrarCanchaComponent} from "../../components/mostrar-cancha/mostrar-cancha.component";
 import {Cancha} from "../../models/cancha";
@@ -29,7 +28,6 @@ export class ReservaPage implements OnInit {
         private tables: TablesService,
         public modalController: ModalController,
         private sms: SMS,
-        private callNumber: CallNumber,
         public alertController: AlertController,
         public toastController: ToastController,
         public androidPermissions: AndroidPermissions
@@ -60,7 +58,6 @@ export class ReservaPage implements OnInit {
 
     pagar(cancha: Cancha) {
         this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.SEND_SMS).then(() => {
-
             var options = {
                 replaceLineBreaks: false, // true to replace \n by a new line, false by default
                 android: {
@@ -69,8 +66,7 @@ export class ReservaPage implements OnInit {
                 }
             };
 
-            //const pago = "PASE " + cancha.metodoPago + " " + cancha.telefono + " -PAGO RESERVA CANCHA";
-            const pago = "SALDO";
+            const pago = "PASE " + cancha.metodoPago + " " + cancha.telefonoSinpe + " PAGO RESERVA CANCHA";
             this.sms.send("+2627", pago, options)
                 .then(res => console.log('Launched dialer!', res))
                 .catch(err => this.presentToast('Error al enviar al enviar el mensaje ' + err, false));
@@ -79,42 +75,6 @@ export class ReservaPage implements OnInit {
         });
     }
 
-    // async mostrarCancha(cancha: Cancha) {
-    //     const alert = await this.alertController.create({
-    //         header: cancha.nombre,
-    //         cssClass: 'ion-text-center',
-    //         inputs: [
-    //             {
-    //                 name: 'Dirrección',
-    //                 type: 'text',
-    //                 value: cancha.direccion,
-    //                 disabled: true
-    //             },
-    //             {
-    //                 name: 'Telefono',
-    //                 type: 'text',
-    //                 value: cancha.telefono != undefined ? cancha.telefono : "Sin Telefono",
-    //                 disabled: true
-    //             }
-    //         ],
-    //         buttons: [
-    //             {
-    //                 text: 'Llamar',
-    //                 handler: () => {
-    //                     console.log('Confirm Ok');
-    //                 }
-    //             },
-    //             {
-    //                 text: 'Listo',
-    //                 handler: () => {
-    //                     console.log('Confirm Ok');
-    //                 }
-    //             }
-    //         ]
-    //     });
-    //
-    //     await alert.present();
-    // }
 
     fechaCompleta(dia, tipo) {
 
@@ -148,13 +108,6 @@ export class ReservaPage implements OnInit {
 
         return "";
     }
-
-    llamar() {
-        this.callNumber.callNumber("89582736", true)
-            .then(res => console.log('Launched dialer!', res))
-            .catch(err => this.presentToast('Error launching dialer ' + err, false));
-    }
-
 
     async presentToast(msj: string, status: boolean) {
         const toast = await this.toastController.create({

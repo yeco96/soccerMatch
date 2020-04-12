@@ -6,9 +6,6 @@ import {TablesService} from 'src/app/service/tables.service';
 import {CrudService} from 'src/app/service/crud.service';
 import {LoaderService} from 'src/app/services/loader.service';
 import {Usuario} from 'src/app/models/usuario';
-import {AngularFireStorage} from '@angular/fire/storage';
-import {AngularFirestore} from '@angular/fire/firestore';
-
 
 @Component({
     selector: 'app-register',
@@ -55,8 +52,6 @@ export class RegisterPage implements OnInit {
         private crudService: CrudService,
         private loader: LoaderService,
         public modalController: ModalController,
-        private storage: AngularFireStorage,
-        private database: AngularFirestore,
         public toastController: ToastController
     ) {
     }
@@ -102,7 +97,7 @@ export class RegisterPage implements OnInit {
                 this.successMessage = 'Your account has been created. Please log in.';
                 this.navCtrl.navigateBack('');
                 this.errorMessage = '';
-                this.authService.validationEmail().then((respuesta:any) =>{
+                this.authService.validationEmail().then((respuesta: any) => {
                     this.presentToast('Se te envio un correo, favor verificalo');
                 });
             }, (err: { message: string; }) => {
@@ -124,11 +119,10 @@ export class RegisterPage implements OnInit {
         this.crudService.create(this.tables.tablas().USUARIO, value as Usuario).then(resp => {
             console.log(resp);
             this.loader.hideLoader();
-        })
-            .catch(error => {
-                console.log(error);
-                this.loader.hideLoader();
-            });
+        }).catch(error => {
+            console.log(error);
+            this.loader.hideLoader();
+        });
     }
 
     async presentToast(msj: string) {
