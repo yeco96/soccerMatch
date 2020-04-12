@@ -8,11 +8,15 @@
                           md="arrow-back-circle-sharp"></ion-icon>
             </ion-button>
         </ion-buttons>
-        <ion-buttons slot="end" *ngIf="tieneEquipo">
-            <ion-button (click)="editarEquipo(); changeProvincia();">
-                <ion-icon *ngIf="editar" style="font-size: 25px;" md="save-sharp"></ion-icon>
+        <ion-buttons slot="end" *ngIf="tieneEquipo && esLider">
+            <ion-button *ngIf="!editar" (click)="editarEquipo(); changeProvincia();">
                 <ion-icon *ngIf="!editar" style="font-size: 25px;" md="create-sharp"></ion-icon>
             </ion-button>
+
+            <ion-button *ngIf="editar" (click)="borrarCancha();">
+                <ion-icon *ngIf="editar" style="font-size: 25px;" md="trash-sharp"></ion-icon>
+            </ion-button>
+
         </ion-buttons>
     </ion-toolbar>
 </ion-header>
@@ -75,6 +79,16 @@
                                            value="{{cant.codigoCanton}}">{{cant.descripcion}}</ion-select-option>
                     </ion-select>
                 </ion-item>
+
+                <!--<ion-button *ngIf="esLider" class="ion-padding" expand="block" color="danger"-->
+                            <!--(click)="borrarCancha()">-->
+                    <!--BORRAR-->
+                <!--</ion-button>-->
+
+                <ion-button *ngIf="esLider" class="ion-padding" expand="block" color="success"
+                            (click)="editarEquipo(); changeProvincia();">
+                    GUARDAR
+                </ion-button>
 
             </div>
 
@@ -161,7 +175,7 @@
                     <ion-select [(ngModel)]="filtro"
                                 interface="action-sheet" cancelText="Cancelar" doneText="Aceptar">
                         <ion-select-option value="LISTO">EQUIPO</ion-select-option>
-                        <ion-select-option value="PENDIENTE">SOLICIUTDES</ion-select-option>
+                        <ion-select-option *ngIf="esLider" value="PENDIENTE">SOLICITUDES</ion-select-option>
                     </ion-select>
                 </ion-item>
 

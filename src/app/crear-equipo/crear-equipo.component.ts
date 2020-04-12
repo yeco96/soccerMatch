@@ -71,7 +71,7 @@ export class CrearEquipoComponent implements OnInit {
     equipoObjeto: Equipo;
     usuario: Usuario;
     obj: Equipo;
-    esLiber: boolean;
+    esLider: boolean;
     tieneEquipo: boolean;
 
     listaEquipos = new Array<Equipo>();
@@ -95,13 +95,16 @@ export class CrearEquipoComponent implements OnInit {
         this.authService.getDataUser().then(res => {
             this.usuario = res;
 
-            if (!this.usuario.liderEquipo) {
+
+
+            if ((!this.usuario.liderEquipo || this.usuario.liderEquipo == "") || (!this.usuario.liderEquipo || this.usuario.liderEquipo == "")) {
                 this.loader.hideLoader();
                 return;
             }
 
             this.crudService.read(this.tables.tablas().EQUIPO).subscribe(data => {
                 this.listaEquipos = this.crudService.construir(data) as Array<Equipo>;
+
                 this.equipoObjeto = this.listaEquipos.filter(x => {
                     return x.id === this.usuario.liderEquipo;
                 })[0];
@@ -110,27 +113,30 @@ export class CrearEquipoComponent implements OnInit {
                     this.equipoObjeto.ubicacion = new UbicacionEquipo();
                 }
 
-                this.esLiber = true;
-                this.tieneEquipo = true;
+                if (this.usuario.liderEquipo) {
+                    this.esLider = true;
+                    this.tieneEquipo = true;
+                }
+
+                if (this.usuario.perteneceEquipo) {
+                    this.esLider = false;
+                    this.tieneEquipo = true;
+                }
 
 
-                this.crudService.read(this.tables.ubicacion().UBICACION).subscribe(data => {
-                    this.ubicacion = this.crudService.construir(data) as Array<Ubicacion>;
-                    this.ubicacionJSON = JSON.parse(JSON.stringify(this.ubicacion));
-
-                    this.loader.hideLoader();
-                }, error1 => {
-                    this.loader.hideLoader();
-                    this.presentToast('Ocurrio un error al cargar las canchas', false)
-                });
-
-
+                this.loader.hideLoader();
             });
 
         }, reason => {
             this.loader.hideLoader();
         });
 
+        this.crudService.read(this.tables.ubicacion().UBICACION).subscribe(data => {
+            this.ubicacion = this.crudService.construir(data) as Array<Ubicacion>;
+            this.ubicacionJSON = JSON.parse(JSON.stringify(this.ubicacion));
+        }, error1 => {
+            this.presentToast('Ocurrio un error al cargar las canchas', false)
+        });
 
     }
 
@@ -155,7 +161,7 @@ export class CrearEquipoComponent implements OnInit {
                     this.equipoObjeto.ubicacion = new UbicacionEquipo();
                 }
 
-                this.esLiber = true;
+                this.esLider = true;
                 this.tieneEquipo = true;
                 this.loader.hideLoader();
             });
@@ -173,7 +179,7 @@ export class CrearEquipoComponent implements OnInit {
 
     datosUbicacion(provincia, canton) {
         if (provincia != null && canton == null) {
-            const  result = this.ubicacion.filter(x => x.codigoProvincia == provincia);
+            const result = this.ubicacion.filter(x => x.codigoProvincia == provincia);
             return result[0].descripcion;
         }
 
@@ -363,7 +369,14 @@ export class CrearEquipoComponent implements OnInit {
                         });
 
                         this.crudService.update(this.tables.tablas().EQUIPO, this.equipoObjeto).then(resp => {
-                            this.loader.hideLoader();
+                            this.usuario.perteneceEquipo = this.equipoObjeto.id;
+                            this.crudService.update(this.tables.tablas().USUARIO, this.usuario).then(resp => {
+                                this.loader.hideLoader();
+                                this.listaEquiposMostrar = [];
+                            }).catch(error => {
+                                this.presentToast('Ocurrio un error al actualizar el usuario', false);
+                                this.loader.hideLoader();
+                            });
                         }).catch(error => {
                             this.presentToast('Ocurrio un error al actualizar  EL EQUIPO', false);
                             this.loader.hideLoader();
@@ -377,7 +390,47 @@ export class CrearEquipoComponent implements OnInit {
     }
 
     changeProvincia() {
-        this.provincia = this.ubicacion.find(x => x.codigoProvincia.toString() === this.equipoObjeto.ubicacion.codigoProvincia.toString());
+        if (this.equipoObjeto.ubicacion.codigoProvincia) {
+            this.provincia = this.ubicacion.find(x => x.codigoProvincia.toString() === this.equipoObjeto.ubicacion.codigoProvincia.toString());
+        }
+    }
+
+    async borrarCancha() {
+
+        const alert = await this.alertController.create({
+            header: 'Borrar equipo',
+            message: "¿Desea borrar su equipo?",
+            buttons: [
+                {
+                    text: 'Cancelar',
+                    role: 'cancel',
+                    cssClass: 'cancelar',
+                    handler: () => {
+
+                    }
+                }, {
+                    text: 'Aceptar',
+                    handler: () => {
+
+                        this.usuario.liderEquipo = "";
+                        this.crudService.update(this.tables.tablas().USUARIO, this.usuario).then(resp => {
+                            this.crudService.delete(this.tables.tablas().EQUIPO, this.equipoObjeto);
+                            this.cerrarModal();
+                            this.loader.hideLoader();
+                            this.listaEquiposMostrar = [];
+                            this.presentToast('Usuario guardado correctamente', true);
+                        }).catch(error => {
+                            this.presentToast('Ocurrio un error al actualizar el usuario', false);
+                            this.loader.hideLoader();
+                        });
+
+                    }
+                }
+            ]
+        });
+
+        await alert.present();
+
     }
 
 

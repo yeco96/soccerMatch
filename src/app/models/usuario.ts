@@ -3,6 +3,7 @@ import { firestore } from 'firebase';
 export class Usuario {
     id: string;
     liderEquipo: string;
+    perteneceEquipo: string;
     uid: string;
     correo: string;
     email: string;
