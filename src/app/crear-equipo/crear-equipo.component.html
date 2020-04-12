@@ -1,6 +1,6 @@
 <ion-header>
     <ion-toolbar color="primary">
-        <ion-title>{{tieneEquipo ? '' : listaEquiposMostrar.length > 0 ? 'Buscar equipo' :'Equipo'}}</ion-title>
+        <ion-title>{{tieneEquipo ? '' : listaEquiposMostrar.length > 0 ? 'Buscar equipo' : 'Equipo'}}</ion-title>
         <ion-buttons slot="start">
             <ion-button (click)="listaEquiposMostrar.length == 0 ? cerrarModal() : listaEquiposMostrar = []">
                 <ion-icon *ngIf="listaEquiposMostrar.length == 0" style="font-size: 25px;" md="close-circle"></ion-icon>
@@ -9,7 +9,7 @@
             </ion-button>
         </ion-buttons>
         <ion-buttons slot="end" *ngIf="tieneEquipo">
-            <ion-button (click)="editarEquipo()">
+            <ion-button (click)="editarEquipo(); changeProvincia();">
                 <ion-icon *ngIf="editar" style="font-size: 25px;" md="save-sharp"></ion-icon>
                 <ion-icon *ngIf="!editar" style="font-size: 25px;" md="create-sharp"></ion-icon>
             </ion-button>
@@ -18,13 +18,16 @@
 </ion-header>
 
 <ion-content>
-    <div class="changeColor" style="height: 100px" *ngIf="!editar && tieneEquipo">
+    <div class="changeColor ion-text-center" style="height: 110px" *ngIf="!editar && tieneEquipo">
         <br>
-        <h1 class="ion-text-center" style="color: white;">{{equipoObjeto.nombre.toUpperCase()}}</h1>
+        <ion-icon style="font-size: 50px;" md="proteger"></ion-icon>
+        <br>
+        <h1 class="ion-text-center ion-no-margin" style="color: white;">{{equipoObjeto.nombre.toUpperCase()}}</h1>
     </div>
     <br>
 
     <ion-card *ngIf="listaEquiposMostrar.length == 0">
+
         <ion-card-content>
             <div *ngIf="!editar && tieneEquipo" class="ion-text-center">
                 <h2>{{equipoObjeto.descripcion ? equipoObjeto.descripcion : 'Sin Descripción'}}</h2>
@@ -49,7 +52,32 @@
                     <ion-input type="text" class="ion-text-center" [(ngModel)]="equipoObjeto.descripcion"
                                required></ion-input>
                 </ion-item>
+
+                <p class="ion-no-margin ion-text-center">PROVINCIA</p>
+                <ion-item>
+                    <ion-label position="floating"></ion-label>
+                    <ion-select class="ion-text-center" name="codigoProvincia"
+                                [(ngModel)]="equipoObjeto.ubicacion.codigoProvincia"
+                                (ionChange)="changeProvincia()" required
+                                interface="action-sheet" cancelText="Cancelar" doneText="Aceptar">
+                        <ion-select-option *ngFor="let ubi of ubicacion"
+                                           value="{{ubi.codigoProvincia}}">{{ubi.descripcion}}</ion-select-option>
+                    </ion-select>
+                </ion-item>
+
+                <p *ngIf="provincia" class="ion-no-margin ion-text-center">CANTÓN</p>
+                <ion-item *ngIf="provincia">
+                    <ion-label position="floating"></ion-label>
+                    <ion-select class="ion-text-center" name="codigoCanton"
+                                [(ngModel)]="equipoObjeto.ubicacion.codigoCanton" required
+                                interface="action-sheet" cancelText="Cancelar" doneText="Aceptar">
+                        <ion-select-option *ngFor="let cant of provincia.canton"
+                                           value="{{cant.codigoCanton}}">{{cant.descripcion}}</ion-select-option>
+                    </ion-select>
+                </ion-item>
+
             </div>
+
         </ion-card-content>
     </ion-card>
 
@@ -103,37 +131,13 @@
 
         <div class="ion-text-center ion-padding">
             <div *ngIf="tab == 'INFO'">
-                INFO
-            </div>
-
-            <div *ngIf="tab == 'JUGADOR'">
-                JUGADOR
 
 
-                <ion-item>
-                    <ion-label position="floating"><strong>Buscar</strong></ion-label>
-                    <ion-input name="nombre" type="text" [(ngModel)]="texto" (ionChange)="buscar()"></ion-input>
-                </ion-item>
+                <h1>{{datosUbicacion(equipoObjeto.ubicacion.codigoProvincia, null)}}</h1>
+                <h2>{{datosUbicacion(equipoObjeto.ubicacion.codigoProvincia, equipoObjeto.ubicacion.codigoCanton)}}</h2>
 
-                <ion-grid>
-                    <ion-row class="ion-padding-bottom">
-                        <ion-col size="9"><strong>Usuario</strong>
-                        </ion-col>
-                        <ion-col size="3"><strong>Acceso</strong></ion-col>
-                    </ion-row>
-                    <ion-row class="ion-padding-bottom" *ngFor="let jugador of equipoObjeto.jugardores">
-                        <ion-col size="9">
-                            <ion-label>
-                                <h2>{{jugador.usuario.nombre}} {{jugador.usuario.apellidos}}</h2>
-                                <h3></h3>
-                                <p>{{jugador.usuario.email}}</p>
-                            </ion-label>
-                        </ion-col>
-                        <ion-col size="3">
-                            <!--<ion-toggle [(ngModel)]="usuario.activo" (ionChange)="actualizar(usuario)">Habilitar</ion-toggle>-->
-                        </ion-col>
-                    </ion-row>
-                </ion-grid>
+                <br>
+                <h4>{{equipoObjeto.jugardores.length}} Jugadores</h4>
 
 
                 <ion-fab horizontal="end" vertical="bottom" slot="fixed">
@@ -142,13 +146,69 @@
                     </ion-fab-button>
                     <ion-fab-list side="top">
                         <ion-fab-button color="primary" data-desc="SMS">
-                            <ion-icon md="mail-sharp"></ion-icon>
+                            <ion-icon md="send-sharp"></ion-icon>
                         </ion-fab-button>
-                        <ion-fab-button color="primary" data-desc="Whatsapp">
-                            <ion-icon md="logo-whatsapp"></ion-icon>
+                        <ion-fab-button color="primary" data-desc="Correo">
+                            <ion-icon md="mail-sharp"></ion-icon>
                         </ion-fab-button>
                     </ion-fab-list>
                 </ion-fab>
+            </div>
+
+            <div *ngIf="tab == 'JUGADOR'">
+                <ion-item class="ion-text-center">
+                    <ion-label position="floating"></ion-label>
+                    <ion-select [(ngModel)]="filtro"
+                                interface="action-sheet" cancelText="Cancelar" doneText="Aceptar">
+                        <ion-select-option value="LISTO">EQUIPO</ion-select-option>
+                        <ion-select-option value="PENDIENTE">SOLICIUTDES</ion-select-option>
+                    </ion-select>
+                </ion-item>
+
+                <ion-grid>
+                    <ion-row class="ion-padding-bottom">
+                        <ion-col size="9"><strong>Usuario</strong>
+                        </ion-col>
+                        <ion-col size="3"><strong>Acceso</strong></ion-col>
+                    </ion-row>
+                    <div *ngFor="let jugador of equipoObjeto.jugardores">
+                        <ion-row *ngIf="jugador.estado == filtro" class="ion-padding-bottom">
+                            <ion-col size="8">
+                                <ion-label>
+                                    <h2>{{jugador.usuario.nombre}} {{jugador.usuario.apellidos}}</h2>
+                                    <h3></h3>
+                                    <p>{{jugador.usuario.email}}</p>
+                                </ion-label>
+                            </ion-col>
+                            <ion-col size="4">
+                                <ion-icon *ngIf="jugador.miembro && jugador.lider" color="warning"
+                                          md="star-sharp"></ion-icon>
+                                <ion-icon *ngIf="jugador.miembro && !jugador.lider" color="success"
+                                          md="star-sharp"></ion-icon>
+                                <br>
+                                <ion-icon *ngIf="jugador.miembro" md="body-sharp"></ion-icon>
+
+                                <ion-row>
+                                    <ion-col *ngIf="!jugador.miembro" size="6" style="top: -24px;">
+                                        <ion-button fill="outline" color="light"
+                                                    (click)="validarSolicitud(true, jugador)">
+                                            <ion-icon color="success" md="checkmark-sharp"></ion-icon>
+                                        </ion-button>
+                                    </ion-col>
+                                    <ion-col *ngIf="!jugador.miembro" size="6" style="top: -24px;">
+                                        <ion-button fill="outline" color="light"
+                                                    (click)="validarSolicitud(false, jugador)">
+                                            <ion-icon color="danger" md="close-sharp"></ion-icon>
+                                        </ion-button>
+                                    </ion-col>
+                                </ion-row>
+
+                                <!--<ion-toggle [(ngModel)]="usuario.activo" (ionChange)="actualizar(usuario)">Habilitar</ion-toggle>-->
+                            </ion-col>
+                        </ion-row>
+                    </div>
+                </ion-grid>
+
 
             </div>
 

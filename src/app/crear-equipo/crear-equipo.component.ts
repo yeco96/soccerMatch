@@ -3,13 +3,15 @@ import {TablesService} from 'src/app/service/tables.service';
 import {CrudService} from 'src/app/service/crud.service';
 import {LoaderService} from 'src/app/services/loader.service';
 import {AlertController, ModalController, ToastController} from '@ionic/angular';
-import {MyData} from 'src/app/models/equipo';
+import {MyData, UbicacionEquipo} from 'src/app/models/equipo';
 import {AngularFireStorage, AngularFireUploadTask} from '@angular/fire/storage';
 import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
 import {Observable} from 'rxjs';
 import {Equipo} from '../models/equipo';
 import {AuthenticationService} from "../services/authentication.service";
 import {Usuario} from "../models/usuario";
+import {Canton, Ubicacion} from "../models/ubicacion";
+import {Cancha} from "../models/cancha";
 
 
 @Component({
@@ -39,6 +41,7 @@ export class CrearEquipoComponent implements OnInit {
     isUploaded: boolean;
 
     tab: string;
+    filtro: string;
 
     private imageCollection: AngularFirestoreCollection<MyData>;
 
@@ -59,6 +62,7 @@ export class CrearEquipoComponent implements OnInit {
         this.imageCollection = database.collection<MyData>('imagenesCancha');
         this.images = this.imageCollection.valueChanges();
         this.tab = 'INFO';
+        this.filtro = 'LISTO';
     }
 
 
@@ -74,10 +78,60 @@ export class CrearEquipoComponent implements OnInit {
     listaEquiposTemp = new Array<Equipo>();
     listaEquiposMostrar = new Array<Equipo>();
 
+
+    ubicacion = new Array<Ubicacion>();
+    ubicacionJSON: any;
+    provincia: Ubicacion;
+    canton: Canton;
+
+
+    canchasTemp: Cancha;
+
     ngOnInit() {
         this.equipoObjeto = new Equipo();
         this.usuario = new Usuario();
-        this.obtenerDatos();
+
+        this.loader.showLoader();
+        this.authService.getDataUser().then(res => {
+            this.usuario = res;
+
+            if (!this.usuario.liderEquipo) {
+                this.loader.hideLoader();
+                return;
+            }
+
+            this.crudService.read(this.tables.tablas().EQUIPO).subscribe(data => {
+                this.listaEquipos = this.crudService.construir(data) as Array<Equipo>;
+                this.equipoObjeto = this.listaEquipos.filter(x => {
+                    return x.id === this.usuario.liderEquipo;
+                })[0];
+
+                if (this.equipoObjeto.ubicacion == undefined) {
+                    this.equipoObjeto.ubicacion = new UbicacionEquipo();
+                }
+
+                this.esLiber = true;
+                this.tieneEquipo = true;
+
+
+                this.crudService.read(this.tables.ubicacion().UBICACION).subscribe(data => {
+                    this.ubicacion = this.crudService.construir(data) as Array<Ubicacion>;
+                    this.ubicacionJSON = JSON.parse(JSON.stringify(this.ubicacion));
+
+                    this.loader.hideLoader();
+                }, error1 => {
+                    this.loader.hideLoader();
+                    this.presentToast('Ocurrio un error al cargar las canchas', false)
+                });
+
+
+            });
+
+        }, reason => {
+            this.loader.hideLoader();
+        });
+
+
     }
 
 
@@ -96,6 +150,11 @@ export class CrearEquipoComponent implements OnInit {
                 this.equipoObjeto = this.listaEquipos.filter(x => {
                     return x.id === this.usuario.liderEquipo;
                 })[0];
+
+                if (this.equipoObjeto.ubicacion == undefined) {
+                    this.equipoObjeto.ubicacion = new UbicacionEquipo();
+                }
+
                 this.esLiber = true;
                 this.tieneEquipo = true;
                 this.loader.hideLoader();
@@ -106,13 +165,23 @@ export class CrearEquipoComponent implements OnInit {
         });
     }
 
-    mostrarEquipos() {
-
-    }
 
     cerrarModal() {
         this.actualizar = false;
         this.modalController.dismiss();
+    }
+
+    datosUbicacion(provincia, canton) {
+        if (provincia != null && canton == null) {
+            const  result = this.ubicacion.filter(x => x.codigoProvincia == provincia);
+            return result[0].descripcion;
+        }
+
+        if (provincia != null && canton != null) {
+            const prov = this.ubicacion.filter(x => x.codigoProvincia == provincia)[0];
+            const result = prov.canton.filter(c => c.codigoCanton == canton);
+            return result[0].descripcion;
+        }
     }
 
     async enviarSolicitud(equipo: Equipo) {
@@ -120,8 +189,23 @@ export class CrearEquipoComponent implements OnInit {
 
         if (equipo.jugardores) {
             const validar = equipo.jugardores.filter(x => x.usuario.uid == this.usuario.uid);
+
             if (validar.length > 0) {
-                return this.presentToast('Ya existe una solicitud al equipo', false);
+
+                const jugador = validar[0];
+
+                if (jugador.miembro) {
+                    return this.presentToast('El usuario ya es un miembro del equipo', true);
+                }
+
+                if (jugador.estado === "RECHAZADO") {
+                    return this.presentToast('El usuario no fue aceptado en el grupo', false);
+                }
+
+                if (jugador.estado === "PENDIENTE") {
+                    return this.presentToast('Ya existe una solicitud al equipo', false);
+                }
+
             }
         }
 
@@ -206,8 +290,8 @@ export class CrearEquipoComponent implements OnInit {
                         }
                         this.equipoObjeto.jugardores.push({
                             usuario: this.usuario,
-                            miembro: false,
-                            estado: 'PENDIENTE',
+                            miembro: true,
+                            estado: 'LISTO',
                             lider: true
                         });
                         this.crudService.create(this.tables.tablas().EQUIPO, this.equipoObjeto).then(resp => {
@@ -246,6 +330,54 @@ export class CrearEquipoComponent implements OnInit {
             this.listaEquiposMostrar = this.listaEquiposMostrar.filter(x => x.nombre.toLowerCase().includes(this.equipoObjeto.nombre.toLowerCase()));
             this.loader.hideLoader();
         }, error1 => this.loader.hideLoader());
+    }
+
+    async validarSolicitud(estado, jugador) {
+        const estadoStr = (estado ? 'Aprobar' : 'Rechazar');
+        const titulo = estado ? 'Aprobar Solicitud' : 'Rechazar Solicitud';
+        const alert = await this.alertController.create({
+            header: titulo,
+            message: "¿Desea " + estadoStr + " al jugador?",
+            buttons: [
+                {
+                    text: 'Cancelar',
+                    role: 'cancel',
+                    cssClass: 'cancelar',
+                    handler: () => {
+
+                    }
+                }, {
+                    text: 'Aceptar',
+                    handler: () => {
+
+                        this.equipoObjeto.jugardores.forEach(x => {
+                            if (JSON.stringify(x) === JSON.stringify(jugador)) {
+                                if (estado) {
+                                    x.miembro = true;
+                                    x.estado = 'LISTO';
+                                } else {
+                                    x.miembro = false;
+                                    x.estado = 'RECHAZADO';
+                                }
+                            }
+                        });
+
+                        this.crudService.update(this.tables.tablas().EQUIPO, this.equipoObjeto).then(resp => {
+                            this.loader.hideLoader();
+                        }).catch(error => {
+                            this.presentToast('Ocurrio un error al actualizar  EL EQUIPO', false);
+                            this.loader.hideLoader();
+                        });
+                    }
+                }
+            ]
+        });
+
+        await alert.present();
+    }
+
+    changeProvincia() {
+        this.provincia = this.ubicacion.find(x => x.codigoProvincia.toString() === this.equipoObjeto.ubicacion.codigoProvincia.toString());
     }
 
 

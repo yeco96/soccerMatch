@@ -1,11 +1,13 @@
 import {Usuario} from "./usuario";
 
+
 export class Equipo {
     id: string;
     nombre: string;
     descripcion: string;
     telefono : String;
     imagen: string;
+    ubicacion: UbicacionEquipo;
     creacion: string;
     lider: string;
     jugardores: Array<Jugador>;
@@ -90,6 +92,11 @@ export class Jugador {
 }
 
 
+export class UbicacionEquipo {
+    codigoProvincia: number;
+    codigoCanton: number;
+    codigoDistrito: number;
+}
 
 
 
