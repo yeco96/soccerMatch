@@ -62,26 +62,43 @@ export class LoaderService {
         // });
 
 
-        this.loadingController.create(options).then(a => {
-            a.present().then(() => {
-                this.loader = a;
-                this.listo = true;
-                if (this.apagado) {
-                    a.dismiss();
-                    this.apagado = false;
-                    this.listo = false;
-                }
-            });
-        });
+        // await this.loadingController.create(options).then(a => {
+        //     a.present().then(() => {
+        //         this.loader = a;
+        //         this.listo = true;
+        //         if (this.apagado) {
+        //             this.loader.dismiss();
+        //             this.apagado = false;
+        //             this.listo = false;
+        //             this.loader = undefined;
+        //         }
+        //     });
+        // });
+
+
+        this.loader = await this.loadingController.create(options);
+        await this.loader.present();
+        this.listo = true;
+        if (this.apagado) {
+            await this.loader.dismiss();
+            this.apagado = false;
+            this.listo = false;
+            this.loader = undefined;
+        }
 
 
     }
 
     async hideLoader() {
 
+        if (this.loader) {
+            return await this.loader.dismiss();
+        }
+
         if (this.listo) {
             this.listo = false;
-            this.loader.dismiss();
+            await this.loader.dismiss();
+            this.loader = undefined;
         } else {
             this.apagado = true;
             this.listo = false;
