@@ -8,4 +8,5 @@ export class Reserva {
     estado: string;
     cancha: Cancha;
     usuario: Usuario;
+    id_MetodoPago: string;
 }

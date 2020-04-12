@@ -1,4 +1,4 @@
-export class Reto {
+export class Torneo {
     id: string;
     descripcion: string;
     partido: [Partido];
