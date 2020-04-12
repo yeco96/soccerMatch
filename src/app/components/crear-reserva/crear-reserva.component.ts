@@ -84,25 +84,26 @@ export class CrearReservaComponent implements OnInit {
     }
 
     ngOnInit() {
+
         this.loader.showLoader();
         this.crudService.read(this.tables.ubicacion().UBICACION).subscribe(data => {
             this.ubicacion = this.crudService.construir(data) as Array<Ubicacion>;
             this.ubicacionJSON = JSON.parse(JSON.stringify(this.ubicacion));
-            this.loader.hideLoader();
+
+            this.usuario = new Usuario();
+            this.authenticationService.getDataUser().then(res => {
+                this.usuario = res;
+                this.loader.hideLoader();
+            }, reason => {
+                this.loader.hideLoader();
+            });
+
+
+
         }, error1 => this.loader.hideLoader());
 
-        this.usuario = new Usuario();
-        this.loader.showLoader();
-        this.authenticationService.getDataUser().then(res => {
-            this.usuario = res;
-            this.loader.hideLoader();
-        }, reason => {
-            this.loader.hideLoader();
-        });
 
         this.fechaMnima = this.formattedDate();
-        console.log(this.fechaMnima)
-
     }
 
 
