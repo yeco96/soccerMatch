@@ -28,18 +28,23 @@ export class ClientesPage implements OnInit {
     usuarios = new Array<Usuario>();
     texto: string;
     usuariosTemp = new Array<Usuario>();
+    user: Usuario;
 
     ngOnInit() {
         this.loader.showLoader();
-        this.crudService.read(this.tables.tablas().USUARIO).subscribe(data => {
-            this.usuarios = this.crudService.construir(data) as Array<Usuario>;
-            this.usuarios.forEach(x => {
-                if (!x.acceso) {
-                    x.acceso = new Acceso();
-                }
+        this.authService.getDataUser().then(res => {
+            this.user = res;
+            this.crudService.read(this.tables.tablas().USUARIO).subscribe(data => {
+                this.usuarios = this.crudService.construir(data) as Array<Usuario>;
+                this.usuarios.forEach(x => {
+                    if (!x.acceso) {
+                        x.acceso = new Acceso();
+                    }
+                });
+                this.usuariosTemp = this.usuarios;
+                this.loader.hideLoader();
             });
-            this.usuariosTemp = this.usuarios;
-            this.loader.hideLoader();
+
         });
     }
 

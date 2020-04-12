@@ -81,13 +81,16 @@ export class AuthenticationService {
 
     async getDataUser() {
         return new Promise<any>((resolve, reject) => {
-            let user = firebase.auth().currentUser;
+            // let user = firebase.auth().currentUser;
             let usuario = new Usuario();
-            if (user == undefined) {
-                user = firebase.auth().currentUser;
-            }
-            const uid = user.uid.toString();
-            this.crudService.read(this.tables.tablas().USUARIO).subscribe(data => {
+            // if (user == undefined) {
+            //     user = firebase.auth().currentUser;
+            // }
+
+
+            this.storage.get('uid').then((val) => {
+                const uid = val.toString();
+                this.crudService.read(this.tables.tablas().USUARIO).subscribe(data => {
                     const temp = (this.crudService.construir(data) as Array<Usuario>);
                     usuario = temp.filter(x => {
                         return x.uid === uid;
@@ -102,8 +105,10 @@ export class AuthenticationService {
 
                     usuario.fechaNacimiento = new Date(usuario.fechaNacimiento).toISOString();
                     resolve(usuario);
-                },
-                err => reject(err));
+                }, err => reject(err));
+            });
+
+
         });
     }
 

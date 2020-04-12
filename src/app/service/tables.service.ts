@@ -35,4 +35,16 @@ export class TablesService {
             CLIENTES: 'Clientes'
         };
     }
+
+    public roles() {
+        return {
+            JUGADOR: '1',
+            CANCHA: '2',
+            ADMIN: '3'
+        };
+    }
+
+    permiso(mascara, permiso) {
+        return (Number(mascara) & Number(permiso)) == Number(permiso);
+    }
 }
