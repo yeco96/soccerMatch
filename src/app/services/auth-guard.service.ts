@@ -7,11 +7,12 @@ import {AuthenticationService} from './authentication.service';
 })
 export class AuthGuardService implements CanActivate {
 
+    /* Inicializacion de Objetos*/
     constructor(
         public authenticationService: AuthenticationService
     ) {
     }
-
+    /*Metodo de guarda para autorizar una autenticacion retornando el servicio */
     canActivate(route: ActivatedRouteSnapshot): boolean {
         const role = route.data.role;
         return this.authenticationService.isAuthenticated();

@@ -12,6 +12,7 @@ import {Usuario} from 'src/app/models/usuario';
     styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
+     /* Inicializacion de Objetos*/
     constructor(
         private navCtrl: NavController,
         private authService: AuthenticationService,
@@ -25,7 +26,7 @@ export class LoginPage implements OnInit {
     validationsForm: FormGroup;
     errorMessage = '';
 
-
+    /* Validacion de campos*/
     validationMessages = {
         email: [
             {type: 'required', message: 'El correo es requerido.'},
@@ -36,7 +37,7 @@ export class LoginPage implements OnInit {
             {type: 'minlength', message: 'Por favor ingrese una contraseña valida'}
         ]
     };
-
+     /* Validacion de que se ingreso con el formato correcto*/
     ngOnInit() {
         this.validationsForm = this.formBuilder.group({
             email: new FormControl('', Validators.compose([
@@ -50,13 +51,14 @@ export class LoginPage implements OnInit {
         });
     }
 
-
+     /* Validacion de usuario ingresado correctamente*/
     loginUser(value: { email: string; password: string; }) {
         this.loader.showLoader();
         this.authService.loginUser(value)
             .then(res => {
                 console.log(res);
                 this.authService.getDataUser().then((value: Usuario) => {
+                     /* Validacion de actividado inactividad de un usuario*/
                     if (value.activo) {
                         this.errorMessage = '';
                         this.navCtrl.navigateForward('/home');
@@ -75,7 +77,7 @@ export class LoginPage implements OnInit {
                 this.loader.hideLoader();
             });
     }
-
+     /* Salir de sesion*/
     logout() {
         this.authService.logoutUser()
             .then(res => {
@@ -86,12 +88,12 @@ export class LoginPage implements OnInit {
                 this.loader.hideLoader();
             });
     }
-
+     /* Ir al registro en caso de no estar registrado*/
     goToRegisterPage() {
         this.navCtrl.navigateForward('/register');
     }
 
-
+     /* Presenta el compononete de olvido su contrasena */
     async presentModal() {
         const modal = await this.modalController.create({
             component: OlvidoContraseniaComponent,

@@ -14,7 +14,7 @@ import {Acceso, Usuario} from 'src/app/models/usuario';
     styleUrls: ['./clientes.page.scss'],
 })
 export class ClientesPage implements OnInit {
-
+/* Inicializacion de Objetos*/
     constructor(
         private navCtrl: NavController,
         private authService: AuthenticationService,
@@ -24,11 +24,13 @@ export class ClientesPage implements OnInit {
         private tables: TablesService,
         public modalController: ModalController) {
     }
-
+    /* Inicializacion de Variables*/ 
     usuarios = new Array<Usuario>();
     texto: string;
     usuariosTemp = new Array<Usuario>();
-    user: Usuario;
+   user: Usuario;
+
+   /*Integracion del service crud loader para la conexion Async */
 
     ngOnInit() {
         this.loader.showLoader();
@@ -47,7 +49,7 @@ export class ClientesPage implements OnInit {
 
         });
     }
-
+     /* Metodo de actualizar cliente/jugador*/
     actualizar(value: Usuario) {
         this.crudService.update(this.tables.tablas().USUARIO, value).then(resp => {
             console.log(resp);
@@ -55,7 +57,7 @@ export class ClientesPage implements OnInit {
             console.log(error);
         });
     }
-
+     /*Metodo de buscar usuario por nombre */
     buscar() {
         this.usuarios = this.usuariosTemp;
         this.usuarios = this.usuarios.filter(x => (x.nombre + ' ' + x.apellidos).toLowerCase().includes(this.texto.toLowerCase()))

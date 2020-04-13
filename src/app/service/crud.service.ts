@@ -13,18 +13,20 @@ export class CrudService {
         private tables: TablesService
     ) {
     }
-
+    /*Metodo para crear una tabla en la DB
+    *Coleccion en firebase
+     */
     create(tabla, record, noticia?: Noticias) {
         if (noticia) {
             this.db.collection(this.tables.tablas().NOTICIAS).add(JSON.parse(JSON.stringify(noticia)));
         }
         return this.db.collection(tabla).add(JSON.parse(JSON.stringify(record)));
     }
-
+    /*Metodo de lectura de coleccion  */
     read(tabla) {
         return this.db.collection(tabla).snapshotChanges();
     }
-
+    /*Metodo para contruir una push del objeto*/
     construir(data): any {
         const lista = data.map(e => {
             return {

@@ -14,7 +14,7 @@ import {Acceso, Usuario} from 'src/app/models/usuario';
 })
 export class RegisterPage implements OnInit {
 
-
+    /* Validaciones*/
     validations_form: FormGroup;
     errorMessage = '';
     successMessage = '';
@@ -43,7 +43,7 @@ export class RegisterPage implements OnInit {
             {type: 'minlength', message: 'debe contener minimo 6 caracteres.'}
         ]
     };
-
+ /* Inicializacion de Objetos*/
     constructor(
         private navCtrl: NavController,
         private authService: AuthenticationService,
@@ -55,10 +55,10 @@ export class RegisterPage implements OnInit {
         public toastController: ToastController
     ) {
     }
-
+    /* Inicializacion de Variables*/ 
     usuarios = new Array<Usuario>();
     usuarioObjeto: Usuario;
-
+    /*Integracion del  loader para la conexion Async y validar los campos */
     ngOnInit() {
 
         this.usuarioObjeto = new Usuario();
@@ -87,7 +87,7 @@ export class RegisterPage implements OnInit {
             ])),
         });
     }
-
+    /*Metodo para realizar un intento de registro */
     tryRegister(value: any) {
         this.authService.registerUser(value)
             .then((res: any) => {
@@ -106,11 +106,11 @@ export class RegisterPage implements OnInit {
                 this.successMessage = '';
             });
     }
-
+    /*Metodo para ir a login */
     goLoginPage() {
         this.navCtrl.navigateBack('');
     }
-
+    /*Metodo para guardar los datos */
     guardar(value: any) {
         this.loader.showLoader();
         value.fechaNacimiento = new Date(value.fechaNacimiento);
@@ -128,7 +128,7 @@ export class RegisterPage implements OnInit {
             this.loader.hideLoader();
         });
     }
-
+    /*Toast controller para el servicio Async */
     async presentToast(msj: string) {
         const toast = await this.toastController.create({
             message: msj,

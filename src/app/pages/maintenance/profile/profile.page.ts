@@ -20,7 +20,7 @@ export class ProfilePage implements OnInit {
     usuario: Usuario;
     editar = true;
     popoverController: any;
-
+     /* Inicializacion de Objetos*/
     constructor(
         private authService: AuthenticationService,
         private formBuilder: FormBuilder,
@@ -34,9 +34,10 @@ export class ProfilePage implements OnInit {
         public navCtrl: NavController,
     ) {
     }
-
+    /* Inicializacion de Variables*/ 
     generos = ['Masculino ', 'Feminino', 'No especificar'];
 
+    /*Integracion del service loader para la autenticacion Async */
     ngOnInit() {
         this.usuario = new Usuario();
         this.loader.showLoader();
@@ -47,7 +48,7 @@ export class ProfilePage implements OnInit {
             this.loader.hideLoader();
         });
     }
-
+    /*Metodo para editar el perfil */
     editarPerfil() {
         if (this.editar) {
             this.editar = false;
@@ -66,7 +67,7 @@ export class ProfilePage implements OnInit {
         }
     }
 
-
+    /*Toast controller para el servicio Async */
     async presentToast(msj: string, status: boolean) {
         const toast = await this.toastController.create({
             message: msj,

@@ -12,6 +12,7 @@ import {AuthenticationService} from 'src/app/services/authentication.service';
     styleUrls: ['./olvido-contrasenia.component.scss'],
 })
 export class OlvidoContraseniaComponent implements OnInit {
+     /* Inicializacion de Objetos*/
     constructor(private tables: TablesService,
                 private loader: LoaderService,
                 public modalController: ModalController,
@@ -22,6 +23,7 @@ export class OlvidoContraseniaComponent implements OnInit {
     ) {
     }
 
+         /* Validaciones*/
     validationsForm: FormGroup;
     errorMessage = '';
 
@@ -34,6 +36,7 @@ export class OlvidoContraseniaComponent implements OnInit {
         ],
     };
 
+         /* Validacion con patron de contrasena*/
     ngOnInit() {
         this.validationsForm = this.formBuilder.group({
             email: new FormControl('', Validators.compose([
@@ -48,7 +51,7 @@ export class OlvidoContraseniaComponent implements OnInit {
         this.modalController.dismiss();
     }
 
-
+     /* Metodo loader al console de olvido de contrasena*/
     forgetPass(value: { email: string; }) {
         this.loader.showLoader();
         this.authService.forgetPass(value).then(res => {
@@ -64,7 +67,7 @@ export class OlvidoContraseniaComponent implements OnInit {
         });
 
     }
-
+    /*Toast controller para el servicio Async */
     async presentToast(msj, status) {
         const toast = await this.toastController.create({
             message: msj,
@@ -74,7 +77,7 @@ export class OlvidoContraseniaComponent implements OnInit {
         });
         toast.present();
     }
-
+    /*Regresar al Login */
     goLoginPage() {
         this.cerrarModal();
     }

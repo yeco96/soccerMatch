@@ -20,6 +20,7 @@ import {Noticias} from 'src/app/models/noticias';
     styleUrls: ['./crear-cancha.component.scss'],
 })
 export class CrearCanchaComponent implements OnInit {
+     
     // Upload Task
     task: AngularFireUploadTask;
     // Progress in percentage
@@ -37,10 +38,11 @@ export class CrearCanchaComponent implements OnInit {
     isUploading: boolean;
     isUploaded: boolean;
 
+    /* Validaciones*/
     validations_form: FormGroup;
     errorMessage = '';
     successMessage = '';
-
+/* Validaciones*/
     validation_messages = {
         telefono: [
             {type: 'required', message: 'campo requerido.'},
@@ -57,6 +59,7 @@ export class CrearCanchaComponent implements OnInit {
     private imageCollection: AngularFirestoreCollection<MyData>;
 
     constructor(
+        /* Inicializacion de Objetos*/
         private tables: TablesService,
         private crudService: CrudService,
         private loader: LoaderService,
@@ -74,7 +77,7 @@ export class CrearCanchaComponent implements OnInit {
         this.images = this.imageCollection.valueChanges();
     }
 
-
+    /* Inicializacion de Variables y referencias a otras tablas*/ 
     actualizar: boolean;
     ubicacion = new Array<Ubicacion>();
     ubicacionJSON: any;
@@ -88,7 +91,7 @@ export class CrearCanchaComponent implements OnInit {
 
 
     obj: Cancha;
-
+    /*Inicializacion del equipo que se va a crear*/
     ngOnInit() {
         this.canchaObjeto = new Cancha();
         this.canchaObjeto.metodoPago = new MetodoPago();
@@ -96,7 +99,7 @@ export class CrearCanchaComponent implements OnInit {
         this.canchaObjeto.ubicacion = new UbicacionCancha();
         this.canchaObjeto.horario = new Horario();
 
-
+        /* Validaciones de length*/
         this.validations_form = this.formBuilder.group({
             telefono: new FormControl('', Validators.compose([
                 Validators.minLength(9),
@@ -109,7 +112,7 @@ export class CrearCanchaComponent implements OnInit {
                 Validators.required
             ])),
         });
-
+        /*Servicio para el crud con la tabla de ubicacion */
         this.loader.showLoader();
         this.crudService.read(this.tables.ubicacion().UBICACION).subscribe(data => {
             this.ubicacion = this.crudService.construir(data) as Array<Ubicacion>;
@@ -131,7 +134,7 @@ export class CrearCanchaComponent implements OnInit {
         this.modalController.dismiss();
     }
 
-
+    /*Metodo de cambio de provincia */
     changeProvincia() {
         this.provincia = this.ubicacion.find(x => x.codigoProvincia.toString() === this.canchaObjeto.ubicacion.codigoProvincia.toString());
     }
@@ -139,7 +142,7 @@ export class CrearCanchaComponent implements OnInit {
     diasHorario: string;
     cantDias: number;
 
-
+    /*Metodo de guardar la cancha creada */
     guardar() {
 
         const result = Cancha.validar(this.canchaObjeto);
@@ -148,7 +151,7 @@ export class CrearCanchaComponent implements OnInit {
         if (result) {
             return this.presentToast(result, false);
         }
-
+        /*Metodo de actualizacionde cancha */
         this.loader.showLoader();
         if (this.actualizar) {
             this.noticia = new Noticias();
@@ -160,7 +163,7 @@ export class CrearCanchaComponent implements OnInit {
                 this.noticia.fecha = this.formattedDate();
                 this.noticia.tipo = 'Cancha'
             }
-
+            /* Aqui se muestran diferentes diferentes de al ingresar lso datos de la cancha*/
             if (JSON.stringify(this.canchaObjeto.horario.dias) != JSON.stringify(this.canchasTemp.horario.dias)) {
                 var i;
                 this.cantDias = this.canchaObjeto.horario.dias.length;
@@ -180,7 +183,7 @@ export class CrearCanchaComponent implements OnInit {
                 this.noticia.fecha = this.formattedDate();
                 this.noticia.tipo = 'Cancha'
             }
-
+            /* Se termina de completar el metodo de update*/
             this.crudService.update(this.tables.tablas().CANCHAS, this.canchaObjeto, this.noticia.descripcion ? this.noticia : undefined).then(resp => {
 
                 this.loader.hideLoader();
@@ -191,7 +194,7 @@ export class CrearCanchaComponent implements OnInit {
             });
             return;
         }
-
+        /*Seccion del metodo que utilza un servicio de autenticacion del usuario para definir si el registro se realizara exitosamente */
         this.authService.getDataUser().then(res => {
             this.canchaObjeto.usuarioCrea = res;
             this.noticia.fecha = this.formattedDate();
@@ -207,7 +210,7 @@ export class CrearCanchaComponent implements OnInit {
             });
         });
     }
-
+    /*Metodp para formatear la fecha */
     formattedDate(d = new Date) {
         let month = String(d.getMonth() + 1);
         let day = String(d.getDate());
@@ -222,7 +225,7 @@ export class CrearCanchaComponent implements OnInit {
         return `${year}-${month}-${day}T${hours}:${minutes}`;
     }
 
-
+    /*metodo para eliminar la cancha */
     elimiar() {
         this.loader.showLoader();
         this.crudService.delete(this.tables.tablas().CANCHAS, this.canchaObjeto).then(resp => {
@@ -234,7 +237,7 @@ export class CrearCanchaComponent implements OnInit {
         });
     }
 
-
+    /*Metodo que hace posible el upload de una imagen de cancha */
     uploadFile(event: FileList) {
         // The File object
         const file = event.item(0);
@@ -283,7 +286,7 @@ export class CrearCanchaComponent implements OnInit {
             })
         );
     }
-
+    /*Metodo para agregar la imagen a la DB */
     addImagetoDB(image: MyData) {
         // Create an ID for document
         const id = this.database.createId();
@@ -294,7 +297,7 @@ export class CrearCanchaComponent implements OnInit {
             console.log('error ' + error);
         });
     }
-
+    /*Toast controller para el servicio Async */
     async presentToast(msj: string, status: boolean) {
         const toast = await this.toastController.create({
             message: msj,

@@ -15,7 +15,7 @@ import {Canton, Ubicacion} from 'src/app/models/ubicacion';
 export class UbicacionPage implements OnInit {
 
     editar: boolean;
-
+ /* Inicializacion de Objetos*/
     constructor(
         private navCtrl: NavController,
         private authService: AuthenticationService,
@@ -26,15 +26,17 @@ export class UbicacionPage implements OnInit {
     ) {
     }
 
-
+    /* Inicializacion de Variables*/ 
     ubicacion = new Array<Ubicacion>();
 
+    
+/*Integracion del crud loader para la conexion Async */
     ngOnInit() {
         this.crudService.read(this.tables.ubicacion().UBICACION).subscribe(data => {
             this.ubicacion = this.crudService.construir(data) as Array<Ubicacion>;
         });
     }
-
+    /* Metodo para crear una prueba de cancha con datos quemados*/
     crearCanchaPrueba() {
 
         const ubicacion = new Ubicacion();

@@ -20,6 +20,7 @@ import {Cancha} from "../models/cancha";
     styleUrls: ['./crear-equipo.component.scss'],
 })
 export class CrearEquipoComponent implements OnInit {
+     /* Inicializacion de Objetos y variables*/
     editar = false;
     popoverController: any;
 
@@ -44,7 +45,7 @@ export class CrearEquipoComponent implements OnInit {
     filtro: string;
 
     private imageCollection: AngularFirestoreCollection<MyData>;
-
+/* Inicializacion de Objetos*/
     constructor(
         private tables: TablesService,
         private crudService: CrudService,
@@ -65,7 +66,7 @@ export class CrearEquipoComponent implements OnInit {
         this.filtro = 'LISTO';
     }
 
-
+/* Inicializacion de Variables y referencias a otras tablas*/ 
     actualizar: boolean;
     equipos = new Array<Equipo>();
     equipoObjeto: Equipo;
@@ -88,25 +89,27 @@ export class CrearEquipoComponent implements OnInit {
 
     canchasTemp: Cancha;
 
+    /* Metodo para crear equipo*/ 
     ngOnInit() {
+        /* Inicializacion de Variables */ 
         this.equipoObjeto = new Equipo();
         this.usuario = new Usuario();
-
+        /* Loader de datos*/ 
         this.loader.showLoader();
         this.authService.getDataUser().then(res => {
             this.usuario = res;
 
-
+            /* Verifica si el usuario no es lider y el campo de lider esta vacio luego si el campo usuario que pertenece al equipo esta vacio*/ 
             if ((!this.usuario.liderEquipo || this.usuario.liderEquipo == "") && (!this.usuario.perteneceEquipo || this.usuario.perteneceEquipo == "")) {
                 this.loader.hideLoader();
                 return;
             }
-
+            /* Servicio de read con la tabla para el mantenimiento*/ 
             this.crudService.read(this.tables.tablas().EQUIPO).subscribe(data => {
                 this.listaEquipos = this.crudService.construir(data) as Array<Equipo>;
 
                 this.equipoObjeto = this.listaEquipos.filter(x => {
-
+                    /*Si es el creador es lider y si no solo es un miembro mas del equipo */
                     if (this.usuario.liderEquipo) {
                         return x.id === this.usuario.liderEquipo;
                     }
@@ -116,7 +119,7 @@ export class CrearEquipoComponent implements OnInit {
                     }
 
                 })[0];
-
+                /* Validaciones*/ 
                 if (this.equipoObjeto.ubicacion == undefined) {
                     this.equipoObjeto.ubicacion = new UbicacionEquipo();
                 }
@@ -150,7 +153,7 @@ export class CrearEquipoComponent implements OnInit {
 
     }
 
-
+/* Obtener datos de la tabla*/ 
     obtenerDatos() {
         this.loader.showLoader();
         this.authService.getDataUser().then(res => {
@@ -206,7 +209,7 @@ export class CrearEquipoComponent implements OnInit {
         this.actualizar = false;
         this.modalController.dismiss();
     }
-
+    /* Obtebner datos de ubicacion*/ 
     datosUbicacion(provincia, canton) {
         if (provincia != null && canton == null) {
             const result = this.ubicacion.filter(x => x.codigoProvincia == provincia);
@@ -219,7 +222,7 @@ export class CrearEquipoComponent implements OnInit {
             return result[0].descripcion;
         }
     }
-
+    /* Enviar solicitud de validacion de un miembro del equipo de forma Async*/ 
     async enviarSolicitud(equipo: Equipo) {
 
 
@@ -229,7 +232,7 @@ export class CrearEquipoComponent implements OnInit {
             if (validar.length > 0) {
 
                 const jugador = validar[0];
-
+                /*Se indica la reaspuesta a la solicitud */
                 if (jugador.miembro) {
                     return this.presentToast('El usuario ya es un miembro del equipo', true);
                 }
@@ -245,7 +248,7 @@ export class CrearEquipoComponent implements OnInit {
             }
         }
 
-
+        /* Verificacion si desear enciar la solicitud para pertenecer a un equipo*/ 
         const alert = await this.alertController.create({
             header: 'Enviar solicitud',
             message: "¿Desea solicitar ingresar al equipo?",
@@ -258,6 +261,7 @@ export class CrearEquipoComponent implements OnInit {
 
                     }
                 }, {
+                    /*Se procede/no procede con la solicitud de actualizacion al equipo */
                     text: 'Aceptar',
                     handler: () => {
                         if (equipo.jugardores == undefined) {
@@ -285,7 +289,7 @@ export class CrearEquipoComponent implements OnInit {
         await alert.present();
     }
 
-
+    /* Metodo para crear un equipo*/ 
     async crearEquipo() {
 
         const result = Equipo.validar(this.equipoObjeto);
@@ -293,7 +297,7 @@ export class CrearEquipoComponent implements OnInit {
         if (result) {
             return this.presentToast(result, false);
         }
-
+        /*Metodo inicializacion de actualizar*/
         if (this.actualizar) {
             this.loader.showLoader();
             this.crudService.update(this.tables.tablas().EQUIPO, this.equipoObjeto).then(resp => {
@@ -305,7 +309,7 @@ export class CrearEquipoComponent implements OnInit {
             return;
         }
 
-
+        /*Metodo de creacion de un quipo */
         const alert = await this.alertController.create({
             header: 'Crear un equipo',
             message: "¿Desea crear un equipo?",
@@ -330,6 +334,7 @@ export class CrearEquipoComponent implements OnInit {
                             estado: 'LISTO',
                             lider: true
                         });
+                        /*Si cumple con las verificaciones se realiza la creacion */
                         this.crudService.create(this.tables.tablas().EQUIPO, this.equipoObjeto).then(resp => {
                             this.usuario.liderEquipo = resp.id;
                             this.crudService.update(this.tables.tablas().USUARIO, this.usuario).then(resp => {
@@ -353,7 +358,7 @@ export class CrearEquipoComponent implements OnInit {
 
         await alert.present();
     }
-
+/* Metodo para buscar equipos*/ 
     buscarEquipos() {
         const result = Equipo.validar(this.equipoObjeto);
         if (result) {
@@ -373,6 +378,7 @@ export class CrearEquipoComponent implements OnInit {
         }, error1 => this.loader.hideLoader());
     }
 
+    /* Validacion de la solicitud si es aprobada o rechazada*/ 
     async validarSolicitud(estado, jugador) {
         const estadoStr = (estado ? 'Aprobar' : 'Rechazar');
         const titulo = estado ? 'Aprobar Solicitud' : 'Rechazar Solicitud';
@@ -428,7 +434,7 @@ export class CrearEquipoComponent implements OnInit {
             this.provincia = this.ubicacion.find(x => x.codigoProvincia.toString() === this.equipoObjeto.ubicacion.codigoProvincia.toString());
         }
     }
-
+    /* Metodo para borrar cancha*/ 
     async borrarCancha() {
 
         const alert = await this.alertController.create({
@@ -467,7 +473,7 @@ export class CrearEquipoComponent implements OnInit {
         await alert.present();
 
     }
-
+    /* Metodo para editar un equipo*/ 
     editarEquipo() {
         if (!this.editar) {
             this.editar = true;
@@ -486,7 +492,7 @@ export class CrearEquipoComponent implements OnInit {
             this.editar = false;
         }
     }
-
+/*Toast controller para el servicio Async */
     async presentToast(msj: string, status: boolean) {
         const toast = await this.toastController.create({
             message: msj,

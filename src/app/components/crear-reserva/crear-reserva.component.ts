@@ -14,6 +14,8 @@ import {Usuario} from "../../models/usuario";
     templateUrl: './crear-reserva.component.html',
     styleUrls: ['./crear-reserva.component.scss'],
 })
+
+/* Inicializacion de Objetos*/
 export class CrearReservaComponent implements OnInit {
 
     constructor(
@@ -26,7 +28,7 @@ export class CrearReservaComponent implements OnInit {
         public authenticationService: AuthenticationService
     ) {
     }
-
+ /* Inicializacion de Variables y referencias a otras tablas*/ 
     ubicacion = new Array<Ubicacion>();
     ubicacionJSON: any;
 
@@ -45,17 +47,20 @@ export class CrearReservaComponent implements OnInit {
 
     buscarValidar: boolean;
 
+
+    /*Metodo para identificar el dia*/
     static diaSemana(dia) {
         const dias = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo'];
         const date = new Date(dia);
         return dias[date.getDay() - 1];
     }
 
+    /*Metodo para obtener la hora */
     getHora(dia) {
         const date = new Date(dia);
         return date.getHours();
     }
-
+    /*metodo para obtener la fecha completa */
     fechaCompleta(dia) {
         const dias = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo'];
         // tslint:disable-next-line: max-line-length
@@ -68,7 +73,7 @@ export class CrearReservaComponent implements OnInit {
 
         return (dias[date.getDay() - 1] + ' ' + fechaNum + ' de ' + meses[mes_name] + ' de ' + date.getFullYear()) + ' a las ' + date.getHours() + ' Horas';
     }
-
+    /*Metodo para darle formato al dia */
     formattedDate(d = new Date) {
         let month = String(d.getMonth() + 1);
         let day = String(d.getDate());
@@ -83,6 +88,7 @@ export class CrearReservaComponent implements OnInit {
         return `${year}-${month}-${day}T${hours}:${minutes}`;
     }
 
+    /*Integracion del service loader para la conexion Async */
     ngOnInit() {
 
         this.loader.showLoader();
@@ -109,7 +115,7 @@ export class CrearReservaComponent implements OnInit {
     cerrarModal() {
         this.modalController.dismiss();
     }
-
+    /*Metodo para buscar canchas */
     buscarCanchas() {
 
         if (this.codProvincia == null || this.codCanton == null) {
@@ -180,12 +186,12 @@ export class CrearReservaComponent implements OnInit {
             this.buscarValidar = false;
         }, error1 => this.loader.hideLoader());
     }
-
+    /*Metodo para cambiar provincia */
     changeProvincia() {
         this.provincia = this.ubicacion.find(x => x.codigoProvincia == this.codProvincia);
         this.codCanton = undefined;
     }
-
+    /*Toast controller para el servicio Async */
     async presentToast(msj, status) {
         const toast = await this.toastController.create({
             message: msj,
@@ -196,12 +202,12 @@ export class CrearReservaComponent implements OnInit {
         toast.present();
     }
 
-
+    /*Solicita reserva Async */
     async solicitar(cancha: Cancha) {
         this.enviarReserva(cancha);
     }
 
-
+    /*Envia reserva Async */
     async enviarReserva(cancha: Cancha) {
         const alert = await this.alertController.create({
             header: '¿Desea confirmar?',

@@ -13,7 +13,7 @@ import {Equipo} from 'src/app/models/equipo';
     styleUrls: ['./equipos.page.scss'],
 })
 export class EquiposPage implements OnInit {
-
+    /* Inicializacion de Objetos*/
     constructor(
         private navCtrl: NavController,
         private authService: AuthenticationService,
@@ -23,12 +23,12 @@ export class EquiposPage implements OnInit {
         private tables: TablesService,
         public modalController: ModalController) {
     }
-
+    /* Inicializacion de Variables */ 
     equipos = new Array<Equipo>();
     texto: string;
     equiposTemp = new Array<Equipo>();
 
-
+    /*Integracion del service loader para la conexion Async de lectura */
     ngOnInit() {
         this.loader.showLoader();
         this.crudService.read(this.tables.tablas().EQUIPO).subscribe(data => {
@@ -37,7 +37,7 @@ export class EquiposPage implements OnInit {
             this.loader.hideLoader();
         });
     }
-
+    /*Metodo de actualizar el equipo */
     actualizar(value: Equipo) {
         this.crudService.update(this.tables.tablas().EQUIPO, value).then(resp => {
             console.log(resp);
@@ -45,7 +45,7 @@ export class EquiposPage implements OnInit {
             console.log(error);
         });
     }
-
+    /*Metodo de buscar equipo por nombre */
     buscar() {
         this.equipos = this.equiposTemp;
         this.equipos = this.equipos.filter(x => (x.nombre + ' ' + x.telefono).toLowerCase().includes(this.texto.toLowerCase()))

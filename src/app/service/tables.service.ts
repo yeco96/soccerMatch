@@ -7,7 +7,7 @@ export class TablesService {
 
     constructor() {
     }
-
+    /*Definicion de metodos con sus tablas y atributos */
     public ubicacion() {
         return {
             UBICACION: 'Ubicacion',

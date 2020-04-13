@@ -10,6 +10,7 @@ import {Cancha} from 'src/app/models/cancha';
     templateUrl: './crear-reto.component.html',
     styleUrls: ['./crear-reto.component.scss'],
 })
+/* Inicializacion de Objetos*/
 export class CrearRetoComponent implements OnInit {
 
     constructor(
@@ -19,7 +20,7 @@ export class CrearRetoComponent implements OnInit {
         public toastController: ToastController
     ) {
     }
-
+ /* Inicializacion de Variables y referencias a otras tablas*/ 
     ubicacion = new Array<Ubicacion>();
     ubicacionJSON: any;
     codProvincia: number;
@@ -29,7 +30,7 @@ export class CrearRetoComponent implements OnInit {
     fechaBuscar: any;
 
     canchas = new Array<Cancha>();
-
+    /*Metodos dias de la semana y formatos */
     diaSemana() {
         const date = new Date(this.fechaBuscar);
 
@@ -67,7 +68,7 @@ export class CrearRetoComponent implements OnInit {
     cerrarModal() {
         this.modalController.dismiss();
     }
-
+    /*Metodo para buscar canchas */
     buscarCanchas() {
 
         if (this.codProvincia == null || this.codCanton == null) {
@@ -86,13 +87,14 @@ export class CrearRetoComponent implements OnInit {
             this.diaSemana2();
         });
     }
-
+    /*Metodo para cambiar provincia */
     changeProvincia() {
         // tslint:disable-next-line: triple-equals
         this.provincia = this.ubicacion.find(x => x.codigoProvincia == this.codProvincia);
         console.log(this.provincia);
     }
 
+    /*Toast controller para el servicio Async */
     async presentToast(msj, status) {
         const toast = await this.toastController.create({
             message: msj,

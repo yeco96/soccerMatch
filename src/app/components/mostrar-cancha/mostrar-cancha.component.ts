@@ -12,6 +12,7 @@ import {SMS} from "@ionic-native/sms/ngx";
 })
 export class MostrarCanchaComponent implements OnInit {
 
+        /* Inicializacion de Objetos*/
     constructor(private callNumber: CallNumber,
                 private sms: SMS,
                 public toastController: ToastController,
@@ -24,13 +25,14 @@ export class MostrarCanchaComponent implements OnInit {
 
     }
 
+    /*Metodo para llamar a la cancha */
     llamar(numero) {
         this.callNumber.callNumber(numero, true)
             .then(res => console.log('Launched dialer!', res))
             .catch(err => this.presentToast('Error al enviar al marcar: ' + err, false));
     }
 
-
+    /*Metodo para mensajear a la cancha */
     mensaje(numero) {
         this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.SEND_SMS).then(() => {
 
@@ -50,7 +52,7 @@ export class MostrarCanchaComponent implements OnInit {
         });
     }
 
-
+    /*Toast controller para el servicio Async */
     async presentToast(msj: string, status: boolean) {
         const toast = await this.toastController.create({
             message: msj,

@@ -14,7 +14,7 @@ import {Noticias} from 'src/app/models/noticias';
     styleUrls: ['./noticias.page.scss'],
 })
 export class NoticiasPage implements OnInit {
-
+/* Inicializacion de Objetos*/
     constructor(
         private navCtrl: NavController,
         private authService: AuthenticationService,
@@ -25,9 +25,9 @@ export class NoticiasPage implements OnInit {
         public modalController: ModalController
     ) {
     }
-
+    /* Inicializacion de Variables*/ 
     noticias = new Array<Noticias>();
-
+    /*Integracion del crud loader para la conexion Async y leer las noticias*/
     ngOnInit() {
         this.crudService.read(this.tables.tablas().NOTICIAS).subscribe(data => {
             this.noticias = this.crudService.construir(data) as Array<Noticias>;

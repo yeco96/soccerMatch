@@ -18,7 +18,7 @@ import {Cancha} from "../../models/cancha";
     styleUrls: ['./reserva.page.scss'],
 })
 export class ReservaPage implements OnInit {
-
+     /* Inicializacion de Objetos*/
     constructor(
         private navCtrl: NavController,
         private authService: AuthenticationService,
@@ -33,10 +33,10 @@ export class ReservaPage implements OnInit {
         public androidPermissions: AndroidPermissions
     ) {
     }
-
+    /* Inicializacion de Variables*/ 
     reservas = new Array<Reserva>();
     filtro: string;
-
+    /*Integracion del crud loader service para la conexion Async y lectura de reservas*/
     ngOnInit() {
         this.loader.showLoader();
         this.crudService.read(this.tables.tablas().RESERVA).subscribe(data => {
@@ -55,7 +55,7 @@ export class ReservaPage implements OnInit {
         this.filtro = 'PENDIENTE';
     }
 
-
+    /*Metodo para realizar un pago de la reserva  */
     pagar(cancha: Cancha) {
         this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.SEND_SMS).then(() => {
             var options = {
@@ -75,7 +75,7 @@ export class ReservaPage implements OnInit {
         });
     }
 
-
+    /*Metodo para obtener una fecha completa */
     fechaCompleta(dia, tipo) {
 
         const dias = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo'];
@@ -108,7 +108,7 @@ export class ReservaPage implements OnInit {
 
         return "";
     }
-
+    /*Toast controller para el servicio Async y definir una configuracion */
     async presentToast(msj: string, status: boolean) {
         const toast = await this.toastController.create({
             message: msj,
@@ -119,7 +119,7 @@ export class ReservaPage implements OnInit {
         toast.present();
     }
 
-
+    /*Metodo para mostrar un CSS en servicio Async */
     async mostrarModalAsync(value) {
         const modal = await this.modalController.create({
             component: MostrarCanchaComponent,
@@ -135,7 +135,7 @@ export class ReservaPage implements OnInit {
         this.mostrarModalAsync(value);
     }
 
-
+    /*Metodo para agregar un equipo */
     async agregarEquipo() {
         const alert = await this.alertController.create({
             header: '¿Agregar un equipo?',
@@ -160,7 +160,7 @@ export class ReservaPage implements OnInit {
         await alert.present();
     }
 
-
+    /*Metodo  para realizar un pago de manera Async*/
     async realizarPago(cancha: Cancha) {
         const alert = await this.alertController.create({
             header: '¡Realizar Pago!',

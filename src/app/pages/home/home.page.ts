@@ -17,7 +17,7 @@ export class HomePage implements OnInit {
 
     ngOnInit() {
     }
-
+    /*Metodo Async que realiza las configuraciones iniciales */
     async settingsPopover(ev: any) {
         const popover = await this.popoverController.create({
             component: MenuComponent,

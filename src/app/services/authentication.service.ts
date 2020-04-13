@@ -15,7 +15,7 @@ import {Usuario} from '../models/usuario';
 export class AuthenticationService {
 
     authState = new BehaviorSubject(false);
-
+    /* Inicializacion de Objetos y variables*/
     constructor(private router: Router,
                 private platform: Platform,
                 private storage: Storage,
@@ -27,13 +27,13 @@ export class AuthenticationService {
         });
     }
 
-
+    /*Metodo que identifica si la sesion esta iniciada */
     ifLoggedIn() {
         this.storage.get('uid').then((val) => {
             this.authState.next(!!val);
         });
     }
-
+    /*Metodo para realizar un registro de usuario con autenticacion  */
     registerUser(value: { email: string; password: string; }) {
         return new Promise<any>((resolve, reject) => {
             firebase.auth().createUserWithEmailAndPassword(value.email, value.password)
@@ -42,7 +42,7 @@ export class AuthenticationService {
                     err => reject(err));
         });
     }
-
+    /*Metodo de inicio de sesion con seguridad */
     loginUser(value: { email: string; password: string; }) {
         return new Promise<any>((resolve, reject) => {
             firebase.auth().signInWithEmailAndPassword(value.email, value.password)
@@ -58,7 +58,7 @@ export class AuthenticationService {
                 }, err => reject(err));
         });
     }
-
+    /*Metodo para salir de la sesion  */
     logoutUser() {
         return new Promise<any>((resolve, reject) => {
             firebase.auth().signOut()
@@ -70,15 +70,15 @@ export class AuthenticationService {
                 }, err => reject(err));
         });
     }
-
+    /*Metodo para autenticar el usuario actual  */
     userAuth() {
         return firebase.auth().currentUser;
     }
-
+    /*Metodo para saber si el usuario esta autenticado*/
     isAuthenticated() {
         return this.authState.value;
     }
-
+    /*Metodo  Asyn para obtener los datos del usuario*/
     async getDataUser() {
         return new Promise<any>((resolve, reject) => {
             // let user = firebase.auth().currentUser;
@@ -120,7 +120,7 @@ export class AuthenticationService {
 
         });
     }
-
+    /*Metodo con seguridad para el olido de contrasena por parte de un usuario */
     forgetPass(value: { email: string; }) {
         return new Promise<any>((resolve, reject) => {
             firebase.auth().sendPasswordResetEmail(value.email)
@@ -129,7 +129,7 @@ export class AuthenticationService {
                     err => reject(err));
         });
     }
-
+    /*Metodo para validacion de un email */
     validationEmail() {
         return new Promise<any>((resolve, reject) => {
             const user = firebase.auth().currentUser;

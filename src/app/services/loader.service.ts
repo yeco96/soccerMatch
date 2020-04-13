@@ -5,7 +5,7 @@ import {LoadingController} from '@ionic/angular';
     providedIn: 'root'
 })
 export class LoaderService {
-
+    /* Inicializacion de Variables*/ 
     loader: any;
     isLoading: boolean;
 
@@ -42,7 +42,7 @@ export class LoaderService {
     //   console.log('hide');
     // }
 
-
+    /*Metodo para mostrar el loader de los servicios ejm: Crud y Auth en Async */
     async showLoader(options: any = {}) {
 
         if (!options.message) {
@@ -75,7 +75,7 @@ export class LoaderService {
         //     });
         // });
 
-
+        
         this.loader = await this.loadingController.create(options);
         await this.loader.present();
         this.listo = true;
@@ -88,7 +88,7 @@ export class LoaderService {
 
 
     }
-
+     /*Metodo para esconder el loader de los servicios ejm: Crud y Auth en Async  */
     async hideLoader() {
         if (this.loader) {
             return await this.loader.dismiss();

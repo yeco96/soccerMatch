@@ -15,6 +15,7 @@ export class MenuComponent implements OnInit {
     page;
     usuario: Usuario;
 
+    /* Inicializacion de Objetos*/
     constructor(
         private navParams: NavParams,
         private popoverController: PopoverController,
@@ -25,6 +26,7 @@ export class MenuComponent implements OnInit {
     ) {
     }
 
+    /*Integracion del service loader para la conexion Async */
     ngOnInit() {
         this.page = this.navParams.get('data');
         this.usuario = new Usuario();
@@ -36,12 +38,12 @@ export class MenuComponent implements OnInit {
             this.loader.hideLoader();
         });
     }
-
+    /*Navegar pantalla de perfil */
     perfil() {
         this.navCtrl.navigateForward('/profile');
         this.popoverController.dismiss();
     }
-
+    /*Loader Asinc de equipo */
     async equipo() {
         const modal = await this.modalController.create({
             component: CrearEquipoComponent
@@ -50,7 +52,7 @@ export class MenuComponent implements OnInit {
         return await modal.present();
     }
 
-
+    /*Cerrar Sesion*/
     logout() {
         this.loader.showLoader();
         this.authService.logoutUser()
