@@ -6,6 +6,7 @@ import {LoaderService} from 'src/app/services/loader.service';
 import {CrudService} from 'src/app/service/crud.service';
 import {TablesService} from 'src/app/service/tables.service';
 import {Noticias} from 'src/app/models/noticias';
+import {Usuario} from "../../models/usuario";
 
 
 @Component({
@@ -14,23 +15,98 @@ import {Noticias} from 'src/app/models/noticias';
     styleUrls: ['./noticias.page.scss'],
 })
 export class NoticiasPage implements OnInit {
-/* Inicializacion de Objetos*/
-    constructor(
-        private navCtrl: NavController,
-        private authService: AuthenticationService,
-        private formBuilder: FormBuilder,
-        private loader: LoaderService,
-        private crudService: CrudService,
-        private tables: TablesService,
-        public modalController: ModalController
-    ) {
+    /* Inicializacion de Objetos*/
+    constructor(private navCtrl: NavController,
+                private authService: AuthenticationService,
+                private loader: LoaderService,
+                private crudService: CrudService,
+                private tables: TablesService,
+                public modalController: ModalController) {
     }
-    /* Inicializacion de Variables*/ 
+
+    /* Inicializacion de Variables*/
     noticias = new Array<Noticias>();
+    usuario: Usuario;
     /*Integracion del crud loader para la conexion Async y leer las noticias*/
     ngOnInit() {
-        this.crudService.read(this.tables.tablas().NOTICIAS).subscribe(data => {
-            this.noticias = this.crudService.construir(data) as Array<Noticias>;
+
+        this.loader.showLoader();
+        this.authService.getDataUser().then(res => {
+            this.usuario = res as Usuario;
+            this.crudService.read(this.tables.tablas().NOTICIAS).subscribe(data => {
+                this.noticias = this.crudService.construir(data) as Array<Noticias>;
+                this.loader.hideLoader();
+            });
+        }, reason => {
+            this.loader.hideLoader();
+        });
+
+    }
+
+
+    tiempo(dato: Noticias) {
+        var fechaInicio = new Date(dato.fecha).getTime();
+        var fechaFin = new Date().getTime();
+
+        var diff = fechaFin - fechaInicio;
+
+        var dias = diff / (1000 * 60 * 60 * 24);
+
+        var horas = diff / (1000 * 60 * 60);
+
+        var minutos = diff / (1000 * 60);
+
+        if (dias > 1) {
+            return 'Hace ' + parseInt(dias) + ' días.';
+        } else if (horas > 1) {
+            return 'Hace ' + parseInt(horas) + ' horas.';
+        } else if (minutos > 1) {
+            return 'Hace ' + parseInt(minutos) + ' minutos.';
+        } else {
+            return 'Hace unos segundos.';
+        }
+    }
+
+    existe(dato: Noticias) {
+
+        if (!dato.like) {
+            dato.like = [];
+        }
+
+        var existe = false;
+        dato.like.forEach(value => {
+            if (value.uid == this.usuario.uid) {
+                existe = true;
+            }
+        });
+
+        return existe;
+    }
+
+    meGusta(dato: Noticias) {
+
+
+        if (!dato.like) {
+            dato.like = [];
+        }
+
+        var existe = false;
+        dato.like.forEach(value => {
+            if (value.uid == this.usuario.uid) {
+                existe = true;
+            }
+        });
+
+        if (existe) {
+            return;
+        }
+
+        dato.like.push(this.usuario);
+
+        this.loader.showLoader();
+        this.crudService.update(this.tables.tablas().NOTICIAS, dato).then(data => {
+            this.loader.hideLoader();
         });
     }
+
 }

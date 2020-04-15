@@ -5,6 +5,8 @@ export class Noticias {
     descripcion: string;
     fecha: any;
     tipo: string;
+    objeto: string;
     usuario: Usuario;
     estado: string;
+    like: Array<Usuario>;
 }

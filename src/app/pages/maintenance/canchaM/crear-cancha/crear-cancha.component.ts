@@ -20,7 +20,7 @@ import {Noticias} from 'src/app/models/noticias';
     styleUrls: ['./crear-cancha.component.scss'],
 })
 export class CrearCanchaComponent implements OnInit {
-     
+
     // Upload Task
     task: AngularFireUploadTask;
     // Progress in percentage
@@ -42,7 +42,7 @@ export class CrearCanchaComponent implements OnInit {
     validations_form: FormGroup;
     errorMessage = '';
     successMessage = '';
-/* Validaciones*/
+    /* Validaciones*/
     validation_messages = {
         telefono: [
             {type: 'required', message: 'campo requerido.'},
@@ -58,18 +58,16 @@ export class CrearCanchaComponent implements OnInit {
 
     private imageCollection: AngularFirestoreCollection<MyData>;
 
-    constructor(
-        /* Inicializacion de Objetos*/
-        private tables: TablesService,
-        private crudService: CrudService,
-        private loader: LoaderService,
-        public modalController: ModalController,
-        private storage: AngularFireStorage,
-        private database: AngularFirestore,
-        public toastController: ToastController,
-        private formBuilder: FormBuilder,
-        private authService: AuthenticationService
-    ) {
+    constructor(/* Inicializacion de Objetos*/
+                private tables: TablesService,
+                private crudService: CrudService,
+                private loader: LoaderService,
+                public modalController: ModalController,
+                private storage: AngularFireStorage,
+                private database: AngularFirestore,
+                public toastController: ToastController,
+                private formBuilder: FormBuilder,
+                private authService: AuthenticationService) {
         this.isUploading = false;
         this.isUploaded = false;
         // Set collection where our documents/ images info will save
@@ -77,7 +75,7 @@ export class CrearCanchaComponent implements OnInit {
         this.images = this.imageCollection.valueChanges();
     }
 
-    /* Inicializacion de Variables y referencias a otras tablas*/ 
+    /* Inicializacion de Variables y referencias a otras tablas*/
     actualizar: boolean;
     ubicacion = new Array<Ubicacion>();
     ubicacionJSON: any;
@@ -155,13 +153,14 @@ export class CrearCanchaComponent implements OnInit {
         this.loader.showLoader();
         if (this.actualizar) {
             this.noticia = new Noticias();
-            this.noticia.descripcion = 'Hubo un cambio en la cancha' + this.canchaObjeto.nombre + '. ';
+            this.noticia.descripcion = 'Hubo un cambio en la cancha ' + this.canchaObjeto.nombre + '. ';
 
 
             if (this.canchaObjeto.montoEquipo != this.canchasTemp.montoEquipo) {
                 this.noticia.descripcion = this.noticia.descripcion + 'El monto ahora es de ' + this.canchaObjeto.montoEquipo + ' por equipo. ';
                 this.noticia.fecha = this.formattedDate();
-                this.noticia.tipo = 'Cancha'
+                this.noticia.objeto = 'Cancha';
+                this.noticia.tipo = 'Nuevo monto';
             }
             /* Aqui se muestran diferentes diferentes de al ingresar lso datos de la cancha*/
             if (JSON.stringify(this.canchaObjeto.horario.dias) != JSON.stringify(this.canchasTemp.horario.dias)) {
@@ -171,17 +170,25 @@ export class CrearCanchaComponent implements OnInit {
                     if (this.diasHorario == undefined) {
                         this.diasHorario = '';
                     }
-                    this.diasHorario = this.diasHorario + ', ' + JSON.stringify(this.canchaObjeto.horario.dias[i]);
+
+                    if (this.diasHorario == "") {
+                        this.diasHorario = this.canchaObjeto.horario.dias[i];
+                    } else {
+                        this.diasHorario = this.diasHorario + ', ' + this.canchaObjeto.horario.dias[i];
+                    }
                 }
+
                 this.noticia.descripcion = this.noticia.descripcion + 'Estara abierta los dias ' + this.diasHorario + '. ';
                 this.noticia.fecha = this.formattedDate();
-                this.noticia.tipo = 'Cancha'
+                this.noticia.objeto = 'Cancha';
+                this.noticia.tipo = 'Nuevos dias de atención';
             }
 
             if (this.canchaObjeto.horario.horaInicio != this.canchasTemp.horario.horaInicio || this.canchaObjeto.horario.horaFin != this.canchasTemp.horario.horaFin) {
-                this.noticia.descripcion = this.noticia.descripcion + 'Con horario de ' + this.canchaObjeto.horario.horaInicio + ' a ' + this.canchaObjeto.horario.horaFin;
+                this.noticia.descripcion = this.noticia.descripcion + 'Con horario de ' + this.getHora(this.canchaObjeto.horario.horaInicio) + ' a ' + this.getHora(this.canchaObjeto.horario.horaFin) + ' horas.';
                 this.noticia.fecha = this.formattedDate();
-                this.noticia.tipo = 'Cancha'
+                this.noticia.objeto = 'Cancha';
+                this.noticia.tipo = 'Nuevo horario de atención';
             }
             /* Se termina de completar el metodo de update*/
             this.crudService.update(this.tables.tablas().CANCHAS, this.canchaObjeto, this.noticia.descripcion ? this.noticia : undefined).then(resp => {
@@ -198,7 +205,8 @@ export class CrearCanchaComponent implements OnInit {
         this.authService.getDataUser().then(res => {
             this.canchaObjeto.usuarioCrea = res;
             this.noticia.fecha = this.formattedDate();
-            this.noticia.tipo = 'Cancha';
+            this.noticia.objeto = 'Cancha';
+            this.noticia.tipo = 'Nueva cancha';
             this.noticia.descripcion = 'Se agrego la cancha ' + this.canchaObjeto.nombre + ' con el telefono: ' + this.canchaObjeto.telefono;
             this.crudService.create(this.tables.tablas().CANCHAS, this.canchaObjeto, this.noticia).then(resp => {
                 this.presentToast('Se registro la cancha correctamente', true);
@@ -210,6 +218,13 @@ export class CrearCanchaComponent implements OnInit {
             });
         });
     }
+
+    /*Metodo para obtener la hora */
+    getHora(dia) {
+        const date = new Date(dia);
+        return date.getHours();
+    }
+
     /*Metodp para formatear la fecha */
     formattedDate(d = new Date) {
         let month = String(d.getMonth() + 1);
@@ -286,6 +301,7 @@ export class CrearCanchaComponent implements OnInit {
             })
         );
     }
+
     /*Metodo para agregar la imagen a la DB */
     addImagetoDB(image: MyData) {
         // Create an ID for document
@@ -297,6 +313,7 @@ export class CrearCanchaComponent implements OnInit {
             console.log('error ' + error);
         });
     }
+
     /*Toast controller para el servicio Async */
     async presentToast(msj: string, status: boolean) {
         const toast = await this.toastController.create({
