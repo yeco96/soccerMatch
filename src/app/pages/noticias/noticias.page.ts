@@ -45,23 +45,23 @@ export class NoticiasPage implements OnInit {
 
 
     tiempo(dato: Noticias) {
-        var fechaInicio = new Date(dato.fecha).getTime();
-        var fechaFin = new Date().getTime();
+        const fechaInicio = new Date(dato.fecha).getTime();
+        let fechaFin = new Date().getTime();
 
-        var diff = fechaFin - fechaInicio;
+        let diff = fechaFin - fechaInicio;
 
-        var dias = diff / (1000 * 60 * 60 * 24);
+        let dias = diff / (1000 * 60 * 60 * 24);
 
-        var horas = diff / (1000 * 60 * 60);
+        let horas = diff / (1000 * 60 * 60);
 
-        var minutos = diff / (1000 * 60);
+        let minutos = diff / (1000 * 60);
 
         if (dias > 1) {
-            return 'Hace ' + parseInt(dias) + ' días.';
+            return 'Hace ' + parseInt(dias.toString()) + ' días.';
         } else if (horas > 1) {
-            return 'Hace ' + parseInt(horas) + ' horas.';
+            return 'Hace ' + parseInt(horas.toString()) + ' horas.';
         } else if (minutos > 1) {
-            return 'Hace ' + parseInt(minutos) + ' minutos.';
+            return 'Hace ' + parseInt(minutos.toString()) + ' minutos.';
         } else {
             return 'Hace unos segundos.';
         }
