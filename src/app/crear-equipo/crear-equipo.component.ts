@@ -12,6 +12,7 @@ import {AuthenticationService} from "../services/authentication.service";
 import {Usuario} from "../models/usuario";
 import {Canton, Ubicacion} from "../models/ubicacion";
 import {Cancha} from "../models/cancha";
+import {Noticias} from 'src/app/models/noticias';
 
 
 @Component({
@@ -85,7 +86,7 @@ export class CrearEquipoComponent implements OnInit {
     provincia: Ubicacion;
     canton: Canton;
     cantidadJugadores: any;
-
+    noticia = new Noticias();
 
     canchasTemp: Cancha;
 
@@ -334,16 +335,21 @@ export class CrearEquipoComponent implements OnInit {
                             estado: 'LISTO',
                             lider: true
                         });
+
+
                         /*Si cumple con las verificaciones se realiza la creacion */
-                        this.crudService.create(this.tables.tablas().EQUIPO, this.equipoObjeto).then(resp => {
+                        this.noticia.fecha = this.formattedDate();
+                        this.noticia.tipo = 'Equipo';
+                        this.noticia.descripcion="Se creo el equipo "+this.equipoObjeto.nombre;
+                        this.crudService.create(this.tables.tablas().EQUIPO, this.equipoObjeto, this.noticia).then(resp => {
                             this.usuario.liderEquipo = resp.id;
                             this.crudService.update(this.tables.tablas().USUARIO, this.usuario).then(resp => {
                                 this.loader.hideLoader();
                                 this.obtenerDatos();
                                 this.listaEquiposMostrar = [];
-                                this.presentToast('Usuario guardado correctamente', true);
+                                this.presentToast('Equipo guardado correctamente', true);
                             }).catch(error => {
-                                this.presentToast('Ocurrio un error al actualizar el usuario', false);
+                                this.presentToast('Ocurrio un error al actualizar el equipo', false);
                                 this.loader.hideLoader();
                             });
                         }).catch(error => {
@@ -351,6 +357,20 @@ export class CrearEquipoComponent implements OnInit {
                             this.loader.hideLoader();
                         });
 
+            /*this.authService.getDataUser().then(res => {
+            this.canchaObjeto.usuarioCrea = res;
+            this.noticia.fecha = this.formattedDate();
+            this.noticia.tipo = 'Cancha';
+            this.noticia.descripcion = 'Se agrego la cancha ' + this.canchaObjeto.nombre + ' con el telefono: ' + this.canchaObjeto.telefono;
+            this.crudService.create(this.tables.tablas().CANCHAS, this.canchaObjeto, this.noticia).then(resp => {
+                this.presentToast('Se registro la cancha correctamente', true);
+                this.loader.hideLoader();
+                this.cerrarModal();
+            }).catch(error => {
+                this.presentToast('Ocurrio un error al crear la cancha', false);
+                this.loader.hideLoader();
+            });
+        });*/
                     }
                 }
             ]
@@ -501,6 +521,20 @@ export class CrearEquipoComponent implements OnInit {
             color: !status ? 'danger' : 'success'
         });
         toast.present();
+    }
+
+    formattedDate(d = new Date) {
+        let month = String(d.getMonth() + 1);
+        let day = String(d.getDate());
+        const year = String(d.getFullYear());
+        let hours = String(d.getHours());
+        let minutes = String(d.getMinutes());
+
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+        if (hours.length < 2) hours = '0' + hours;
+        if (minutes.length < 2) minutes = '0' + minutes;
+        return `${year}-${month}-${day}T${hours}:${minutes}`;
     }
 }
 
