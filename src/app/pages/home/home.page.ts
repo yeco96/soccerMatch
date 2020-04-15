@@ -2,6 +2,10 @@ import {Component, OnInit} from '@angular/core';
 
 import {PopoverController} from '@ionic/angular';
 import {MenuComponent} from '../../components/menu/menu.component';
+import {Noticias} from "../../models/noticias";
+import {CrudService} from "../../service/crud.service";
+import {LoaderService} from "../../services/loader.service";
+import {TablesService} from "../../service/tables.service";
 
 @Component({
     selector: 'app-home',
@@ -11,11 +15,17 @@ import {MenuComponent} from '../../components/menu/menu.component';
 export class HomePage implements OnInit {
 
     constructor(
-        private popoverController: PopoverController
+        private popoverController: PopoverController,
+        private crudService: CrudService,
+        private tables: TablesService,
+    private loader: LoaderService
     ) {
     }
 
+    noticias : Array<Noticias>;
     ngOnInit() {
+
+
     }
     /*Metodo Async que realiza las configuraciones iniciales */
     async settingsPopover(ev: any) {
