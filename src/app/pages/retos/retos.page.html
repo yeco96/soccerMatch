@@ -39,7 +39,27 @@
     <!--<ion-icon md="add-circle-sharp"></ion-icon>-->
     <!--</ion-fab-button>-->
     <!--</ion-fab>-->
-
+    <ion-card>
+        <ion-card-content>
+          <ion-grid>
+            <ion-row>
+              <ion-col>
+          <ion-list>
+            <ion-item *ngFor="let reto of retos">
+              <ion-label>
+                <h2>{{reto.descripcion}}</h2>
+                <h5>{{reto.id_estado}}</h5>
+              </ion-label>
+              <!-- <ion-button fill="outline" slot="end">
+              </ion-button> -->
+            </ion-item>
+          </ion-list>
+        </ion-col>
+        </ion-row>
+        </ion-grid>
+        </ion-card-content>
+      </ion-card>
+      
     <ion-fab horizontal="end" vertical="bottom" slot="fixed">
         <ion-fab-button color="secondary" class="">
             <ion-icon md="plus"></ion-icon>
