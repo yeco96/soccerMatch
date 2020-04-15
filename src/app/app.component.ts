@@ -147,7 +147,7 @@ export class AppComponent implements OnInit {
                         visible: this.tables.permiso(this.usuario.acceso.mascara, this.tables.roles().ADMIN)
                     },
                     {
-                        title: 'Clientes',
+                        title: 'Usuarios',
                         url: '/clientes',
                         icon: 'person',
                         visible: this.tables.permiso(this.usuario.acceso.mascara, this.tables.roles().ADMIN)
