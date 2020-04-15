@@ -86,6 +86,8 @@ export class LoaderService {
             this.loader = undefined;
         }
 
+        setTimeout(10000, this.loadingController.dismiss());
+
 
     }
      /*Metodo para esconder el loader de los servicios ejm: Crud y Auth en Async  */
