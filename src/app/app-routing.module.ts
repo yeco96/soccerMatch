@@ -94,9 +94,8 @@ const routes: Routes = [
         data: {
             role: tables.roles().CANCHA
         }
-    }
-
-
+    },
+  
 ];
 
 @NgModule({
