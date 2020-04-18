@@ -3,6 +3,7 @@ import {TablesService} from 'src/app/service/tables.service';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {RespuestaData} from '../models/respuesta-data';
 import {Noticias} from '../models/noticias';
+import {Auditoria} from '../models/auditoria';
 
 @Injectable({
     providedIn: 'root'
@@ -16,9 +17,11 @@ export class CrudService {
     /*Metodo para crear una tabla en la DB
     *Coleccion en firebase
      */
-    create(tabla, record, noticia?: Noticias) {
+    create(tabla, record, noticia?: Noticias, auditoria?:Auditoria) {
         if (noticia) {
             this.db.collection(this.tables.tablas().NOTICIAS).add(JSON.parse(JSON.stringify(noticia)));
+        }if (auditoria) {
+            this.db.collection(this.tables.tablas().AUDITORIA).add(JSON.parse(JSON.stringify(auditoria)));
         }
         return this.db.collection(tabla).add(JSON.parse(JSON.stringify(record)));
     }
@@ -48,9 +51,11 @@ export class CrudService {
     * Actualizar directo
     *
     * */
-    update(tabla, record, noticia?: Noticias) {
+    update(tabla, record, noticia?: Noticias, auditoria?:Auditoria) {
         if (noticia) {
             this.db.collection(this.tables.tablas().NOTICIAS).add(JSON.parse(JSON.stringify(noticia)));
+        }if (auditoria) {
+            this.db.collection(this.tables.tablas().AUDITORIA).add(JSON.parse(JSON.stringify(auditoria)));
         }
         return this.db.doc(tabla + '/' + record.id).update(JSON.parse(JSON.stringify(record)));
     }
@@ -66,11 +71,15 @@ export class CrudService {
         return this.db.collection(tabla).doc(id).update(JSON.parse(JSON.stringify(record)));
     }
 
-    delete(tabla, recordId) {
+    delete(tabla, recordId , auditoria?:Auditoria) {
+        if (auditoria) {
+            this.db.collection(this.tables.tablas().AUDITORIA).add(JSON.parse(JSON.stringify(auditoria)));
+        }
         const doc = this.db.doc(tabla + '/' + recordId.id);
         return doc.delete();
     }
 
-
-
 }
+
+
+

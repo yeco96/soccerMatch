@@ -32,7 +32,8 @@ export class TablesService {
             RESERVA: 'Reserva',
             ESTUDIANTES: 'Students',
             NOTICIAS: 'Noticias',
-            CLIENTES: 'Clientes'
+            CLIENTES: 'Clientes',
+            AUDITORIA: 'Auditoria'
         };
     }
 

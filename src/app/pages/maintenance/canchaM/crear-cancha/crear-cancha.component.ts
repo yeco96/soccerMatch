@@ -12,6 +12,7 @@ import {finalize, tap} from 'rxjs/operators';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {AuthenticationService} from 'src/app/services/authentication.service';
 import {Noticias} from 'src/app/models/noticias';
+import {Auditoria} from 'src/app/models/auditoria';
 
 
 @Component({
@@ -86,6 +87,7 @@ export class CrearCanchaComponent implements OnInit {
     dias = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo'];
     noticia = new Noticias();
     canchasTemp: Cancha;
+    auditoria = new Auditoria();
 
 
     obj: Cancha;
@@ -153,16 +155,22 @@ export class CrearCanchaComponent implements OnInit {
         this.loader.showLoader();
         if (this.actualizar) {
             this.noticia = new Noticias();
+            this.auditoria = new Auditoria();
             this.noticia.descripcion = 'Hubo un cambio en la cancha ' + this.canchaObjeto.nombre + '. ';
+            this.auditoria.descripcion = 'Hubo un cambio en la cancha ' + this.canchaObjeto.nombre + '. ';
 
 
             if (this.canchaObjeto.montoEquipo != this.canchasTemp.montoEquipo) {
                 this.noticia.descripcion = this.noticia.descripcion + 'El monto ahora es de ' + this.canchaObjeto.montoEquipo + ' por equipo. ';
+                this.auditoria.descripcion = this.auditoria.descripcion + 'El monto se modifico de  ' + this.canchasTemp.montoEquipo + 'a '+ this.canchaObjeto.montoEquipo;
                 this.noticia.fecha = this.formattedDate();
                 this.noticia.objeto = 'Cancha';
                 this.noticia.tipo = 'Nuevo monto';
+                this.auditoria.fecha = this.formattedDate();
+                this.auditoria.objeto = 'Cancha';
+                this.auditoria.tipo = 'Nuevo monto';
             }
-            /* Aqui se muestran diferentes diferentes de al ingresar lso datos de la cancha*/
+            /* Aqui se muestran diferentes de al ingresar lso datos de la cancha*/
             if (JSON.stringify(this.canchaObjeto.horario.dias) != JSON.stringify(this.canchasTemp.horario.dias)) {
                 var i;
                 this.cantDias = this.canchaObjeto.horario.dias.length;
@@ -182,6 +190,10 @@ export class CrearCanchaComponent implements OnInit {
                 this.noticia.fecha = this.formattedDate();
                 this.noticia.objeto = 'Cancha';
                 this.noticia.tipo = 'Nuevos dias de atención';
+                this.auditoria.descripcion = this.noticia.descripcion + 'Estara abierta los dias ' + this.diasHorario + '. ';
+                this.auditoria.fecha = this.formattedDate();
+                this.auditoria.objeto = 'Cancha';
+                this.auditoria.tipo = 'Nuevos dias de atención';
             }
 
             if (this.canchaObjeto.horario.horaInicio != this.canchasTemp.horario.horaInicio || this.canchaObjeto.horario.horaFin != this.canchasTemp.horario.horaFin) {
@@ -189,7 +201,14 @@ export class CrearCanchaComponent implements OnInit {
                 this.noticia.fecha = this.formattedDate();
                 this.noticia.objeto = 'Cancha';
                 this.noticia.tipo = 'Nuevo horario de atención';
+                this.auditoria.descripcion = this.auditoria.descripcion + 'El horario era de ' + this.getHora(this.canchasTemp.horario.horaInicio) + ' a ' + this.getHora(this.canchasTemp.horario.horaFin) +
+                 '.horas' +'pero ahora se modifico y va a ser de'+this.getHora(this.canchaObjeto.horario.horaInicio)+'a '+ this.getHora(this.canchaObjeto.horario.horaFin);
+                this.auditoria.fecha = this.formattedDate();
+                this.auditoria.objeto = 'Cancha';
+                this.auditoria.tipo = 'Nuevo horario de atención';
+                
             }
+           // this.auditoria.usuario = 
             /* Se termina de completar el metodo de update*/
             this.crudService.update(this.tables.tablas().CANCHAS, this.canchaObjeto, this.noticia.descripcion ? this.noticia : undefined).then(resp => {
 
@@ -204,11 +223,16 @@ export class CrearCanchaComponent implements OnInit {
         /*Seccion del metodo que utilza un servicio de autenticacion del usuario para definir si el registro se realizara exitosamente */
         this.authService.getDataUser().then(res => {
             this.canchaObjeto.usuarioCrea = res;
+            this.auditoria.usuario = res;
             this.noticia.fecha = this.formattedDate();
             this.noticia.objeto = 'Cancha';
             this.noticia.tipo = 'Nueva cancha';
+            this.auditoria.fecha = this.formattedDate();
+            this.auditoria.objeto = 'Cancha';
+            this.auditoria.tipo = 'Nueva cancha';
             this.noticia.descripcion = 'Se agrego la cancha ' + this.canchaObjeto.nombre + ' con el telefono: ' + this.canchaObjeto.telefono;
-            this.crudService.create(this.tables.tablas().CANCHAS, this.canchaObjeto, this.noticia).then(resp => {
+            this.auditoria.descripcion = 'Se agrego la cancha ' + this.canchaObjeto.nombre + ' con el telefono: ' + this.canchaObjeto.telefono+ 'con el correo'+this.canchaObjeto.correo;
+            this.crudService.create(this.tables.tablas().CANCHAS, this.canchaObjeto, this.noticia ,this.auditoria).then(resp => {
                 this.presentToast('Se registro la cancha correctamente', true);
                 this.loader.hideLoader();
                 this.cerrarModal();
