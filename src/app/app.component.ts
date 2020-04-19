@@ -156,7 +156,7 @@ export class AppComponent implements OnInit {
 
                 this.appReportes = [
                     {
-                        title: 'Reportes',
+                        title: 'Consulta Reservas',
                         url: '/reportes',
                         icon: 'compass',
                         visible: this.tables.permiso(this.usuario.acceso.mascara, this.tables.roles().CANCHA)
