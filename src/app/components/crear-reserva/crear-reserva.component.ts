@@ -8,6 +8,7 @@ import {Cancha} from "../../models/cancha";
 import {Reserva} from "../../models/reserva";
 import {AuthenticationService} from "../../services/authentication.service";
 import {Usuario} from "../../models/usuario";
+import {MostrarCanchaComponent} from "../mostrar-cancha/mostrar-cancha.component";
 
 @Component({
     selector: 'app-crear-reserva',
@@ -263,4 +264,21 @@ export class CrearReservaComponent implements OnInit {
 
         await alert.present();
     }
+
+    /*Metodo para mostrar un CSS en servicio Async */
+    async mostrarModalAsync(value) {
+        const modal = await this.modalController.create({
+            component: MostrarCanchaComponent,
+            cssClass: 'my-custom-modal-css',
+            componentProps: {
+                cancha: value
+            }
+        });
+        return await modal.present();
+    }
+
+    mostrarModal(value) {
+        this.mostrarModalAsync(value);
+    }
+
 }

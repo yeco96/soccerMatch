@@ -59,9 +59,9 @@
                 <ion-row class="">
                     <ion-col size="6">
                         <div class="ion-text-center">
-                            <img height="90" width="100" [src]="cancha.imagen">
+                            <img height="90" width="100" [src]="cancha.imagen" (click)="mostrarModal(cancha)">
                             <h4 class="ion-text-center ion-no-margin"><strong>{{cancha.nombre}}</strong></h4>
-                            <p class="ion-text-start ion-no-margin"><strong>Pago:</strong> en sitio</p>
+                            <p class="ion-text-start ion-no-margin"><strong>Pago:</strong> {{cancha.metodoPago.tipo}}</p>
                             <p class="ion-text-start ion-no-margin"><strong>Direción:</strong> {{cancha.direccion}}</p>
                         </div>
                     </ion-col>
@@ -77,8 +77,11 @@
                             <p class="ion-text-start ion-no-margin">
                                 <strong>Uniforme:</strong> {{cancha.uniforme ? 'SI' : 'NO'}}</p>
                             <div class="ion-text-center ion-padding-top">
-                                <ion-button fill="outline" slot="end" (click)="solicitar(cancha)">
+                                <ion-button style="font-size: 9px;" fill="outline" slot="start" (click)="solicitar(cancha)">
                                     Solicitar
+                                </ion-button>
+                                <ion-button style="font-size: 9px;" fill="outline" color="secondary" slot="end" (click)="mostrarModal(cancha)">
+                                    <ion-icon style="font-size: 25px;" md="information-circle-outline"></ion-icon>
                                 </ion-button>
                             </div>
                         </div>
