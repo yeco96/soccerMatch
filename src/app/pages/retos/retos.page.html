@@ -42,6 +42,22 @@
 
 
     <ion-grid>
+
+
+        <div *ngIf="retos.length == 0" class="ion-text-center">
+            <br>
+            <br>
+            <br>
+            <ion-icon style="font-size: 130px" md="jugador"></ion-icon>
+            <br>
+            <br>
+            <h1 class="ion-no-margin ">No existen retos</h1>
+            <br>
+            <ion-button fill="outline" (click)="enviarReserva()" color="success">
+                CREAR
+            </ion-button>
+        </div>
+
         <div *ngFor="let reto of retos" class="ion-padding-bottom">
             <ion-card>
 
