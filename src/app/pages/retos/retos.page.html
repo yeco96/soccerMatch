@@ -6,7 +6,7 @@
 
 <ion-content>
 
-    <h1 class="ion-text-center">RETOS</h1>
+    <!--<h1 class="ion-text-center">RETOS</h1>-->
     <!--<ion-card>-->
     <!--<ion-card-content>-->
     <!--<ion-list>-->
@@ -39,27 +39,51 @@
     <!--<ion-icon md="add-circle-sharp"></ion-icon>-->
     <!--</ion-fab-button>-->
     <!--</ion-fab>-->
+    <ion-grid>
+      <div *ngFor="let reto of retos"  class="ion-padding-bottom">
     <ion-card>
+
+      <ion-card-header>
+        <h4 style="font-size: 15px" class="ion-no-margin ion-text-center">
+          Amistoso</h4> <!--{{reto.id_TipoReto}} Amistoso/Competitivo-->
+    </ion-card-header>
+
         <ion-card-content>
-          <ion-grid>
+          
             <ion-row>
-              <ion-col>
-          <ion-list>
-            <ion-item *ngFor="let reto of retos">
-              <ion-label>
-                <h2>{{reto.descripcion}}</h2>
-                <h5>{{reto.id_estado}}</h5>
-              </ion-label>
-              <!-- <ion-button fill="outline" slot="end">
-              </ion-button> -->
-            </ion-item>
-          </ion-list>
-        </ion-col>
-        </ion-row>
-        </ion-grid>
+              <ion-col size="12">
+              
+                <p>{{reto.descripcion}}</p>      
+
+              </ion-col>
+            </ion-row>
+
+            <ion-row>
+              <ion-col size="12">
+              
+                <p>{{reto.id_estado}}</p>
+
+              </ion-col>   
+            </ion-row>
+
+            
+          <ion-row>
+            <ion-col size="10">
+              <ion-button style="float: left;" fill="solid" color="danger" >
+                <ion-icon md="md-close"></ion-icon>
+              </ion-button>
+              <ion-button style="float: right;" fill="solid" color="success" >
+                Enviar Solicitud
+              </ion-button>
+            </ion-col>
+          </ion-row>
+
+
         </ion-card-content>
       </ion-card>
-      
+    </div>
+    </ion-grid>
+
     <ion-fab horizontal="end" vertical="bottom" slot="fixed">
         <ion-fab-button color="secondary" class="">
             <ion-icon md="plus"></ion-icon>
