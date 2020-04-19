@@ -6,12 +6,9 @@ import {LoaderService} from "../../services/loader.service";
 import {CrudService} from "../../service/crud.service";
 import {TablesService} from "../../service/tables.service";
 import {Reserva} from "../../models/Reserva";
-import {Usuario} from "../../models/usuario";
 import {SMS} from '@ionic-native/sms/ngx';
 import {CallNumber} from '@ionic-native/call-number/ngx';
 import {AndroidPermissions} from '@ionic-native/android-permissions/ngx';
-import {MostrarCanchaComponent} from "../../components/mostrar-cancha/mostrar-cancha.component";
-import {Cancha} from "../../models/cancha";
 
 @Component({
     selector: 'app-reserva',
@@ -38,26 +35,69 @@ export class ReportesPage implements OnInit {
 
     reservas = new Array<Reserva>();
     filtro: string;
+    filtroTotales: string;
     /*this.usuarios = this.crudService.construir(data) as Array<Usuario>;
     this.usuariosTemp=this.usuarios;
     this.loader.hideLoader();*/
 
+    montoReserva: any;
+    filtroTipo: string;
+
     ngOnInit() {
         this.loader.showLoader();
+        this.filtro = 'LISTADO';
+        this.filtroTotales = 'PENDIENTE';
+        this.filtroTipo = 'TODO';
         this.crudService.read(this.tables.tablas().RESERVA).subscribe(data => {
             this.reservas = this.crudService.construir(data) as Array<Reserva>;
-            
-           this.authService.getDataUser().then(res => {
-                const usuario = res as Usuario;
-                /*this.reservas = reservas.filter(reservas => {
-                    return reservas.usuario.id === usuario.id;
-                });*/
-                this.loader.hideLoader();
-            }, reason => {
-                this.loader.hideLoader();
+            this.montoReserva = 0;
+            this.reservas.forEach(x => {
+                if (this.filtroTotales === x.estado) {
+                    this.montoReserva += x.cancha.montoEquipo;
+                }
             });
+
+            this.loader.hideLoader();
         });
-        this.filtro = 'PENDIENTE';
+    }
+
+    cargarDatos() {
+        this.crudService.read(this.tables.tablas().RESERVA).subscribe(data => {
+            this.reservas = this.crudService.construir(data) as Array<Reserva>;
+            this.montoReserva = 0;
+            this.reservas.forEach(x => {
+
+                if (this.filtroTotales === x.estado) {
+
+                    if (this.filtroTipo === 'TODO') {
+                        this.montoReserva += x.cancha.montoEquipo;
+                    } else {
+                        if (this.filtroTipo === x.cancha.metodoPago.tipo) {
+                            this.montoReserva += x.cancha.montoEquipo;
+                        }
+                    }
+
+                }
+                if (this.filtroTotales === 'TODO') {
+                    this.montoReserva += x.cancha.montoEquipo;
+                }
+            });
+            this.loader.hideLoader();
+        });
+    }
+
+    /*Metodo para darle formato al dia */
+    fechaCompleta(dia) {
+        const dias = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo'];
+        // tslint:disable-next-line: max-line-length
+        const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+
+        const date = new Date(dia);
+
+        const fechaNum = date.getDate();
+        const mes_name = date.getMonth();
+
+        return (dias[date.getDay() - 1] + ' ' + fechaNum + ' de ' + meses[mes_name] + ' de ' + date.getFullYear());
     }
 
     /*ngOnInit2() {
@@ -101,7 +141,7 @@ export class ReportesPage implements OnInit {
         );
       };
     }*/
-    
+
 
     // async mostrarCancha(cancha: Cancha) {
     //     const alert = await this.alertController.create({
@@ -140,7 +180,6 @@ export class ReportesPage implements OnInit {
     //     await alert.present();
     // }
 
-    
 
 }
 

@@ -49,7 +49,7 @@
             </ion-item>
           </ion-menu-toggle>
 
-          <ion-list-header class="ion-padding">Reportes</ion-list-header>
+          <ion-list-header class="ion-padding">Consultas</ion-list-header>
 
           <ion-menu-toggle auto-hide="false" *ngFor="let p of appReportes; let i = index">
             <ion-item *ngIf="p.visible" (click)="selectedIndexReportes = i" routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false">
