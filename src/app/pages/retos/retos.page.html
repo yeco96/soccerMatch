@@ -58,8 +58,17 @@
             </ion-button>
         </div>
 
+        <ion-item class="ion-text-center">
+            <ion-label position="floating"></ion-label>
+            <ion-select [(ngModel)]="filtro"
+                        interface="action-sheet" cancelText="Cancelar" doneText="Aceptar">
+                <ion-select-option value="TODO">Todos</ion-select-option>
+                <ion-select-option value="PERSONALES">Personales</ion-select-option>
+            </ion-select>
+        </ion-item>
+
         <div *ngFor="let reto of retos" class="ion-padding-bottom">
-            <ion-card>
+            <ion-card *ngIf="validarPropietario(reto)">
 
                 <ion-card-header class="ion-text-center">
 
@@ -99,11 +108,12 @@
 
                     <div class="ion-text-center">
                         {{fechaCompleta(reto.fechaReserva)}}
-
                         <ion-row class="ion-text-center">
                             <ion-col size="5">
-                                <ion-button fill="outline" color="secondary">
-                                    <ion-icon md="help-circle-sharp"></ion-icon>
+                                <ion-button fill="outline" color="secondary"
+                                            (click)="filtro != 'TODO' ? verNotificacion(reto) : informacion()">
+                                    <ion-icon *ngIf="filtro == 'TODO'" md="help-circle-sharp"></ion-icon>
+                                    <ion-icon *ngIf="filtro != 'TODO'" md="person-add-sharp"></ion-icon>
                                 </ion-button>
                             </ion-col>
                             <ion-col class="ion-no-padding" size="1">

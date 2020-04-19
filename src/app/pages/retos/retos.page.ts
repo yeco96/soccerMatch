@@ -47,9 +47,12 @@ export class RetosPage implements OnInit {
     retos = new Array<Retos>();
     usuario: Usuario;
     equipoObjeto: Equipo;
+    filtro: string;
 
     /*Integracion del crud loader service para la conexion Async y lectura de retos */
     ngOnInit() {
+        this.filtro = 'TODO';
+
         this.crudService.read(this.tables.tablas().RETOS).subscribe(data => {
             this.retos = this.crudService.construir(data) as Array<Retos>;
         });
@@ -86,8 +89,13 @@ export class RetosPage implements OnInit {
             });
 
         });
+    }
 
-
+    validarPropietario(reto: Reto) {
+        if (this.filtro == 'TODO') {
+            return true;
+        }
+        return reto.usuario.uid === this.usuario.uid;
     }
 
 
@@ -153,12 +161,12 @@ export class RetosPage implements OnInit {
         if (value.solicitud) {
             let existe = false;
             value.solicitud.forEach(x => {
-                if(x.usuario.uid === this.usuario.uid){
+                if (x.usuario.uid === this.usuario.uid) {
                     existe = true;
                 }
             });
 
-            if(existe){
+            if (existe) {
                 return this.presentToast('Ya existe una solicitud', false);
             }
         }
@@ -220,5 +228,18 @@ export class RetosPage implements OnInit {
             color: !status ? 'danger' : 'success'
         });
         toast.present();
+    }
+
+    verNotificacion(reto: Reto) {
+
+        if (!reto.solicitud || reto.solicitud.length == 0) {
+            return this.presentToast('No tiene solicitudes', false);
+        }
+
+        this.presentToast('Tiene ' + reto.solicitud.length + ' solicitudes ', true);
+    }
+
+    informacion() {
+        this.presentToast('Información', true);
     }
 }
