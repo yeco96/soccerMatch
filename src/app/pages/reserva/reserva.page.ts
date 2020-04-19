@@ -12,7 +12,7 @@ import {AndroidPermissions} from '@ionic-native/android-permissions/ngx';
 import {MostrarCanchaComponent} from "../../components/mostrar-cancha/mostrar-cancha.component";
 import {Cancha} from "../../models/cancha";
 import {CrearEquipoComponent} from "../../crear-equipo/crear-equipo.component";
-import {Reto} from "../../models/reto";
+import {Equipo} from "../../models/equipo";
 
 @Component({
     selector: 'app-reserva',
@@ -41,6 +41,7 @@ export class ReservaPage implements OnInit {
     filtro: string;
     usuario: Usuario;
     tipoReto: boolean;
+    equipoObjeto: Equipo;
 
     /*Integracion del crud loader service para la conexion Async y lectura de reservas*/
     ngOnInit() {
@@ -53,6 +54,33 @@ export class ReservaPage implements OnInit {
                 this.reservas = reservas.filter(reservas => {
                     return reservas.usuario.id === this.usuario.id;
                 });
+
+
+                if ((!this.usuario.liderEquipo || this.usuario.liderEquipo == "") && (!this.usuario.perteneceEquipo || this.usuario.perteneceEquipo == "")) {
+                    this.loader.hideLoader();
+                    return;
+                }
+
+                /* Servicio de read con la tabla para el mantenimiento*/
+                this.crudService.read(this.tables.tablas().EQUIPO).subscribe(data => {
+                    const equipos = this.crudService.construir(data) as Array<Equipo>;
+
+                    this.equipoObjeto = equipos.filter(x => {
+                        /*Si es el creador es lider y si no solo es un miembro mas del equipo */
+                        if (this.usuario.liderEquipo) {
+                            return x.id === this.usuario.liderEquipo;
+                        }
+
+                        if (this.usuario.perteneceEquipo) {
+                            return x.id === this.usuario.perteneceEquipo;
+                        }
+
+                    })[0];
+
+                    this.loader.hideLoader();
+                });
+
+
                 this.loader.hideLoader();
             }, reason => {
                 this.loader.hideLoader();
@@ -196,15 +224,15 @@ export class ReservaPage implements OnInit {
             message: "Al selecionar un equipo se creara un reto",
             inputs: [{
                 type: "radio",
-                name: 'publico',
-                value: 'publico',
-                label: 'Publico',
+                name: 'Amistoso',
+                value: 'Amistoso',
+                label: 'Amistoso',
                 checked: true
             }, {
                 type: "radio",
-                name: 'privado',
-                value: 'privado',
-                label: 'Privado',
+                name: 'Competitivo',
+                value: 'Competitivo',
+                label: 'Competitivo',
                 checked: false
             }],
             buttons: [
@@ -234,6 +262,10 @@ export class ReservaPage implements OnInit {
     /*Metodo  para crear un reto*/
     crearReto(value) {
         this.loader.showLoader();
+        if (!value.partido) {
+            value.partido = {};
+        }
+        value.partido.equipoA = this.equipoObjeto;
         this.crudService.create(this.tables.tablas().RETOS, value).then(resp => {
 
             value.estado = 'RETO';
