@@ -12,7 +12,7 @@ import {AndroidPermissions} from '@ionic-native/android-permissions/ngx';
 import {MostrarCanchaComponent} from "../../components/mostrar-cancha/mostrar-cancha.component";
 import {Cancha} from "../../models/cancha";
 import {CrearEquipoComponent} from "../../crear-equipo/crear-equipo.component";
-import {Reto, Tipo} from "../../models/reto";
+import {Reto} from "../../models/reto";
 
 @Component({
     selector: 'app-reserva',
@@ -232,11 +232,41 @@ export class ReservaPage implements OnInit {
     }
 
     /*Metodo  para crear un reto*/
-    crearReto(value: Reto) {
+    crearReto(value) {
         this.loader.showLoader();
         this.crudService.create(this.tables.tablas().RETOS, value).then(resp => {
-            this.presentToast('Se creo el reto', true);
+
+            value.estado = 'RETO';
+            value.idReto = resp.id;
+            this.crudService.update(this.tables.tablas().RESERVA, value).then(resp => {
+                this.presentToast('Se creo el reto', true);
+                this.loader.hideLoader();
+            }).catch(error => {
+                this.presentToast('Ocurrio un error al crear el reto', false);
+                this.loader.hideLoader();
+            });
+
+        }).catch(error => {
+            this.presentToast('Ocurrio un error al crear el reto', false);
             this.loader.hideLoader();
+        });
+    }
+
+    /*Metodo  para cerrar un reto*/
+    cerrarReto(value) {
+        this.loader.showLoader();
+        this.crudService.delete(this.tables.tablas().RETOS, {id: value.idReto}).then(resp => {
+
+            value.estado = 'PENDIENTE';
+            value.idReto = "";
+            this.crudService.update(this.tables.tablas().RESERVA, value).then(resp => {
+                this.presentToast('Se creo el reto', true);
+                this.loader.hideLoader();
+            }).catch(error => {
+                this.presentToast('Ocurrio un error al crear el reto', false);
+                this.loader.hideLoader();
+            });
+
         }).catch(error => {
             this.presentToast('Ocurrio un error al crear el reto', false);
             this.loader.hideLoader();
