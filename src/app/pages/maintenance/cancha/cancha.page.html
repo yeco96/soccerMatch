@@ -10,7 +10,8 @@
 
 <ion-item>
   <ion-label position="floating"><strong>Buscar</strong></ion-label>
-  <ion-input name="nombre" type="text" [(ngModel)]="texto" (ionChange)="buscar()"></ion-input>
+  <ion-input autocorrect="on" autofocus="on" clearInput="true" clearOnEdit="true" color="primary" inputmode="text" name="nombre" type="text" [(ngModel)]="texto" (ionChange)="buscar()"></ion-input>
+  <ion-icon md="search-outline" slot="end"></ion-icon>
 </ion-item>
 
 <ion-content class="ion-padding">
