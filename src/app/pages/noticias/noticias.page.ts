@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ModalController, NavController} from '@ionic/angular';
 import {AuthenticationService} from 'src/app/services/authentication.service';
-import {FormBuilder} from '@angular/forms';
 import {LoaderService} from 'src/app/services/loader.service';
 import {CrudService} from 'src/app/service/crud.service';
 import {TablesService} from 'src/app/service/tables.service';
@@ -27,6 +26,7 @@ export class NoticiasPage implements OnInit {
     /* Inicializacion de Variables*/
     noticias = new Array<Noticias>();
     usuario: Usuario;
+
     /*Integracion del crud loader para la conexion Async y leer las noticias*/
     ngOnInit() {
 
@@ -91,13 +91,24 @@ export class NoticiasPage implements OnInit {
         }
 
         var existe = false;
+        var id = "";
         dato.like.forEach(value => {
             if (value.uid == this.usuario.uid) {
                 existe = true;
+                id = value.uid;
             }
         });
 
+
         if (existe) {
+
+            dato.like = dato.like.filter(x => x.uid !== id);
+
+            this.loader.showLoader();
+            this.crudService.set(this.tables.tablas().NOTICIAS, dato.id, dato).then(data => {
+                this.loader.hideLoader();
+            });
+
             return;
         }
 
