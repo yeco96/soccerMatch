@@ -58,6 +58,7 @@ export class ReservaPage implements OnInit {
 
                 if ((!this.usuario.liderEquipo || this.usuario.liderEquipo == "") && (!this.usuario.perteneceEquipo || this.usuario.perteneceEquipo == "")) {
                     this.loader.hideLoader();
+                    this.equipoObjeto = undefined;
                     return;
                 }
 
@@ -81,7 +82,7 @@ export class ReservaPage implements OnInit {
                 });
 
 
-                this.loader.hideLoader();
+
             }, reason => {
                 this.loader.hideLoader();
             });
@@ -191,7 +192,7 @@ export class ReservaPage implements OnInit {
 
         if ((!this.usuario.liderEquipo || this.usuario.liderEquipo === "") && (!this.usuario.perteneceEquipo || this.usuario.perteneceEquipo === "")) {
             this.presentToast('Error usuario no pertence a un equipo ', false);
-
+            this.equipoObjeto = undefined;
 
             const alert = await this.alertController.create({
                 header: '¿Equipo?',
@@ -265,6 +266,10 @@ export class ReservaPage implements OnInit {
         if (!value.partido) {
             value.partido = {};
         }
+        if (this.equipoObjeto && this.equipoObjeto.id == undefined) {
+            return this.presentToast('Intentelo nuevamente', false);
+        }
+
         value.partido.equipoA = this.equipoObjeto;
         this.crudService.create(this.tables.tablas().RETOS, value).then(resp => {
 

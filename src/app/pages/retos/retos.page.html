@@ -79,7 +79,7 @@
                             <p class="ion-no-padding ">VS</p>
                         </ion-col>
                         <ion-col size="5">
-                            <p class="ion-no-margin ">{{reto.partido.equipoB ? reto.partido.equipoB.nombre.toUpperCase() : '????????????'}}</p>
+                            <p class="ion-no-margin ">{{reto.partido.equipoB ? reto.partido.equipoB.nombre.toUpperCase() : '?????????'}}</p>
                         </ion-col>
                     </ion-row>
 
@@ -110,7 +110,7 @@
 
                             </ion-col>
                             <ion-col size="5">
-                                <ion-button fill="outline" color="secondary">
+                                <ion-button fill="outline" color="secondary" (click)="enviarSolicitud(reto)">
                                     <ion-icon md="add-circle-sharp"></ion-icon>
                                 </ion-button>
                             </ion-col>

@@ -19,6 +19,8 @@ export class Reto {
     usuario: Usuario;
     id_MetodoPago: string;
 
+    solicitud: Array<Solicitud>;
+
 }
 
 export class Partido {
@@ -31,3 +33,10 @@ export class Partido {
 export class Tipo {
     nombre: string;
 }
+
+
+export class Solicitud {
+    usuario: Usuario;
+    estado: string;
+}
+
