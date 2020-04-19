@@ -9,4 +9,5 @@ export class Reserva {
     cancha: Cancha;
     usuario: Usuario;
     id_MetodoPago: string;
+    idReto: string;
 }

@@ -22,6 +22,7 @@
         <ion-select [(ngModel)]="filtro"
                     interface="action-sheet" cancelText="Cancelar" doneText="Aceptar">
             <ion-select-option value="PENDIENTE">Pendientes</ion-select-option>
+            <ion-select-option value="RETO">En Retos</ion-select-option>
             <ion-select-option value="LISTO">Historial</ion-select-option>
         </ion-select>
     </ion-item>
@@ -59,9 +60,15 @@
 
                             <ion-col size="4">
                                 <ion-row>
-                                    <ion-button fill="outline" color="light"  (click)="agregarEquipo(reserva)">
+                                    <ion-button *ngIf="reserva.estado == 'PENDIENTE'" fill="outline" color="light"  (click)="agregarEquipo(reserva)">
                                         <ion-icon color="primary" md="person-add"></ion-icon>
                                     </ion-button>
+
+                                    <ion-button *ngIf="reserva.estado == 'RETO'" fill="outline" color="light"  (click)="cerrarReto(reserva)">
+                                        <ion-icon color="primary" md="close"></ion-icon>
+                                    </ion-button>
+
+
                                 </ion-row>
                                 <ion-row>
                                     <ion-button fill="outline" color="light" (click)="realizarPago(reserva.cancha)">
