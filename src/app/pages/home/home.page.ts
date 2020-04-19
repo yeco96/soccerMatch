@@ -6,6 +6,9 @@ import {Noticias} from "../../models/noticias";
 import {CrudService} from "../../service/crud.service";
 import {LoaderService} from "../../services/loader.service";
 import {TablesService} from "../../service/tables.service";
+import {Usuario} from "../../models/usuario";
+import {Equipo} from "../../models/equipo";
+import {AuthenticationService} from "../../services/authentication.service";
 
 @Component({
     selector: 'app-home',
@@ -18,6 +21,7 @@ export class HomePage implements OnInit {
         private popoverController: PopoverController,
         private crudService: CrudService,
         private tables: TablesService,
+        private authService: AuthenticationService,
     private loader: LoaderService
     ) {
     }
