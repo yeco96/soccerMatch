@@ -208,16 +208,21 @@ export class CrearCanchaComponent implements OnInit {
                 this.auditoria.tipo = 'Nuevo horario de atención';
                 
             }
+            this.authService.getDataUser().then(res => {
+                this.canchaObjeto.usuarioCrea = res;
+                this.auditoria.usuario = res;
+                this.crudService.update(this.tables.tablas().CANCHAS, this.canchaObjeto, this.noticia.descripcion ? this.noticia : undefined, this.auditoria).then(resp => {
+
+                    this.loader.hideLoader();
+                    this.cerrarModal();
+                }).catch(error => {
+                    this.presentToast('Ocurrio un error al actualizar la cancha', false);
+                    this.loader.hideLoader();
+                });
+            });
            // this.auditoria.usuario = 
             /* Se termina de completar el metodo de update*/
-            this.crudService.update(this.tables.tablas().CANCHAS, this.canchaObjeto, this.noticia.descripcion ? this.noticia : undefined).then(resp => {
 
-                this.loader.hideLoader();
-                this.cerrarModal();
-            }).catch(error => {
-                this.presentToast('Ocurrio un error al actualizar la cancha', false);
-                this.loader.hideLoader();
-            });
             return;
         }
         /*Seccion del metodo que utilza un servicio de autenticacion del usuario para definir si el registro se realizara exitosamente */
@@ -241,6 +246,7 @@ export class CrearCanchaComponent implements OnInit {
                 this.loader.hideLoader();
             });
         });
+
     }
 
     /*Metodo para obtener la hora */
