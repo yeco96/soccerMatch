@@ -1,12 +1,13 @@
 import {Cancha} from "./cancha";
 import {Usuario} from "./usuario";
+import {Equipo} from "./equipo";
 
 export class Reto {
     id: string;
     descripcion: string;
-    partido: [Partido];
+    partido: Partido;
     id_Cancha: string;
-    id_TipoReto:string;
+    id_TipoReto: string;
     id_Estado: string;
 
 
@@ -23,15 +24,9 @@ export class Reto {
 export class Partido {
     descripcion: string;
     fecha: Date;
-    equipoA: [Equipo];
-    equipoB: [Equipo];
+    equipoA: Equipo;
+    equipoB: Equipo;
 }
-
-export class Equipo {
-    id: string;
-    nombre: string;
-}
-
 
 export class Tipo {
     nombre: string;

@@ -37,4 +37,20 @@ export class RetosPage implements OnInit {
             this.retos = this.crudService.construir(data) as Array<Retos>;
         });
     }
+
+
+    /*metodo para obtener la fecha completa */
+    fechaCompleta(dia) {
+        const dias = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo'];
+        // tslint:disable-next-line: max-line-length
+        const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+
+        const date = new Date(dia);
+
+        const fechaNum = date.getDate();
+        const mes_name = date.getMonth();
+
+        return (dias[date.getDay() - 1] + ' ' + fechaNum + ' de ' + meses[mes_name] + ' de ' + date.getFullYear()) + ' a las ' + date.getHours() + ' Horas';
+    }
+
 }

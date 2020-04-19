@@ -39,49 +39,85 @@
     <!--<ion-icon md="add-circle-sharp"></ion-icon>-->
     <!--</ion-fab-button>-->
     <!--</ion-fab>-->
+
+
     <ion-grid>
-      <div *ngFor="let reto of retos"  class="ion-padding-bottom">
-    <ion-card>
+        <div *ngFor="let reto of retos" class="ion-padding-bottom">
+            <ion-card>
 
-      <ion-card-header>
-        <h4 style="font-size: 15px" class="ion-no-margin ion-text-center">
-          Amistoso</h4> <!--{{reto.id_TipoReto}} Amistoso/Competitivo-->
-    </ion-card-header>
+                <ion-card-header class="ion-text-center">
 
-        <ion-card-content>
-          
-            <ion-row>
-              <ion-col size="12">
-              
-                <p>{{reto.descripcion}}</p>      
-
-              </ion-col>
-            </ion-row>
-
-            <ion-row>
-              <ion-col size="12">
-              
-                <p>{{reto.id_estado}}</p>
-
-              </ion-col>   
-            </ion-row>
-
-            
-          <ion-row>
-            <ion-col size="10">
-              <ion-button style="float: left;" fill="solid" color="danger" >
-                <ion-icon md="md-close"></ion-icon>
-              </ion-button>
-              <ion-button style="float: right;" fill="solid" color="success" >
-                Enviar Solicitud
-              </ion-button>
-            </ion-col>
-          </ion-row>
+                    <p class="ion-no-margin ">{{reto.tipo.nombre}}</p>
 
 
-        </ion-card-content>
-      </ion-card>
-    </div>
+                </ion-card-header>
+
+                <ion-card-content>
+
+
+                    <ion-row class="ion-text-center">
+                        <ion-col size="5">
+                            <p class="ion-no-margin ">{{reto.partido.equipoA.nombre.toUpperCase()}}</p>
+                        </ion-col>
+                        <ion-col class="ion-no-padding" style="top: 6px;" size="1">
+                            <p class="ion-no-padding ">VS</p>
+                        </ion-col>
+                        <ion-col size="5">
+                            <p class="ion-no-margin ">{{reto.partido.equipoB ? reto.partido.equipoB.nombre.toUpperCase() : '????????????'}}</p>
+                        </ion-col>
+                    </ion-row>
+
+
+                    <ion-row class="ion-text-center">
+                        <ion-col size="5">
+                            <ion-icon style="font-size: 50px;" md="proteger4"></ion-icon>
+                        </ion-col>
+                        <ion-col class="ion-no-padding" size="1">
+
+                        </ion-col>
+                        <ion-col size="5">
+                            <ion-icon style="font-size: 50px;" md="proteger3"></ion-icon>
+                        </ion-col>
+                    </ion-row>
+
+
+                    <div class="ion-text-center">
+                        {{fechaCompleta(reto.fechaReserva)}}
+
+                        <ion-row class="ion-text-center">
+                            <ion-col size="5">
+                                <ion-button fill="outline" color="secondary">
+                                    <ion-icon md="help-circle-sharp"></ion-icon>
+                                </ion-button>
+                            </ion-col>
+                            <ion-col class="ion-no-padding" size="1">
+
+                            </ion-col>
+                            <ion-col size="5">
+                                <ion-button fill="outline" color="secondary">
+                                    <ion-icon md="add-circle-sharp"></ion-icon>
+                                </ion-button>
+                            </ion-col>
+                        </ion-row>
+
+                    </div>
+
+
+                    <!--<ion-row>-->
+                    <!--<ion-col size="10">-->
+                    <!--<ion-button style="float: left;" fill="solid" color="danger">-->
+                    <!--<ion-icon md="md-close"></ion-icon>-->
+                    <!--</ion-button>-->
+                    <!--<ion-button style="float: right;" fill="solid" color="success">-->
+                    <!--Enviar Solicitud-->
+                    <!--</ion-button>-->
+                    <!--</ion-col>-->
+                    <!--</ion-row>-->
+
+
+                </ion-card-content>
+            </ion-card>
+        </div>
     </ion-grid>
 
     <ion-fab horizontal="end" vertical="bottom" slot="fixed">
@@ -97,7 +133,6 @@
             </ion-fab-button>
         </ion-fab-list>
     </ion-fab>
-
 
 
 </ion-content>
