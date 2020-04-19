@@ -15,7 +15,7 @@
     <div *ngIf="!actualizar">
         <ion-card class="ion-text-center" *ngIf="!isUploading && !isUploaded">
             <ion-card-header>
-                <ion-card-title>Foto de Perfil</ion-card-title>
+                <ion-card-title>Foto</ion-card-title>
             </ion-card-header>
             <ion-card-content>
                 <div class="fileUpload btn btn-primary">
@@ -61,9 +61,10 @@
         </ion-card>
     </div>
 
-    <div *ngIf="actualizar">
-        <img [src]="canchaObjeto.imagen"/>
-        <a [href]="canchaObjeto.imagen" target="_blank" rel="noopener">Download</a>
+    <div *ngIf="actualizar" class="ion-text-center">
+        <br>
+        <img [src]="canchaObjeto.imagen" style="border-radius: 10%"/>
+        <!--<a [href]="canchaObjeto.imagen" target="_blank" rel="noopener">Download</a>-->
     </div>
 
     <ion-card>

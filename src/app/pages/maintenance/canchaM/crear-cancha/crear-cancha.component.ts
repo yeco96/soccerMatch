@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {TablesService} from 'src/app/service/tables.service';
 import {CrudService} from 'src/app/service/crud.service';
 import {LoaderService} from 'src/app/services/loader.service';
-import {ModalController, ToastController} from '@ionic/angular';
+import {AlertController, ModalController, ToastController} from '@ionic/angular';
 import {Canton, Ubicacion} from 'src/app/models/ubicacion';
 import {Cancha, Horario, MetodoPago, MyData, UbicacionCancha} from 'src/app/models/cancha';
 import {AngularFireStorage, AngularFireUploadTask} from '@angular/fire/storage';
@@ -68,6 +68,7 @@ export class CrearCanchaComponent implements OnInit {
                 private database: AngularFirestore,
                 public toastController: ToastController,
                 private formBuilder: FormBuilder,
+                public alertController: AlertController,
                 private authService: AuthenticationService) {
         this.isUploading = false;
         this.isUploaded = false;
@@ -91,6 +92,7 @@ export class CrearCanchaComponent implements OnInit {
 
 
     obj: Cancha;
+
     /*Inicializacion del equipo que se va a crear*/
     ngOnInit() {
         this.canchaObjeto = new Cancha();
@@ -162,7 +164,7 @@ export class CrearCanchaComponent implements OnInit {
 
             if (this.canchaObjeto.montoEquipo != this.canchasTemp.montoEquipo) {
                 this.noticia.descripcion = this.noticia.descripcion + 'El monto ahora es de ' + this.canchaObjeto.montoEquipo + ' por equipo. ';
-                this.auditoria.descripcion = this.auditoria.descripcion + 'El monto se modifico de  ' + this.canchasTemp.montoEquipo + 'a '+ this.canchaObjeto.montoEquipo;
+                this.auditoria.descripcion = this.auditoria.descripcion + 'El monto se modifico de  ' + this.canchasTemp.montoEquipo + 'a ' + this.canchaObjeto.montoEquipo;
                 this.noticia.fecha = this.formattedDate();
                 this.noticia.objeto = 'Cancha';
                 this.noticia.tipo = 'Nuevo monto';
@@ -202,11 +204,11 @@ export class CrearCanchaComponent implements OnInit {
                 this.noticia.objeto = 'Cancha';
                 this.noticia.tipo = 'Nuevo horario de atención';
                 this.auditoria.descripcion = this.auditoria.descripcion + 'El horario era de ' + this.getHora(this.canchasTemp.horario.horaInicio) + ' a ' + this.getHora(this.canchasTemp.horario.horaFin) +
-                 '.horas' +'pero ahora se modifico y va a ser de'+this.getHora(this.canchaObjeto.horario.horaInicio)+'a '+ this.getHora(this.canchaObjeto.horario.horaFin);
+                    '.horas' + 'pero ahora se modifico y va a ser de' + this.getHora(this.canchaObjeto.horario.horaInicio) + 'a ' + this.getHora(this.canchaObjeto.horario.horaFin);
                 this.auditoria.fecha = this.formattedDate();
                 this.auditoria.objeto = 'Cancha';
                 this.auditoria.tipo = 'Nuevo horario de atención';
-                
+
             }
             this.authService.getDataUser().then(res => {
                 this.canchaObjeto.usuarioCrea = res;
@@ -220,7 +222,7 @@ export class CrearCanchaComponent implements OnInit {
                     this.loader.hideLoader();
                 });
             });
-           // this.auditoria.usuario = 
+            // this.auditoria.usuario =
             /* Se termina de completar el metodo de update*/
 
             return;
@@ -236,8 +238,8 @@ export class CrearCanchaComponent implements OnInit {
             this.auditoria.objeto = 'Cancha';
             this.auditoria.tipo = 'Nueva cancha';
             this.noticia.descripcion = 'Se agrego la cancha ' + this.canchaObjeto.nombre + ' con el telefono: ' + this.canchaObjeto.telefono;
-            this.auditoria.descripcion = 'Se agrego la cancha ' + this.canchaObjeto.nombre + ' con el telefono: ' + this.canchaObjeto.telefono+ 'con el correo'+this.canchaObjeto.correo;
-            this.crudService.create(this.tables.tablas().CANCHAS, this.canchaObjeto, this.noticia ,this.auditoria).then(resp => {
+            this.auditoria.descripcion = 'Se agrego la cancha ' + this.canchaObjeto.nombre + ' con el telefono: ' + this.canchaObjeto.telefono + 'con el correo' + this.canchaObjeto.correo;
+            this.crudService.create(this.tables.tablas().CANCHAS, this.canchaObjeto, this.noticia, this.auditoria).then(resp => {
                 this.presentToast('Se registro la cancha correctamente', true);
                 this.loader.hideLoader();
                 this.cerrarModal();
@@ -271,15 +273,41 @@ export class CrearCanchaComponent implements OnInit {
     }
 
     /*metodo para eliminar la cancha */
-    elimiar() {
-        this.loader.showLoader();
-        this.crudService.delete(this.tables.tablas().CANCHAS, this.canchaObjeto).then(resp => {
-            this.loader.hideLoader();
-            this.cerrarModal();
-        }).catch(error => {
-            this.presentToast('Ocurrio un error al borrar la cancha', false);
-            this.loader.hideLoader();
+    async elimiar() {
+
+
+        const alert = await this.alertController.create({
+            header: 'Eliminar',
+            message: "¿Desea eliminar la cancha?",
+            buttons: [
+                {
+                    text: 'Cancelar',
+                    role: 'cancel',
+                    cssClass: 'cancelar',
+                    handler: () => {
+
+                    }
+                }, {
+                    /*Se procede/no procede con la solicitud de actualizacion al equipo */
+                    text: 'Aceptar',
+                    handler: () => {
+
+                        this.loader.showLoader();
+                        this.crudService.delete(this.tables.tablas().CANCHAS, this.canchaObjeto).then(resp => {
+                            this.loader.hideLoader();
+                            this.cerrarModal();
+                        }).catch(error => {
+                            this.presentToast('Ocurrio un error al borrar la cancha', false);
+                            this.loader.hideLoader();
+                        });
+
+                    }
+                }
+            ]
         });
+
+        await alert.present();
+
     }
 
     /*Metodo que hace posible el upload de una imagen de cancha */
@@ -349,8 +377,8 @@ export class CrearCanchaComponent implements OnInit {
         const toast = await this.toastController.create({
             message: msj,
             duration: 2000,
-            position: 'top',
-            color: !status ? 'danger' : 'primary'
+            position: 'bottom',
+            color: !status ? 'danger' : 'success'
         });
         toast.present();
     }
