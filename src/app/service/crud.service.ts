@@ -71,6 +71,12 @@ export class CrudService {
         return this.db.collection(tabla).doc(id).update(JSON.parse(JSON.stringify(record)));
     }
 
+
+    set(tabla, id, record) {
+        return this.db.collection(tabla).doc(id).set(JSON.parse(JSON.stringify(record)));
+    }
+
+
     delete(tabla, recordId , auditoria?:Auditoria) {
         if (auditoria) {
             this.db.collection(this.tables.tablas().AUDITORIA).add(JSON.parse(JSON.stringify(auditoria)));
