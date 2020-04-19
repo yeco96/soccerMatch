@@ -40,7 +40,7 @@ export class Cancha {
             && (Cancha.null(obj.ubicacion) || Cancha.null(obj.ubicacion.codigoProvincia) || Cancha.null(obj.ubicacion.codigoCanton))
             && Cancha.null(obj.montoEquipo)
             && (Cancha.null(obj.metodoPago) || Cancha.null(obj.metodoPago.tipo))
-            && (Cancha.null(obj.horario) || Cancha.null(obj.horario.dias) || Cancha.null(obj.horario.horaFin) || Cancha.null(obj.horario.horaInicio) || Cancha.null(obj.horario.tiempoJuego))
+            && (Cancha.null(obj.horario) || Cancha.null(obj.horario.dias) || Cancha.null(obj.horario.horaFin) || Cancha.null(obj.horario.horaInicio))
             && Cancha.null(obj.imagen)
         ) {
             return true;
@@ -94,7 +94,7 @@ export class Cancha {
             return "Debe ingresar un metodo de pago valido";
         }
 
-        if((Cancha.null(obj.horario) || Cancha.null(obj.horario.dias) || Cancha.null(obj.horario.horaFin) || Cancha.null(obj.horario.horaInicio) || Cancha.null(obj.horario.tiempoJuego))){
+        if((Cancha.null(obj.horario) || Cancha.null(obj.horario.dias) || Cancha.null(obj.horario.horaFin) || Cancha.null(obj.horario.horaInicio))){
             return "Debe ingresar un horario valido";
         }
 
