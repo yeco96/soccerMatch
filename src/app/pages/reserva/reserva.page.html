@@ -65,7 +65,7 @@
                                 </ion-row>
                                 <ion-row>
                                     <ion-button fill="outline" color="light" (click)="realizarPago(reserva.cancha)">
-                                        <ion-icon color="success" md="wallet"></ion-icon>
+                                        <ion-icon color="success" md="{{reserva.cancha.metodoPago.tipo == 'EFECTIVO' ? 'card-outline' : 'card-sharp'}}"></ion-icon>
                                     </ion-button>
                                 </ion-row>
                             </ion-col>

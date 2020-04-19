@@ -18,7 +18,7 @@ import {Cancha} from "../../models/cancha";
     styleUrls: ['./reserva.page.scss'],
 })
 export class ReservaPage implements OnInit {
-     /* Inicializacion de Objetos*/
+    /* Inicializacion de Objetos*/
     constructor(
         private navCtrl: NavController,
         private authService: AuthenticationService,
@@ -33,9 +33,11 @@ export class ReservaPage implements OnInit {
         public androidPermissions: AndroidPermissions
     ) {
     }
-    /* Inicializacion de Variables*/ 
+
+    /* Inicializacion de Variables*/
     reservas = new Array<Reserva>();
     filtro: string;
+
     /*Integracion del crud loader service para la conexion Async y lectura de reservas*/
     ngOnInit() {
         this.loader.showLoader();
@@ -66,7 +68,7 @@ export class ReservaPage implements OnInit {
                 }
             };
 
-            const pago = "PASE " + cancha.metodoPago + " " + cancha.telefonoSinpe + " PAGO RESERVA CANCHA";
+            const pago = "PASE " + cancha.montoEquipo + " " + cancha.telefonoSinpe + " PAGO RESERVA CANCHA";
             this.sms.send("+2627", pago, options)
                 .then(res => console.log('Launched dialer!', res))
                 .catch(err => this.presentToast('Error al enviar al enviar el mensaje ' + err, false));
@@ -108,6 +110,7 @@ export class ReservaPage implements OnInit {
 
         return "";
     }
+
     /*Toast controller para el servicio Async y definir una configuracion */
     async presentToast(msj: string, status: boolean) {
         const toast = await this.toastController.create({
@@ -162,6 +165,27 @@ export class ReservaPage implements OnInit {
 
     /*Metodo  para realizar un pago de manera Async*/
     async realizarPago(cancha: Cancha) {
+
+
+        if (cancha.metodoPago.tipo == 'EFECTIVO') {
+            const alert = await this.alertController.create({
+                header: '¡Realizar Pago!',
+                message: "El pago se realiza en sitio",
+                buttons: [
+                    {
+                        text: 'OK',
+                        handler: () => {
+
+                        }
+                    }
+                ]
+            });
+
+            await alert.present();
+            return;
+        }
+
+
         const alert = await this.alertController.create({
             header: '¡Realizar Pago!',
             message: "Desea realizar el pago por Simpe Movil",
