@@ -1,3 +1,6 @@
+import {Cancha} from "./cancha";
+import {Usuario} from "./usuario";
+
 export class Reto {
     id: string;
     descripcion: string;
@@ -5,6 +8,16 @@ export class Reto {
     id_Cancha: string;
     id_TipoReto:string;
     id_Estado: string;
+
+
+    tipo: Tipo;
+    fechaCreacion: any;
+    fechaReserva: any;
+    estado: string;
+    cancha: Cancha;
+    usuario: Usuario;
+    id_MetodoPago: string;
+
 }
 
 export class Partido {
@@ -16,5 +29,10 @@ export class Partido {
 
 export class Equipo {
     id: string;
+    nombre: string;
+}
+
+
+export class Tipo {
     nombre: string;
 }
