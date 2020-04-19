@@ -58,7 +58,7 @@ export class CrudService {
         });
 
 
-        if (noticia) {
+        if (noticia && noticia.fecha) {
             this.db.collection(this.tables.tablas().NOTICIAS).add(JSON.parse(JSON.stringify(noticia)));
         }
         // if (auditoria) {
@@ -114,7 +114,7 @@ export class CrudService {
         });
 
 
-        if (noticia) {
+        if (noticia && noticia.fecha) {
             this.db.collection(this.tables.tablas().NOTICIAS).add(JSON.parse(JSON.stringify(noticia)));
         }
         // if (auditoria) {
@@ -145,7 +145,7 @@ export class CrudService {
 
         });
 
-        if (noticia) {
+        if (noticia && noticia.fecha) {
             this.db.collection(this.tables.tablas().NOTICIAS).add(JSON.parse(JSON.stringify(noticia)));
         }
         return this.db.collection(tabla).doc(id).update(JSON.parse(JSON.stringify(record)));
