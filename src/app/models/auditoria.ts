@@ -7,4 +7,6 @@ export class Auditoria {
     tipo: string;
     objeto: string;
     usuario: Usuario;
+    jsonAntes: {};
+    jsonDespues: {};
 }
