@@ -11,6 +11,7 @@ import {AuthenticationService} from "../../services/authentication.service";
 import {LoaderService} from "../../services/loader.service";
 import {CrearEquipoComponent} from "../../crear-equipo/crear-equipo.component";
 import {Reto} from "../../models/reto";
+import { AceptarRetoComponent } from 'src/app/components/aceptar-reto/aceptar-reto.component';
 
 @Component({
     selector: 'app-retos',
@@ -237,9 +238,25 @@ export class RetosPage implements OnInit {
         }
 
         this.presentToast('Tiene ' + reto.solicitud.length + ' solicitudes ', true);
+        this.mostrarModalAsync(reto.solicitud);
     }
 
     informacion() {
         this.presentToast('Información', true);
     }
+
+
+    async mostrarModalAsync(value) {
+        const modal = await this.modalController.create({
+            component: AceptarRetoComponent,
+            cssClass: 'my-custom-modal-css',
+            componentProps: {
+                solicitud: value
+            }
+        });
+        return await modal.present();
+    }
+
+
+
 }

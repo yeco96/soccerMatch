@@ -45,12 +45,13 @@ import {NgxMaskIonicModule} from 'ngx-mask-ionic'
 import {CrearReservaComponent} from "./components/crear-reserva/crear-reserva.component";
 import {HashLocationStrategy, LocationStrategy} from "@angular/common";
 import { CrearEquipoComponent } from './crear-equipo/crear-equipo.component';
+import { AceptarRetoComponent } from './components/aceptar-reto/aceptar-reto.component';
 
 firebase.initializeApp(environment.firebase);
 
 @NgModule({
-  declarations: [AppComponent, MenuComponent, CrearRetoComponent, MostrarCanchaComponent, CrearReservaComponent, CrearCanchaComponent, FileSizeFormatPipe,OlvidoContraseniaComponent,CrearEquipoComponent],
-  entryComponents: [MenuComponent, CrearRetoComponent, MostrarCanchaComponent, CrearReservaComponent, CrearCanchaComponent, OlvidoContraseniaComponent,CrearEquipoComponent],
+  declarations: [AppComponent, MenuComponent, CrearRetoComponent, MostrarCanchaComponent, CrearReservaComponent, CrearCanchaComponent, FileSizeFormatPipe,OlvidoContraseniaComponent,CrearEquipoComponent, AceptarRetoComponent],
+  entryComponents: [MenuComponent, CrearRetoComponent, MostrarCanchaComponent, CrearReservaComponent, CrearCanchaComponent, OlvidoContraseniaComponent,CrearEquipoComponent, AceptarRetoComponent],
   imports: [BrowserModule, IonicModule.forRoot({ backButtonText: 'Atrás', scrollPadding: true, scrollAssist: false}), AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
     NgxMaskIonicModule.forRoot(),
