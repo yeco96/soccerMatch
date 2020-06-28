@@ -38,7 +38,4 @@ export class Solicitud {
     equipo: Equipo;
     estado: string;
     fecha: any;
-  partido: any;
-  partido: any;
-  partido: any;
 }

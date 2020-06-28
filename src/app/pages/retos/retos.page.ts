@@ -44,7 +44,7 @@ export class RetosPage implements OnInit {
     }
 
     /* Inicializacion de Variables*/
-    retos = new Array<Retos>();
+    retos = new Array<Reto>();
     usuario: Usuario;
     equipoObjeto: Equipo;
     filtro: string;
@@ -54,7 +54,7 @@ export class RetosPage implements OnInit {
         this.filtro = 'TODO';
 
         this.crudService.read(this.tables.tablas().RETOS).subscribe(data => {
-            this.retos = this.crudService.construir(data) as Array<Retos>;
+            this.retos = this.crudService.construir(data) as Array<Reto>;
         });
 
 
@@ -190,7 +190,7 @@ export class RetosPage implements OnInit {
                             value.solicitud = [];
                         }
 
-                        value.solicitud.push({estado: 'PENDIENTE', usuario: this.usuario, equipo: this.equipoObjeto, fecha: new Date(), partido: undefined});
+                        value.solicitud.push({estado: 'PENDIENTE', usuario: this.usuario, equipo: this.equipoObjeto, fecha: new Date()});
 
                         this.loader.showLoader();
                         this.crudService.update(this.tables.tablas().RETOS, value).then(resp => {

@@ -261,53 +261,107 @@ export class ReservaPage implements OnInit {
     }
 
     /*Metodo  para crear un reto*/
-    crearReto(value) {
-        this.loader.showLoader();
-        if (!value.partido) {
-            value.partido = {};
-        }
-        if (this.equipoObjeto && this.equipoObjeto.id == undefined) {
-            return this.presentToast('Intentelo nuevamente', false);
-        }
+    async crearReto(value) {
 
-        value.partido.equipoA = this.equipoObjeto;
-        this.crudService.create(this.tables.tablas().RETOS, value).then(resp => {
 
-            value.estado = 'RETO';
-            value.idReto = resp.id;
-            this.crudService.update(this.tables.tablas().RESERVA, value).then(resp => {
-                this.presentToast('Se creo el reto', true);
-                this.loader.hideLoader();
-            }).catch(error => {
-                this.presentToast('Ocurrio un error al crear el reto', false);
-                this.loader.hideLoader();
-            });
+      const alert = await this.alertController.create({
+          header: 'Crear!',
+          message: "Desea crear el reto",
+          buttons: [
+              {
+                  text: 'Cancelar',
+                  role: 'cancel',
+                  cssClass: 'cancelar',
+                  handler: () => {
 
-        }).catch(error => {
-            this.presentToast('Ocurrio un error al crear el reto', false);
-            this.loader.hideLoader();
-        });
+                  }
+              }, {
+                  text: 'Aceptar',
+                  handler: () => {
+                    this.loader.showLoader();
+                    if (!value.partido) {
+                        value.partido = {};
+                    }
+                    if (this.equipoObjeto && this.equipoObjeto.id == undefined) {
+                        return this.presentToast('Intentelo nuevamente', false);
+                    }
+
+                    value.partido.equipoA = this.equipoObjeto;
+                    this.crudService.create(this.tables.tablas().RETOS, value).then(resp => {
+
+                        value.estado = 'RETO';
+                        value.idReto = resp.id;
+                        this.crudService.update(this.tables.tablas().RESERVA, value).then(resp => {
+                            this.presentToast('Se creo el reto', true);
+                            this.loader.hideLoader();
+                        }).catch(error => {
+                            this.presentToast('Ocurrio un error al crear el reto', false);
+                            this.loader.hideLoader();
+                        });
+
+                    }).catch(error => {
+                        this.presentToast('Ocurrio un error al crear el reto', false);
+                        this.loader.hideLoader();
+                    });
+                  }
+
+              }
+          ]
+      });
+
+      await alert.present();
+
+
+
     }
 
     /*Metodo  para cerrar un reto*/
-    cerrarReto(value) {
-        this.loader.showLoader();
-        this.crudService.delete(this.tables.tablas().RETOS, {id: value.idReto}).then(resp => {
+    async cerrarReto(value) {
 
-            value.estado = 'PENDIENTE';
-            value.idReto = "";
-            this.crudService.update(this.tables.tablas().RESERVA, value).then(resp => {
-                this.presentToast('Se creo el reto', true);
-                this.loader.hideLoader();
-            }).catch(error => {
-                this.presentToast('Ocurrio un error al crear el reto', false);
-                this.loader.hideLoader();
-            });
 
-        }).catch(error => {
-            this.presentToast('Ocurrio un error al crear el reto', false);
-            this.loader.hideLoader();
-        });
+
+      const alert = await this.alertController.create({
+      header: 'Elminar!',
+      message: "Desea eliminar la reserva",
+      buttons: [
+          {
+              text: 'Cancelar',
+              role: 'cancel',
+              cssClass: 'cancelar',
+              handler: () => {
+
+              }
+          }, {
+              text: 'Aceptar',
+              handler: () => {
+                this.loader.showLoader();
+                this.crudService.delete(this.tables.tablas().RETOS, {id: value.idReto}).then(resp => {
+
+                    value.estado = 'PENDIENTE';
+                    value.idReto = "";
+                    this.crudService.update(this.tables.tablas().RESERVA, value).then(resp => {
+                        this.presentToast('Se creo el reto', true);
+                        this.loader.hideLoader();
+                    }).catch(error => {
+                        this.presentToast('Ocurrio un error al crear el reto', false);
+                        this.loader.hideLoader();
+                    });
+
+                }).catch(error => {
+                    this.presentToast('Ocurrio un error al crear el reto', false);
+                    this.loader.hideLoader();
+                });
+              }
+
+          }
+      ]
+  });
+
+  await alert.present();
+
+
+
+
     }
 
     /*Metodo  para realizar un pago de manera Async*/
