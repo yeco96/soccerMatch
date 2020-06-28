@@ -33,7 +33,8 @@ export class TablesService {
             ESTUDIANTES: 'Students',
             NOTICIAS: 'Noticias',
             CLIENTES: 'Clientes',
-            AUDITORIA: 'Auditoria'
+            AUDITORIA: 'Auditoria',
+            PARTIDO: 'Partido'
         };
     }
 
@@ -48,4 +49,6 @@ export class TablesService {
     permiso(mascara, permiso) {
         return (Number(mascara) & Number(permiso)) == Number(permiso);
     }
+
+
 }

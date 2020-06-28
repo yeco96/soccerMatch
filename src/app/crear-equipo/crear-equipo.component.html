@@ -227,7 +227,17 @@
             </div>
 
             <div *ngIf="tab == 'HISTORIAL'">
-                HISTORIAL
+                Resultado
+                <div *ngFor="let partido of partidos">
+                    
+                    <div>{{partido.equipoA.nombre}}</div>
+                    <div>{{partido.resultadoEquipoA}}</div>
+                    <div>{{partido.equipoA.nombre}}</div>
+                    <div>{{partido.resultadoEquipoB}}</div>
+
+                </div>
+                
+
             </div>
         </div>
 

@@ -13,6 +13,7 @@ import {Usuario} from "../models/usuario";
 import {Canton, Ubicacion} from "../models/ubicacion";
 import {Cancha} from "../models/cancha";
 import {Noticias} from 'src/app/models/noticias';
+import {Partido} from 'src/app/models/partido';
 
 
 @Component({
@@ -87,6 +88,7 @@ export class CrearEquipoComponent implements OnInit {
     canton: Canton;
     cantidadJugadores: any;
     noticia = new Noticias();
+    partido= new Array<Partido>();
 
     canchasTemp: Cancha;
 
@@ -137,6 +139,17 @@ export class CrearEquipoComponent implements OnInit {
                     this.tieneEquipo = true;
                 }
 
+                if (this.tieneEquipo) {
+                    this.crudService.read(this.tables.tablas().PARTIDO).subscribe(data => {
+                        let partidos = this.crudService.construir(data) as Array<Partido>;
+
+                        this.partido = partidos.filter(a => {
+                            return a.equipoA.id == this.equipoObjeto.id || a.equipoB.id == this.equipoObjeto.id;
+                        })
+                    }, error1 => {
+                        this.presentToast('Ocurrio un error al cargar el historial', false)
+                    });
+                }
 
                 this.loader.hideLoader();
             });
@@ -536,5 +549,8 @@ export class CrearEquipoComponent implements OnInit {
         if (minutes.length < 2) minutes = '0' + minutes;
         return `${year}-${month}-${day}T${hours}:${minutes}`;
     }
+
+    
+
 }
 
