@@ -322,7 +322,7 @@ export class ReservaPage implements OnInit {
 
       const alert = await this.alertController.create({
       header: 'Elminar!',
-      message: "Desea eliminar la reserva",
+      message: "Desea eliminar el reto y mantener la reserva",
       buttons: [
           {
               text: 'Cancelar',
@@ -334,6 +334,8 @@ export class ReservaPage implements OnInit {
           }, {
               text: 'Aceptar',
               handler: () => {
+
+
                 this.loader.showLoader();
                 this.crudService.delete(this.tables.tablas().RETOS, {id: value.idReto}).then(resp => {
 
@@ -408,6 +410,78 @@ export class ReservaPage implements OnInit {
         });
 
         await alert.present();
+    }
+
+    async elimarReserva(value) {
+      const alert = await this.alertController.create({
+      header: 'Elminar!',
+      message: "Desea eliminar la reserva y liberar el campo",
+      buttons: [
+          {
+              text: 'Cancelar',
+              role: 'cancel',
+              cssClass: 'cancelar',
+              handler: () => {
+
+              }
+          }, {
+              text: 'Aceptar',
+              handler: () => {
+
+
+
+
+                  this.loader.showLoader();
+                  this.crudService.read(this.tables.tablas().CANCHAS).subscribe(data => {
+                      const canchas = this.crudService.construir(data) as Array<Cancha>;
+
+                      canchas.forEach(c => {
+
+                        let borrar = false;
+
+                        if (c.reserva) {
+                          c.reserva.forEach((item, index) => {
+                            if (item.idReserva === value.id) {
+                              borrar = true;
+                              c.reserva.splice(index, 1);
+                            }
+                          });
+
+                          if (borrar) {
+                            this.crudService.update(this.tables.tablas().CANCHAS, c).then(resp => {
+
+                              this.crudService.delete(this.tables.tablas().RESERVA, { id: value.id }).then(resp => {
+                                this.presentToast('Correcto', true);
+                                this.loader.hideLoader();
+                              }).catch(error => {
+                                this.presentToast('Ocurrio un error al crear el reto', false);
+                                this.loader.hideLoader();
+                              });
+
+                            }).catch(error => {
+                              this.presentToast('Ocurrio un error al crear el reto', false);
+                              this.loader.hideLoader();
+                            });
+                          }
+
+
+                        }
+
+                      });
+
+                      this.loader.hideLoader();
+                  });
+
+
+
+              }
+
+          }
+      ]
+  });
+
+  await alert.present();
+
     }
 
 }

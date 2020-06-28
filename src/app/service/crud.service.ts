@@ -202,6 +202,12 @@ export class CrudService {
     }
 
 
+    deleteRura(ruta) {
+        const doc = this.db.doc(ruta);
+        return doc.delete();
+    }
+
+
     async getDataUser() {
         return new Promise<any>((resolve, reject) => {
             // let user = firebase.auth().currentUser;
@@ -243,6 +249,3 @@ export class CrudService {
     }
 
 }
-
-
-

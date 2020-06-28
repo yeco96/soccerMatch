@@ -232,7 +232,7 @@ export class CrearReservaComponent implements OnInit {
                         this.reserva.fechaReserva = this.fechaBuscar;
                         this.reserva.usuario = this.usuario;
 
-                        this.loader.showLoader();
+
                         this.crudService.create(this.tables.tablas().RESERVA, this.reserva).then(resp => {
 
                             if (cancha.reserva === undefined) {
@@ -240,6 +240,7 @@ export class CrearReservaComponent implements OnInit {
                             }
 
                             cancha.reserva.push({
+                                idReserva: resp.id,
                                 estado: 'LISTO',
                                 fecha: this.fechaBuscar.toString().replace("T", " ").replace("Z", " ")
                             });
@@ -257,6 +258,38 @@ export class CrearReservaComponent implements OnInit {
                             this.presentToast('Ocurrio un error al crear la reserva', false);
                             this.loader.hideLoader();
                         });
+
+
+                        // if (cancha.reserva === undefined) {
+                        //     cancha.reserva = [];
+                        // }
+                        //
+                        // cancha.reserva.push({
+                        //     estado: 'LISTO',
+                        //     fecha: this.fechaBuscar.toString().replace("T", " ").replace("Z", " ")
+                        // });
+                        //
+                        // this.loader.showLoader();
+                        // this.crudService.update(this.tables.tablas().CANCHAS, cancha).then(resp => {
+                        //
+                        //   this.reserva.rutaCancelar = "/Canchas/" + cancha.id + "/reserva/"+ resp;
+                        //   this.crudService.create(this.tables.tablas().RESERVA, this.reserva).then(resp => {
+                        //     this.loader.hideLoader();
+                        //     this.cerrarModal();
+                        //     this.presentToast("La reserva se realizo correctamente", true);
+                        //   }).catch(error => {
+                        //       this.presentToast('Ocurrio un error al crear la reserva', false);
+                        //       this.loader.hideLoader();
+                        //   });
+                        //
+                        //
+                        // }).catch(error => {
+                        //     this.presentToast('Ocurrio un error al crear la reserva', false);
+                        //     this.loader.hideLoader();
+                        // });
+
+
+
                     }
                 }
             ]

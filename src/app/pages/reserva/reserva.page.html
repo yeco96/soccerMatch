@@ -46,7 +46,7 @@
 
 
                         <ion-row class="">
-                            <ion-col size="8" (click)="mostrarModal(reserva.cancha)">
+                            <ion-col size="8" (click)="agregarEquipo(reserva)">
                                 <div class="ion-padding-top ion-padding-start ion-padding-bottom" style="height: 90px">
                                     <h1 style="font-size: 20px;" class="ion-no-margin">
                                         {{reserva.cancha.nombre}}</h1>
@@ -60,8 +60,8 @@
 
                             <ion-col size="4">
                                 <ion-row>
-                                    <ion-button *ngIf="reserva.estado == 'PENDIENTE'" fill="outline" color="light"  (click)="agregarEquipo(reserva)">
-                                        <ion-icon color="primary" md="person-add"></ion-icon>
+                                    <ion-button *ngIf="reserva.estado == 'PENDIENTE'" fill="outline" color="light"  (click)="elimarReserva(reserva)">
+                                        <ion-icon color="primary" md="close"></ion-icon>
                                     </ion-button>
 
                                     <ion-button *ngIf="reserva.estado == 'RETO'" fill="outline" color="light"  (click)="cerrarReto(reserva)">
@@ -82,27 +82,18 @@
                     </ion-card>
                 </ion-col>
             </ion-row>
+
+              <ion-row class="ion-text-center">
+                <ion-col size="12">
+                  <ion-button fill="outline" color="success" expand="full" (click)="mostrarModal(reserva.cancha)">
+                    INFORMACIÓN
+                  </ion-button>
+                  </ion-col>
+              </ion-row>
+
         </ion-grid>
 
     </div>
 
 
-    <!--<ion-card>-->
-    <!--<ion-card-content>-->
-    <!--<ion-list>-->
-    <!--<ion-item *ngFor="let reserva of reservas">-->
-    <!--<ion-avatar slot="start">-->
-    <!--</ion-avatar>-->
-    <!--<ion-label>-->
-    <!--<h2>{{reserva.fecha}}</h2>-->
-    <!--<h3></h3>-->
-    <!--<p>{{reserva.estado}}</p>-->
-    <!--</ion-label>-->
-    <!--&lt;!&ndash;<ion-button fill="outline" slot="end" (click)="editar(cancha);">&ndash;&gt;-->
-    <!--&lt;!&ndash;Editar&ndash;&gt;-->
-    <!--&lt;!&ndash;</ion-button>&ndash;&gt;-->
-    <!--</ion-item>-->
-    <!--</ion-list>-->
-    <!--</ion-card-content>-->
-    <!--</ion-card>-->
 </ion-content>

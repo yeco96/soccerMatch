@@ -153,6 +153,9 @@ export class RetosPage implements OnInit {
             return this.presentToast('Intentelo nuevamente', false);
         }
 
+        if (this.equipoObjeto == undefined) {
+          return this.presentToast('Debe crear un equipo', false);
+        }
 
         if (value.partido.equipoA.id === this.equipoObjeto.id) {
             return this.presentToast('No puede solicitar un reto propio', false);

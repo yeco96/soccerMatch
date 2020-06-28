@@ -26,7 +26,7 @@ export class Cancha {
     static validarEmail(valor) {
 
          return(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3,4})+$/.test(valor));
-         
+
       }
 
     static validarNumero(valor){
@@ -147,9 +147,5 @@ export interface MyData {
 export class Reserva {
     fecha: Date;
     estado: string;
+    idReserva: any;
 }
-
-
-  
-
-

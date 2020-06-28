@@ -10,4 +10,5 @@ export class Reserva {
     usuario: Usuario;
     id_MetodoPago: string;
     idReto: string;
+    rutaCancelar: string;
 }

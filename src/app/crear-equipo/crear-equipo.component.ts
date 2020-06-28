@@ -68,7 +68,7 @@ export class CrearEquipoComponent implements OnInit {
         this.filtro = 'LISTO';
     }
 
-/* Inicializacion de Variables y referencias a otras tablas*/ 
+/* Inicializacion de Variables y referencias a otras tablas*/
     actualizar: boolean;
     equipos = new Array<Equipo>();
     equipoObjeto: Equipo;
@@ -92,22 +92,22 @@ export class CrearEquipoComponent implements OnInit {
 
     canchasTemp: Cancha;
 
-    /* Metodo para crear equipo*/ 
+    /* Metodo para crear equipo*/
     ngOnInit() {
-        /* Inicializacion de Variables */ 
+        /* Inicializacion de Variables */
         this.equipoObjeto = new Equipo();
         this.usuario = new Usuario();
-        /* Loader de datos*/ 
+        /* Loader de datos*/
         this.loader.showLoader();
         this.authService.getDataUser().then(res => {
             this.usuario = res;
 
-            /* Verifica si el usuario no es lider y el campo de lider esta vacio luego si el campo usuario que pertenece al equipo esta vacio*/ 
+            /* Verifica si el usuario no es lider y el campo de lider esta vacio luego si el campo usuario que pertenece al equipo esta vacio*/
             if ((!this.usuario.liderEquipo || this.usuario.liderEquipo == "") && (!this.usuario.perteneceEquipo || this.usuario.perteneceEquipo == "")) {
                 this.loader.hideLoader();
                 return;
             }
-            /* Servicio de read con la tabla para el mantenimiento*/ 
+            /* Servicio de read con la tabla para el mantenimiento*/
             this.crudService.read(this.tables.tablas().EQUIPO).subscribe(data => {
                 this.listaEquipos = this.crudService.construir(data) as Array<Equipo>;
 
@@ -122,7 +122,14 @@ export class CrearEquipoComponent implements OnInit {
                     }
 
                 })[0];
-                /* Validaciones*/ 
+
+                if (this.equipoObjeto == undefined) {
+                  this.equipoObjeto = new Equipo();
+                    this.loader.hideLoader();
+                  return;
+                }
+
+                /* Validaciones*/
                 if (this.equipoObjeto.ubicacion == undefined) {
                     this.equipoObjeto.ubicacion = new UbicacionEquipo();
                 }
@@ -167,7 +174,7 @@ export class CrearEquipoComponent implements OnInit {
 
     }
 
-/* Obtener datos de la tabla*/ 
+/* Obtener datos de la tabla*/
     obtenerDatos() {
         this.loader.showLoader();
         this.authService.getDataUser().then(res => {
@@ -192,6 +199,14 @@ export class CrearEquipoComponent implements OnInit {
                     }
 
                 })[0];
+
+
+                if (this.equipoObjeto == undefined) {
+                  this.equipoObjeto = new Equipo();
+                    this.loader.hideLoader();
+                  return;
+                }
+
 
                 if (this.equipoObjeto.ubicacion == undefined) {
                     this.equipoObjeto.ubicacion = new UbicacionEquipo();
@@ -223,7 +238,7 @@ export class CrearEquipoComponent implements OnInit {
         this.actualizar = false;
         this.modalController.dismiss();
     }
-    /* Obtebner datos de ubicacion*/ 
+    /* Obtebner datos de ubicacion*/
     datosUbicacion(provincia, canton) {
         if (provincia != null && canton == null) {
             const result = this.ubicacion.filter(x => x.codigoProvincia == provincia);
@@ -236,7 +251,7 @@ export class CrearEquipoComponent implements OnInit {
             return result[0].descripcion;
         }
     }
-    /* Enviar solicitud de validacion de un miembro del equipo de forma Async*/ 
+    /* Enviar solicitud de validacion de un miembro del equipo de forma Async*/
     async enviarSolicitud(equipo: Equipo) {
 
 
@@ -262,7 +277,7 @@ export class CrearEquipoComponent implements OnInit {
             }
         }
 
-        /* Verificacion si desear enciar la solicitud para pertenecer a un equipo*/ 
+        /* Verificacion si desear enciar la solicitud para pertenecer a un equipo*/
         const alert = await this.alertController.create({
             header: 'Enviar solicitud',
             message: "¿Desea solicitar ingresar al equipo?",
@@ -303,7 +318,7 @@ export class CrearEquipoComponent implements OnInit {
         await alert.present();
     }
 
-    /* Metodo para crear un equipo*/ 
+    /* Metodo para crear un equipo*/
     async crearEquipo() {
 
         const result = Equipo.validar(this.equipoObjeto);
@@ -391,7 +406,7 @@ export class CrearEquipoComponent implements OnInit {
 
         await alert.present();
     }
-/* Metodo para buscar equipos*/ 
+/* Metodo para buscar equipos*/
     buscarEquipos() {
         const result = Equipo.validar(this.equipoObjeto);
         if (result) {
@@ -411,7 +426,7 @@ export class CrearEquipoComponent implements OnInit {
         }, error1 => this.loader.hideLoader());
     }
 
-    /* Validacion de la solicitud si es aprobada o rechazada*/ 
+    /* Validacion de la solicitud si es aprobada o rechazada*/
     async validarSolicitud(estado, jugador) {
         const estadoStr = (estado ? 'Aprobar' : 'Rechazar');
         const titulo = estado ? 'Aprobar Solicitud' : 'Rechazar Solicitud';
@@ -467,7 +482,7 @@ export class CrearEquipoComponent implements OnInit {
             this.provincia = this.ubicacion.find(x => x.codigoProvincia.toString() === this.equipoObjeto.ubicacion.codigoProvincia.toString());
         }
     }
-    /* Metodo para borrar cancha*/ 
+    /* Metodo para borrar cancha*/
     async borrarCancha() {
 
         const alert = await this.alertController.create({
@@ -506,7 +521,7 @@ export class CrearEquipoComponent implements OnInit {
         await alert.present();
 
     }
-    /* Metodo para editar un equipo*/ 
+    /* Metodo para editar un equipo*/
     editarEquipo() {
         if (!this.editar) {
             this.editar = true;
@@ -550,7 +565,6 @@ export class CrearEquipoComponent implements OnInit {
         return `${year}-${month}-${day}T${hours}:${minutes}`;
     }
 
-    
+
 
 }
-
