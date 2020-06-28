@@ -29,7 +29,7 @@ export class CrearReservaComponent implements OnInit {
         public authenticationService: AuthenticationService
     ) {
     }
- /* Inicializacion de Variables y referencias a otras tablas*/ 
+ /* Inicializacion de Variables y referencias a otras tablas*/
     ubicacion = new Array<Ubicacion>();
     ubicacionJSON: any;
 

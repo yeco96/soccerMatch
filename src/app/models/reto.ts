@@ -37,6 +37,7 @@ export class Tipo {
 
 export class Solicitud {
     usuario: Usuario;
+    equipo: Equipo;
     estado: string;
+    fecha: any;
 }
-

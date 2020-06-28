@@ -23,4 +23,8 @@ export class AceptarRetoComponent implements OnInit {
       this.modalController.dismiss();
   }
 
+  aceptar(s: Solicitud) {
+
+  }
+
 }

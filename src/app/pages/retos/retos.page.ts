@@ -191,7 +191,7 @@ export class RetosPage implements OnInit {
                             value.solicitud = [];
                         }
 
-                        value.solicitud.push({estado: 'PENDIENTE', usuario: this.usuario});
+                        value.solicitud.push({estado: 'PENDIENTE', usuario: this.usuario, equipo: this.equipoObjeto, fecha: new Date()});
 
                         this.loader.showLoader();
                         this.crudService.update(this.tables.tablas().RETOS, value).then(resp => {
