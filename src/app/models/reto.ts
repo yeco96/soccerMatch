@@ -6,9 +6,7 @@ export class Reto {
     id: string;
     descripcion: string;
     partido: Partido;
-    id_Cancha: string;
-    id_TipoReto: string;
-    id_Estado: string;
+
 
 
     tipo: Tipo;
@@ -17,7 +15,7 @@ export class Reto {
     estado: string;
     cancha: Cancha;
     usuario: Usuario;
-    id_MetodoPago: string;
+
 
     solicitud: Array<Solicitud>;
 
@@ -40,4 +38,7 @@ export class Solicitud {
     equipo: Equipo;
     estado: string;
     fecha: any;
+  partido: any;
+  partido: any;
+  partido: any;
 }

@@ -108,7 +108,7 @@
 
                     <div class="ion-text-center">
                         {{fechaCompleta(reto.fechaReserva)}}
-                        <ion-row class="ion-text-center">
+                        <ion-row class="ion-text-center" *ngIf="filtro == 'TODO' && reto.estado != 'LISTO'">
                             <ion-col size="5">
                                 <ion-button fill="outline" color="secondary"
                                             (click)="filtro != 'TODO' ? verNotificacion(reto) : informacion()">
@@ -123,6 +123,29 @@
                                 <ion-button fill="outline" color="secondary" (click)="enviarSolicitud(reto)">
                                     <ion-icon md="add-circle-sharp"></ion-icon>
                                 </ion-button>
+                            </ion-col>
+                        </ion-row>
+
+                          <ion-row class="ion-text-center" *ngIf="filtro == 'TODO' && reto.estado == 'LISTO'">
+                              <ion-col size="12">
+                                <ion-button fill="outline" color="success">
+                                  VER DATOS
+                                </ion-button>
+                              </ion-col>
+                            </ion-row>
+
+                        <ion-row class="ion-text-center" *ngIf="filtro != 'TODO'">
+                            <ion-col size="12">
+
+                              <ion-button fill="outline" *ngIf="reto.estado != 'LISTO'" color="secondary" (click)="verNotificacion(reto)">
+                                LISTA DE SOLICITUDES
+                              </ion-button>
+
+
+                              <ion-button fill="outline" color="danger" *ngIf="reto.estado == 'LISTO'" (click)="cancelarReto(reto)">
+                                CANCELAR RETO
+                              </ion-button>
+
                             </ion-col>
                         </ion-row>
 

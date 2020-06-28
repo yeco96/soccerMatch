@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {TablesService} from 'src/app/service/tables.service';
 import {CrudService} from 'src/app/service/crud.service';
 import {AlertController, ModalController, ToastController} from '@ionic/angular';
-import {Retos} from 'src/app/models/retos';
 import {CrearReservaComponent} from "../../components/crear-reserva/crear-reserva.component";
 import {Router} from "@angular/router";
 import {Usuario} from "../../models/usuario";
@@ -191,7 +190,7 @@ export class RetosPage implements OnInit {
                             value.solicitud = [];
                         }
 
-                        value.solicitud.push({estado: 'PENDIENTE', usuario: this.usuario, equipo: this.equipoObjeto, fecha: new Date()});
+                        value.solicitud.push({estado: 'PENDIENTE', usuario: this.usuario, equipo: this.equipoObjeto, fecha: new Date(), partido: undefined});
 
                         this.loader.showLoader();
                         this.crudService.update(this.tables.tablas().RETOS, value).then(resp => {
@@ -238,7 +237,7 @@ export class RetosPage implements OnInit {
         }
 
         this.presentToast('Tiene ' + reto.solicitud.length + ' solicitudes ', true);
-        this.mostrarModalAsync(reto.solicitud);
+        this.mostrarModalAsync(reto.solicitud, reto);
     }
 
     informacion() {
@@ -246,15 +245,57 @@ export class RetosPage implements OnInit {
     }
 
 
-    async mostrarModalAsync(value) {
+    async mostrarModalAsync(value, reto) {
         const modal = await this.modalController.create({
             component: AceptarRetoComponent,
             cssClass: 'my-custom-modal-css',
             componentProps: {
-                solicitud: value
+                solicitud: value,
+                reto: reto
             }
         });
         return await modal.present();
+    }
+
+
+    async cancelarReto(reto){
+
+      const alert = await this.alertController.create({
+          header: 'Elminar!',
+          message: "Desea eliminar el reto",
+          buttons: [
+              {
+                  text: 'Cancelar',
+                  role: 'cancel',
+                  cssClass: 'cancelar',
+                  handler: () => {
+
+                  }
+              }, {
+                  text: 'Aceptar',
+                  handler: () => {
+                    this.loader.showLoader();
+                    this.crudService.delete(this.tables.tablas().RETOS, {id: reto.id}).then(resp => {
+
+                      //cambiar de estado la reserva
+
+                      this.presentToast('Se elmino el reto', true);
+                      this.loader.hideLoader();
+                    }).catch(error => {
+                        this.presentToast('Ocurrio un error al crear el reto', false);
+                        this.loader.hideLoader();
+                    });
+                  }
+
+              }
+          ]
+      });
+
+      await alert.present();
+
+
+
+
     }
 
 
