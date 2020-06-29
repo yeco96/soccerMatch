@@ -227,13 +227,22 @@
             </div>
 
             <div *ngIf="tab == 'HISTORIAL'">
-                Resultado
-                <div *ngFor="let partido of partidos">
+                Resultados
+                <div *ngFor="let P of partido">
 
-                    <div>{{partido.equipoA.nombre}}</div>
-                    <div>{{partido.resultadoEquipoA}}</div>
-                    <div>{{partido.equipoA.nombre}}</div>
-                    <div>{{partido.resultadoEquipoB}}</div>
+                    <div  class="ion-text-center ion-padding" fill="outline" color="light" style="color:black; border: gray; border-style: solid;"> 
+                      <!--  <div style="font-size: 15px" class="ion-no-margin ion-text-center">-->
+                        
+                        <div style="color: rgb(119, 28, 28);">Partido</div>
+
+                        <div>{{P.equipoA.nombre}}</div>
+                        <div>{{P.resultadoEquipoA}}</div>
+                        <div>{{P.equipoB.nombre}}</div>
+                        <div>{{P.resultadoEquipoB}}</div>
+                        <div>{{P.fecha}}</div>
+
+                    </div>
+
 
                 </div>
 
