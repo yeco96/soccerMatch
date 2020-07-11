@@ -108,7 +108,7 @@
 
                     <div class="ion-text-center">
                         {{fechaCompleta(reto.fechaReserva)}}
-                        <ion-row class="ion-text-center" *ngIf="filtro == 'TODO' && reto.estado != 'LISTO'">
+                        <ion-row class="ion-text-center" *ngIf="filtro == 'TODO' && reto.estado != 'LISTO' && reto.estado != 'CON RESULTADO'">
                             <ion-col size="5">
                                 <ion-button fill="outline" color="secondary"
                                             (click)="filtro != 'TODO' ? verNotificacion(reto) : informacion()">
@@ -126,15 +126,15 @@
                             </ion-col>
                         </ion-row>
 
-                          <ion-row class="ion-text-center" *ngIf="filtro == 'TODO' && reto.estado == 'LISTO'">
-                              <ion-col size="12">
-                                <ion-button fill="outline" color="success">
-                                  VER DATOS
-                                </ion-button>
-                              </ion-col>
-                            </ion-row>
+                        <ion-row class="ion-text-center" *ngIf="filtro == 'TODO' && reto.estado == 'CON RESULTADO'">
+                            <ion-col size="12">
+                              <ion-button fill="outline" color="success" (click)="verDatos(reto)">
+                                VER DATOS
+                              </ion-button>
+                            </ion-col>
+                        </ion-row>
 
-                        <ion-row class="ion-text-center" *ngIf="filtro != 'TODO'">
+                        <ion-row class="ion-text-center" *ngIf="filtro != 'TODO' && reto.estado != 'CON RESULTADO'">
                             <ion-col size="12">
 
                               <ion-button fill="outline" *ngIf="reto.estado != 'LISTO'" color="secondary" (click)="verNotificacion(reto)">
@@ -142,8 +142,12 @@
                               </ion-button>
 
 
-                              <ion-button fill="outline" color="danger" *ngIf="reto.estado == 'LISTO'" (click)="cancelarReto(reto)">
+                              <ion-button fill="outline" color="danger" *ngIf="reto.estado == 'LISTO' && fechaValida(reto.fechaReserva) == 'PENDIENTE'" (click)="cancelarReto(reto)">
                                 CANCELAR RETO
+                              </ion-button>
+
+                              <ion-button fill="outline" color="secondary" *ngIf="reto.estado == 'LISTO' && fechaValida(reto.fechaReserva) == 'REALIZADO'" (click)="ingresarMarcador(reto)">
+                                INGRESAR MARCADOR
                               </ion-button>
 
                             </ion-col>

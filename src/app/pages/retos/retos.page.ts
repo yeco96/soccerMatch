@@ -11,6 +11,7 @@ import {LoaderService} from "../../services/loader.service";
 import {CrearEquipoComponent} from "../../crear-equipo/crear-equipo.component";
 import {Reto} from "../../models/reto";
 import { AceptarRetoComponent } from 'src/app/components/aceptar-reto/aceptar-reto.component';
+import { Partido } from 'src/app/models/partido';
 
 @Component({
     selector: 'app-retos',
@@ -295,12 +296,74 @@ export class RetosPage implements OnInit {
       });
 
       await alert.present();
-
-
-
-
     }
 
+
+    fechaValida(fecha) {
+        const date = new Date(fecha);
+
+        if(date > new Date()){
+          return "PENDIENTE"
+        }
+
+        return "REALIZADO"
+    }
+
+
+    ingresarMarcador(reto: Reto) {
+
+      const partido = new Partido();
+
+      partido.equipoA = reto.partido.equipoA;
+      partido.equipoB = reto.partido.equipoB;
+
+      partido.resultadoEquipoA = 10;
+      partido.resultadoEquipoB = 5;
+
+
+      this.loader.showLoader();
+      this.crudService.create(this.tables.tablas().PARTIDO, partido).then(resp => {
+
+        reto.estado = 'CON RESULTADO';
+        reto.partido.resultadoEquipoA = partido.resultadoEquipoA;
+        reto.partido.resultadoEquipoB = partido.resultadoEquipoB;
+        this.crudService.update(this.tables.tablas().RETOS, reto).then(resp => {
+          this.presentToast('Se ingreso el resultado', true);
+
+            this.loader.hideLoader();
+        }).catch(error => {
+            this.presentToast('Ocurrio un error al enviar la solitud', false);
+            this.loader.hideLoader();
+        });
+
+        this.loader.hideLoader();
+      }).catch(error => {
+          this.presentToast('Ocurrio un error al crear el resultado', false);
+          this.loader.hideLoader();
+      });
+    }
+
+
+    async verDatos(reto: Reto){
+
+      const datos = reto.partido.equipoA.nombre + " " + reto.partido.resultadoEquipoA + " / " + reto.partido.equipoB.nombre + " " + reto.partido.resultadoEquipoB;
+
+      const alert = await this.alertController.create({
+          header: 'RESULTADOS',
+          message: datos,
+          buttons: [
+                {
+                  text: 'Aceptar',
+                  handler: () => {
+
+                  }
+
+              }
+          ]
+      });
+
+      await alert.present();
+    }
 
 
 }

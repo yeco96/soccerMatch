@@ -26,6 +26,8 @@ export class Partido {
     fecha: Date;
     equipoA: Equipo;
     equipoB: Equipo;
+    resultadoEquipoA: number;
+    resultadoEquipoB: number;
 }
 
 export class Tipo {

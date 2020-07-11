@@ -55,8 +55,9 @@ export class AceptarRetoComponent implements OnInit {
 
                     this.loader.showLoader();
                     this.crudService.update(this.tables.tablas().RETOS, this.reto).then(resp => {
-                        this.presentToast('Se envio la solitud', true);
+                        this.presentToast('Se acepto la solitud', true);
                         this.loader.hideLoader();
+                        this.modalController.dismiss();
                     }).catch(error => {
                         this.presentToast('Ocurrio un error al enviar la solitud', false);
                         this.loader.hideLoader();
