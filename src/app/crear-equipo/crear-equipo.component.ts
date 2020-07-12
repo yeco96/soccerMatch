@@ -149,9 +149,12 @@ export class CrearEquipoComponent implements OnInit {
                 if (this.tieneEquipo) {
                     this.crudService.read(this.tables.tablas().PARTIDO).subscribe(data => {
                         let partidos = this.crudService.construir(data) as Array<Partido>;
-
                         this.partido = partidos.filter(a => {
-                            return a.equipoA.id == this.equipoObjeto.id || a.equipoB.id == this.equipoObjeto.id;
+                            if(a.equipoA.id == this.equipoObjeto.id){
+                                return a.equipoA.id == this.equipoObjeto.id;
+                                
+                            }else
+                             return a.equipoB.id == this.equipoObjeto.id;
                         })
                     }, error1 => {
                         this.presentToast('Ocurrio un error al cargar el historial', false)
