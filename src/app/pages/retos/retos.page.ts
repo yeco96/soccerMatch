@@ -310,37 +310,92 @@ export class RetosPage implements OnInit {
     }
 
 
-    ingresarMarcador(reto: Reto) {
-
-      const partido = new Partido();
-
-      partido.equipoA = reto.partido.equipoA;
-      partido.equipoB = reto.partido.equipoB;
-
-      partido.resultadoEquipoA = 10;
-      partido.resultadoEquipoB = 5;
+    async ingresarMarcador(reto: Reto) {
 
 
-      this.loader.showLoader();
-      this.crudService.create(this.tables.tablas().PARTIDO, partido).then(resp => {
 
-        reto.estado = 'CON RESULTADO';
-        reto.partido.resultadoEquipoA = partido.resultadoEquipoA;
-        reto.partido.resultadoEquipoB = partido.resultadoEquipoB;
-        this.crudService.update(this.tables.tablas().RETOS, reto).then(resp => {
-          this.presentToast('Se ingreso el resultado', true);
 
-            this.loader.hideLoader();
-        }).catch(error => {
-            this.presentToast('Ocurrio un error al enviar la solitud', false);
-            this.loader.hideLoader();
-        });
 
-        this.loader.hideLoader();
-      }).catch(error => {
-          this.presentToast('Ocurrio un error al crear el resultado', false);
-          this.loader.hideLoader();
-      });
+
+              const alert = await this.alertController.create({
+                  header: '¿Agregar un equipo?',
+                  message: "Al selecionar un equipo se creara un reto",
+                  inputs: [{
+                      type: "number",
+                      name: 'EquipoA',
+                      label: 'Equipo A',
+                      placeholder:"Equipo A",
+                      checked: true
+                  }, {
+                      type: "number",
+                      name: 'EquipoB',
+                      label: 'Equipo B',
+                      placeholder:"Equipo B",
+                      checked: false
+                  }],
+                  buttons: [
+                      {
+                          text: 'Cancelar',
+                          role: 'cancel',
+                          cssClass: 'cancelar',
+                          handler: () => {
+
+                          }
+                      }, {
+                          text: 'Aceptar',
+                          handler: data => {
+
+                            if (!data) {
+                              return this.presentToast('Debe ingresar los marcadores', false);
+                            }
+
+                            if (data.EquipoA == undefined || data.EquipoA == "") {
+                              return this.presentToast('Debe ingresar el marcador del equipo A', false);
+                            }
+
+
+                            if (data.EquipoB == undefined || data.EquipoB == "") {
+                              return this.presentToast('Debe ingresar el marcador del equipo B', false);
+                            }
+
+                            const partido = new Partido();
+
+                            partido.equipoA = reto.partido.equipoA;
+                            partido.equipoB = reto.partido.equipoB;
+
+                            partido.resultadoEquipoA = data.EquipoA;
+                            partido.resultadoEquipoB = data.EquipoB;
+
+
+                            this.loader.showLoader();
+                            this.crudService.create(this.tables.tablas().PARTIDO, partido).then(resp => {
+
+                              reto.estado = 'CON RESULTADO';
+                              reto.partido.resultadoEquipoA = partido.resultadoEquipoA;
+                              reto.partido.resultadoEquipoB = partido.resultadoEquipoB;
+                              this.crudService.update(this.tables.tablas().RETOS, reto).then(resp => {
+                                this.presentToast('Se ingreso el resultado', true);
+
+                                  this.loader.hideLoader();
+                              }).catch(error => {
+                                  this.presentToast('Ocurrio un error al enviar la solitud', false);
+                                  this.loader.hideLoader();
+                              });
+
+                              this.loader.hideLoader();
+                            }).catch(error => {
+                                this.presentToast('Ocurrio un error al crear el resultado', false);
+                                this.loader.hideLoader();
+                            });
+                          }
+                      }
+                  ]
+              });
+
+              await alert.present();
+
+
+
     }
 
 
