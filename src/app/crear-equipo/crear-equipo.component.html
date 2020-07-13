@@ -230,21 +230,37 @@
                 Resultados
                 <div *ngFor="let P of partido">
 
-                    <div  class="ion-text-center ion-padding" fill="outline" color="light" style="color:black; border: gray; border-style: solid;"> 
-                      <!--  <div style="font-size: 15px" class="ion-no-margin ion-text-center">-->
-                        
-                        <div style="color: rgb(119, 28, 28);">Partido</div>
 
-                        <div>{{P.equipoA.nombre}} - {{P.resultadoEquipoA}} / {{P.resultadoEquipoB}} - {{P.equipoB.nombre}}</div>
-
-                        <div>{{P.fecha}}</div>
-
-                    </div>
+                  <div  class="ion-padding" fill="outline" color="light">
 
 
+
+                      <ion-row>
+                          <ion-col size="12">
+                            <!-- PERDIO -->
+                            <div style="height: 15px; background-color: red;" *ngIf="(P.equipoA.id === equipoObjeto.id && P.resultadoEquipoA < P.resultadoEquipoB) || (P.equipoB.id === equipoObjeto.id && P.resultadoEquipoB < P.resultadoEquipoA)"></div>
+                            <!-- GANO -->
+                            <div style="height: 15px; background-color: green;" *ngIf="(P.equipoA.id === equipoObjeto.id && P.resultadoEquipoA > P.resultadoEquipoB) || (P.equipoA.id === equipoObjeto.id && P.resultadoEquipoA > P.resultadoEquipoB)"></div>
+                            <!-- EMPATE -->
+                            <div style="height: 15px; background-color: blue;" *ngIf="(P.equipoA.id === equipoObjeto.id && P.resultadoEquipoA == P.resultadoEquipoB) || (P.equipoB.id === equipoObjeto.id && P.resultadoEquipoB == P.resultadoEquipoA)"></div>
+
+                          </ion-col>
+                      </ion-row>
+
+                      <ion-row class="ion-text-start ion-padding-bottom">
+                          <ion-col size="10"><strong>{{P.equipoA.nombre}}</strong></ion-col>
+                          <ion-col size="2">{{P.resultadoEquipoA}}</ion-col>
+                      </ion-row>
+
+                      <ion-row class="ion-text-start ion-padding-bottom">
+                          <ion-col size="10"><strong> {{P.equipoB.nombre}}</strong></ion-col>
+                          <ion-col size="2"> {{P.resultadoEquipoB}}</ion-col>
+                      </ion-row>
+
+                      <div>{{P.fecha}}</div>
+
+                  </div>
                 </div>
-
-
             </div>
         </div>
 
