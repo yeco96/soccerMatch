@@ -21,7 +21,7 @@
 
     <ion-item>
       <ion-label position="floating" color="primary">Correo</ion-label>
-      <ion-input type="text" formControlName="email"></ion-input>
+      <ion-input type="email" formControlName="email"></ion-input>
     </ion-item>
     <div class="validation-errors">
       <ng-container *ngFor="let validation of validationMessages.email">
@@ -59,7 +59,7 @@
 <div class="ion-padding ion-text-center">
 
   <p>Registro</p>
- 
+
   <ion-button (click)="goToRegisterPage()" expand="full" color="secondary">
     <ion-icon md="correo-electronico"></ion-icon>
     &nbsp;
