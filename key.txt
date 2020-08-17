@@ -1,0 +1,19 @@
+https://ionicframework.com/docs/deployment/play-store
+
+
+cd C:\Program Files\Java\jdk1.8.0_251\bin
+
+
+keytool -genkey -v -alias my-release-key -keyalg RSA -keysize 2048 -validity 10000 -keystore "C:\Users\yeiso\Desktop\soccerMatch\platforms\android\app\build\outputs\apk\release\my-release-key.keystore"
+
+password: soccer2020.
+
+unidad, nombre, etc: soccer match
+pais, region, etc: costa rica
+
+
+jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore my-release-key.keystore app-release-unsigned.apk my-release-key
+
+
+/path/to/Android/sdk/build-tools/VERSION/zipalign
+zipalign -v 4 app-release-unsigned.apk soccerMatch.apk
