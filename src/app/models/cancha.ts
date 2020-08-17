@@ -105,6 +105,12 @@ export class Cancha {
         if(Cancha.null(obj.correo) || Cancha.validarEmail(obj.correo)){
             return "Debe ingresar correo electronico valido"
         }
+
+        var re = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
+        if(!re.test(obj.correo)){
+            return "Debe ingresar correo electronico valido"
+        }
+
         if(( (obj.metodoPago.tipo=="SINPE") || (obj.metodoPago.tipo=='AMBOS')) && ((Cancha.null(obj.telefonoSinpe)) || (obj.telefonoSinpe.toString().length <9)) ){
             return "Debe ingresar numero sinpe valido";
         }
