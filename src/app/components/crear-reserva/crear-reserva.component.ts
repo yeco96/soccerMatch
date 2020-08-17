@@ -137,7 +137,7 @@ export class CrearReservaComponent implements OnInit {
 
             const respuesta = this.crudService.construir(data) as Array<Cancha>;
 
-            this.canchas = respuesta.filter(x => x.ubicacion.codigoProvincia == this.codProvincia && x.ubicacion.codigoCanton == this.codCanton);
+            this.canchas = respuesta.filter(x => x.ubicacion.codigoProvincia == this.codProvincia && x.ubicacion.codigoCanton == this.codCanton && x.estado);
 
             if (this.canchas.length == 0) {
                 this.loader.hideLoader();

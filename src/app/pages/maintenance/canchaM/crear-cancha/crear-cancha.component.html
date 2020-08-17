@@ -113,7 +113,7 @@
                 <ion-item>
                     <ion-label position="floating">Método de Pago</ion-label>
                     <ion-select name="metodoPago" [(ngModel)]="canchaObjeto.metodoPago.tipo" required
-                                
+
                                 interface="action-sheet" cancelText="Cancelar" doneText="Aceptar">
                                 <ion-select-option value="SINPE">SINPE Movil</ion-select-option>
                                 <ion-select-option value="EFECTIVO">Efectivo en sitio</ion-select-option>
@@ -125,7 +125,7 @@
                 <ion-item *ngIf="canchaObjeto.metodoPago.tipo != null && canchaObjeto.metodoPago.tipo != 'EFECTIVO' ">
                     <ion-label position="floating">Numero sinpe</ion-label>
                     <ion-input name="telefonoSinpe" [(ngModel)]="canchaObjeto.telefonoSinpe" required
-                    
+
                              mask="0000-0000"
                              type="text"
                              maxlength="9"
@@ -135,7 +135,7 @@
 
                 <ion-item>
                     <ion-label position="floating">Telefono Principal</ion-label>
-                    <ion-input name="telefono" [(ngModel)]="canchaObjeto.telefono" required  
+                    <ion-input name="telefono" [(ngModel)]="canchaObjeto.telefono" required
                             mask="0000-0000"
                             type="text"
                             maxlength="9"
@@ -242,10 +242,10 @@
                 <br>
             </form>
 
-            <!--<ion-item *ngIf="actualizar" class="ion-no-padding">-->
-                <!--<ion-label>Estado</ion-label>-->
-                <!--<ion-toggle name="estado" [(ngModel)]="canchaObjeto.estado"></ion-toggle>-->
-            <!--</ion-item>-->
+            <ion-item *ngIf="actualizar" class="ion-no-padding">
+                <ion-label>Estado</ion-label>
+                <ion-toggle name="estado" [(ngModel)]="canchaObjeto.estado"></ion-toggle>
+            </ion-item>
             <br>
 
             <!--<ion-button *ngIf="actualizar" (click)="elimiar()" class="ion-padding" expand="block" color="danger">-->
