@@ -80,9 +80,9 @@
                 <ion-card-content>
 
 
-                    <ion-row class="ion-text-center">
+                    <ion-row class="ion-text-center" *ngIf="reto.partido.equipoA && reto.partido.equipoB">
                         <ion-col size="5">
-                            <p class="ion-no-margin ">{{reto.partido.equipoA.nombre.toUpperCase()}}</p>
+                            <p class="ion-no-margin" >{{reto.partido.equipoA.nombre.toUpperCase()}}</p>
                         </ion-col>
                         <ion-col class="ion-no-padding" style="top: 6px;" size="1">
                             <p class="ion-no-padding ">VS</p>
