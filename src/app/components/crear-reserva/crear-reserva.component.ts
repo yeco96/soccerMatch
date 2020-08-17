@@ -247,7 +247,7 @@ export class CrearReservaComponent implements OnInit {
                             this.crudService.update(this.tables.tablas().CANCHAS, cancha).then(resp => {
                                 this.loader.hideLoader();
                                 this.cerrarModal();
-                                this.presentToast("La reserva se realizo correctamente", true);
+                                this.presentToast("La reserva se realizo correctamente, proceda a crear un reto", true);
                             }).catch(error => {
                                 this.presentToast('Ocurrio un error al crear la reserva', false);
                                 this.loader.hideLoader();
